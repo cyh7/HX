@@ -1,8 +1,7 @@
 #pragma once
 
-#include "OpenCV_includes.h"
-
-
+#include "../opencv_include.h"
+#include "../STL_include.h"
 
 using namespace cv;
 using namespace std;

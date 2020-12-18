@@ -221,6 +221,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Vision\CalLIB\CalLib.h" />
     <ClInclude Include="Vision\CamControl\CamCon.h" />
     <ClInclude Include="Vision\EDLIB\ED.h" />
     <ClInclude Include="Vision\EDLIB\EDCircles.h" />
@@ -230,6 +231,7 @@
     <ClInclude Include="Vision\EDLIB\EDPF.h" />
     <ClInclude Include="Vision\EDLIB\NFA.h" />
     <ClInclude Include="Vision\opencv_include.h" />
+    <ClInclude Include="Vision\SolutionOpenCV\SimpleMath.h" />
     <ClInclude Include="Vision\SolutionOpenCV\solution_opencv.h" />
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +288,9 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Vision\CalLIB\CalLib.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Vision\CamControl\CamCon.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -305,6 +310,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Vision\EDLIB\NFA.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Vision\SolutionOpenCV\SimpleMath.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Vision\SolutionOpenCV\solution_opencv.cpp">

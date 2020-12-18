@@ -3,9 +3,10 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <map>
-
-#include "../EDLIB/EDLib.h"
 #include <ctime>
+
+#include "SimpleMath.h"
+#include "../EDLIB/EDLib.h"
 
 
 using namespace std;
@@ -24,6 +25,8 @@ public:
 	
 	//去除支架
 	void remove_plate_holder(const bool& is_left = true);
+	//直接获取轮廓，无凸优化
+	void GetContour();
 
 	//获取ROI
 	void get_roi();
@@ -34,6 +37,7 @@ public:
 
 	//把所有的步骤全部走一遍并输出结果
 	void auto_detect_default();
+	
 
 	//计时
 	void timer_start();

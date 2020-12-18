@@ -52,6 +52,12 @@
     <Filter Include="源文件\Cheng\CamControl">
       <UniqueIdentifier>{f8b6245d-8f30-4274-8a5e-15c2fd6f943d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Cheng\SolutionOpenCV\CalLIB">
+      <UniqueIdentifier>{2a390eee-ef77-4a53-b1dd-ac5a1f4d5f4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Cheng\SolutionOpenCV\CalLIB">
+      <UniqueIdentifier>{43d41aa1-21b3-45c8-94e1-b08a694cb913}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CSerialPort\sigslot.h">
@@ -159,6 +165,12 @@
     <ClInclude Include="Vision\EDLIB\NFA.h">
       <Filter>头文件\Cheng\SolutionOpenCV\EDLIB</Filter>
     </ClInclude>
+    <ClInclude Include="Vision\CalLIB\CalLib.h">
+      <Filter>头文件\Cheng\SolutionOpenCV\CalLIB</Filter>
+    </ClInclude>
+    <ClInclude Include="Vision\SolutionOpenCV\SimpleMath.h">
+      <Filter>头文件\Cheng\SolutionOpenCV\ImageProcess</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SerialPort.cpp">
@@ -247,6 +259,12 @@
     </ClCompile>
     <ClCompile Include="Vision\EDLIB\NFA.cpp">
       <Filter>源文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="Vision\CalLIB\CalLib.cpp">
+      <Filter>源文件\Cheng\SolutionOpenCV\CalLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="Vision\SolutionOpenCV\SimpleMath.cpp">
+      <Filter>源文件\Cheng\SolutionOpenCV\ImageProcess</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -532,7 +532,8 @@ void solution_opencv::get_lines()
 
 		/*double t = ((vector1.x * vector2.x) + (vector1.y * vector2.y)) / (sqrt(pow(vector1.x, 2) + pow(vector1.y, 2)) * sqrt(pow(vector2.x, 2) + pow(vector2.y, 2)));
 		cout << "这两个向量的夹角为:" << acos(t) * (180 / PI) << "度" << endl;*/
-		cout << "这两个向量的夹角为：" << t << "度" << endl;
+
+		//cout << "这两个向量的夹角为：" << t << "度" << endl;
 
 	}
 
