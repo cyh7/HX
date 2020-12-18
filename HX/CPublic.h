@@ -45,12 +45,14 @@ struct CPublic
 	//返回左相机SN
 	static const string& LEFT_CAM_SN()
 	{
-		return string("");
+		static const string LCSN("LT0200091521");
+		return LCSN;
 	}
 	//返回右相机SN
 	static const string& RIGHT_CAM_SN()
 	{
-		return string("");
+		static const string RCSN("LT0200091520");
+		return RCSN;
 	}
 
 
@@ -83,7 +85,7 @@ struct CPublic
 		return flag;
 	}
 	*/
-	static bool Selection_enabled;
+	static bool leftSelectionEnabled;
 
 
 

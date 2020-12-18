@@ -2,4 +2,5 @@
 #include "CPublic.h"
 
 
-bool CPublic::Selection_enabled = false;
+bool CPublic::leftSelectionEnabled = false;
+

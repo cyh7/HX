@@ -2,6 +2,7 @@
 #include "CmodbusDlg.h"
 #include "CLayout.h"
 #include "CMyButton.h"
+#include "Vision/CamControl/CamCon.h"
 
 extern bool IdentifyDone;
 //把时间全局给插入数据库用
@@ -65,4 +66,7 @@ public:
 	void OnBnClickedVisBtnLeft();
 	void OnBnClickedVisBtnRight();
 	afx_msg void OnBnClickedVsBtnDetect();
+	afx_msg void OnBnClickedVsEditRoi();
+	shared_ptr<SingleCam> leftCam;
+	shared_ptr<SingleCam> rightCam;
 };

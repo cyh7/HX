@@ -77,6 +77,7 @@ BEGIN_MESSAGE_MAP(CvisionDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_VS_STARTREC, &CvisionDlg::OnBnClickedVsStartrec)
 	ON_WM_HSCROLL()
 	//ON_BN_CLICKED(IDC_VS_BTN_DETECT, &CvisionDlg::OnBnClickedVsBtnDetect)
+	ON_BN_CLICKED(IDC_VS_EDIT_ROI, &CvisionDlg::OnBnClickedVsEditRoi)
 END_MESSAGE_MAP()
 
 
@@ -258,6 +259,8 @@ BOOL CvisionDlg::OnInitDialog()
 	//扫描总线上所有的相机
 	CAMVEC().init_all_cam(SCV());
 
+	leftCam = SCV()[0];
+	rightCam = SCV()[1];
 
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -749,11 +752,10 @@ void CvisionDlg::OnBnClickedButton2()
 void CvisionDlg::OnBnClickedVsStartrec()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	//leftCam = SCV()[0];
 
-	//关闭录制
-
-	//使能
-	CPublic::Selection_enabled = !CPublic::Selection_enabled;
+	CPublic::leftSelectionEnabled = false;
+	leftCam->Record_start();
 
 	return;
 
@@ -764,26 +766,49 @@ void CvisionDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 
-	if (CPublic::Selection_enabled)
+	if (CPublic::leftSelectionEnabled)
 	{
-		cv::Rect& ROI1 = CPublic::ROI1Temp();
+		leftCam = SCV()[0];
+		rightCam = SCV()[1];
+
+		//if
+		cv::Rect& ROI1 = leftCam->ROI;
+		//else
+		//cv::Rect& ROI1 = rightCam->ROI;
+
 		CSliderCtrl* pSlider = (CSliderCtrl*)pScrollBar;
 		if (pSlider->GetDlgCtrlID() == IDC_VS_SB_ROI_H)
 		{
 			int ROI1_width = m_slider_ROI_width.GetPos(); //获取roi1的宽度
+
+
+			if (ROI1_width + ROI1.x >= PC_WIDTH)
+			{
+				ROI1_width = PC_WIDTH - ROI1.x;
+			}
 			SetDlgItemInt(IDC_VS_EDIT_HORI, ROI1_width);
+			m_slider_ROI_width.SetPos(ROI1_width);
+
+
 			ROI1.width = ROI1_width;
 
 		}
 		else if (pSlider->GetDlgCtrlID() == IDC_VS_SB_ROI_V)
 		{
 			int ROI1_height = m_slider_ROI_height.GetPos(); //获取roi1的高度
+			if (ROI1_height + ROI1.y >= PC_HEIGHT)
+			{
+				ROI1_height = PC_HEIGHT - ROI1.y;
+			}
 			SetDlgItemInt(IDC_VS_EDIT_VERT, ROI1_height);
+			m_slider_ROI_height.SetPos(ROI1_height);
 			ROI1.height = ROI1_height;
 		}
 		///temp
 		/// 
-		Mat src = CPublic::Mat_Vec()[CPublic::RESIZED].clone();
+		
+		//if ...
+		Mat src = leftCam->GetSrc().clone();
 		if (src.empty())
 		{
 			CString a;
@@ -791,8 +816,23 @@ void CvisionDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			return;
 		}
 		cv::Rect ROI1Resized(ROI1.x / 10, ROI1.y / 10, ROI1.width / 10, ROI1.height / 10);
+		resize(src, src, Size(0, 0), 1.0 / AS_RATIO, 1.0 / AS_RATIO);
 		rectangle(src, ROI1Resized, Scalar(255, 0, 0));
-		imshow(CPublic::LEFT_MATWINDOW_NAME(), src);
+		imshow(leftCam->GetShowWindow(), src);
+		//else
+		/*
+		Mat src = rightCam->GetSrc().clone();
+		if (src.empty())
+		{
+			CString a;
+			MessageBox(CString("empty Mat"));
+			return;
+		}
+		cv::Rect ROI1Resized(ROI1.x / 10, ROI1.y / 10, ROI1.width / 10, ROI1.height / 10);
+		resize(src, src, Size(0, 0), 1 / AS_RATIO, 1 / AS_RATIO);
+		rectangle(src, ROI1Resized, Scalar(255, 0, 0));
+		imshow(rightCam->GetShowWindow(), src);
+		*/
 	}
 
 
@@ -803,7 +843,7 @@ constexpr int roiSlice = 80;//前进步进
 void CvisionDlg::OnBnClickedVisBtnUp()
 {
 	// TODO: 在此处添加实现代码.
-	if (CPublic::Selection_enabled)
+	if (CPublic::leftSelectionEnabled)
 	{
 		cv::Rect& curROI = CPublic::ROI1Temp();
 
@@ -820,7 +860,7 @@ void CvisionDlg::OnBnClickedVisBtnUp()
 void CvisionDlg::OnBnClickedVisBtnDown()
 {
 	// TODO: 在此处添加实现代码.
-	if (CPublic::Selection_enabled)
+	if (CPublic::leftSelectionEnabled)
 	{
 		cv::Rect& curROI = CPublic::ROI1Temp();
 
@@ -837,7 +877,7 @@ void CvisionDlg::OnBnClickedVisBtnDown()
 void CvisionDlg::OnBnClickedVisBtnLeft()
 {
 	// TODO: 在此处添加实现代码.
-	if (CPublic::Selection_enabled)
+	if (CPublic::leftSelectionEnabled)
 	{
 		cv::Rect& curROI = CPublic::ROI1Temp();
 
@@ -854,7 +894,7 @@ void CvisionDlg::OnBnClickedVisBtnLeft()
 void CvisionDlg::OnBnClickedVisBtnRight()
 {
 	// TODO: 在此处添加实现代码.
-	if (CPublic::Selection_enabled)
+	if (CPublic::leftSelectionEnabled)
 	{
 		cv::Rect& curROI = CPublic::ROI1Temp();
 
@@ -875,9 +915,23 @@ void CvisionDlg::OnBnClickedVsBtnDetect()
 	/// 这个按键是暂时的，意味着这玩意直接就调用两个相机的停止采集，然后对两个相机的原图来一波操作
 	/// 要用到多线程
 	/// 
-	auto leftCam  = SCV()[0];
-	auto rightCam = SCV()[1];
+	/*auto leftCam  = SCV()[0];
+	auto rightCam = SCV()[1];*/
 	
-	solution_opencv left_pic(leftCam->GetSrc(), leftCam->ROI);
-	left_pic.auto_detect_default();
+	//solution_opencv left_pic(leftCam->GetSrc(), leftCam->ROI);
+	//left_pic.auto_detect_default();
+	leftCam->Record_stop();
+}
+
+
+void CvisionDlg::OnBnClickedVsEditRoi()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	/*auto leftCam = SCV()[0];
+	auto rightCam = SCV()[1];*/
+	//关闭录制
+	leftCam->Record_stop();
+	//...
+	//使能
+	CPublic::leftSelectionEnabled = true;
 }
