@@ -55,4 +55,14 @@ public:
 
 
 
+	afx_msg void OnBnClickedButton2();
+	CSliderCtrl m_slider_ROI_width;
+	CSliderCtrl m_slider_ROI_height;
+	afx_msg void OnBnClickedVsStartrec();
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	void OnBnClickedVisBtnUp();
+	void OnBnClickedVisBtnDown();
+	void OnBnClickedVisBtnLeft();
+	void OnBnClickedVisBtnRight();
+	afx_msg void OnBnClickedVsBtnDetect();
 };

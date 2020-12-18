@@ -14,6 +14,8 @@
 #include <winsock.h> 
 #include "mysql.h"
 #include <afxcontrolbars.h>
+//相机库头文件
+#include "GalaxySDK/inc/GalaxyIncludes.h"
 //#include "SkinPPWTL.h"
 //#pragma comment(lib,"SkinPPWTL.lib")
 #endif //PCH_H

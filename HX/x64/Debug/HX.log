@@ -1,0 +1,4 @@
+﻿  CvisionDlg.cpp
+C:\Users\Administrator\Desktop\CPP_Projects\HX\HX\Vision\EDLIB\EDColor.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+    正在创建库 C:\Users\Administrator\Desktop\CPP_Projects\HX\x64\Debug\HX.lib 和对象 C:\Users\Administrator\Desktop\CPP_Projects\HX\x64\Debug\HX.exp
+  HX.vcxproj -> C:\Users\Administrator\Desktop\CPP_Projects\HX\x64\Debug\HX.exe

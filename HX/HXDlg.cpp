@@ -95,6 +95,7 @@ BEGIN_MESSAGE_MAP(CHXDlg, CDialogEx)
 	ON_COMMAND(ID_MENU_LOGIN, &CHXDlg::OnMenuLogin)
 	ON_COMMAND(ID_MENU_EXIT, &CHXDlg::OnMenuExit)
 	ON_BN_CLICKED(IDC_HX_BTN_MONITOR, &CHXDlg::OnBnClickedHxBtnMonitor)
+	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
 
@@ -746,6 +747,9 @@ void CHXDlg::OnMenuExit()
 	LoginFlag = false;
 	MessageBox(_T("管理员已退出！"));
 }
+
+
+
 
 
 

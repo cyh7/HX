@@ -1,41 +1,94 @@
 #pragma once
-#include <string>
-#include "CSerialPort/SerialPort.h"
-#include "CSerialPort/SerialPortInfo.h"
+#include "Vision/opencv_include.h"
+#include "Vision/STL_include.h"
+using namespace std;
 
-using namespace itas109;
-
-
-class CPublic
+//相机参数，放缩比
+enum
 {
-public:
-	CPublic();
-	virtual ~CPublic();
+	PC_WIDTH = 5496,
+	PC_HEIGHT = 3672,
+	AS_RATIO = 10,
+};
 
-public:
-	static bool test1;
-	//判断是否到达
-	static bool ArriveFlag;
-	//判断识别是否完成
-	static bool IdentifyDone;
-	//开始执行识别
-	static bool ExecuteIdentify;
+struct CPublic
+{
 
-	static std::string Port;
-	static int BaudRate;
-	static int Parity;
-	static int DataBits;
-	static int Stop;
+	//返回一个存放着Mat的vector的引用
+	//第一个存放着完全没缩放过的原图
+	//第二个位置存放着缩放过的原图
+	//第三个存放裁切后的原图
+	enum
+	{
+		ORIGINAL,
+		RESIZED,
+		CROPPED_ORIGINAL,
+		CROPPED_RESIZED,
+	};
+	static std::vector<cv::Mat>& Mat_Vec()
+	{
+		static std::vector<cv::Mat> Mat_Vec(4);
+		return Mat_Vec;
+	}
 
 
-	//内存泄漏
-	//static CSerialPort m_SerialPort;//About CSerialPort
-public:
-	////创建CRC16的全局函数
-	//static unsigned short CRC16(unsigned char* puchMsg, unsigned short usDataLen);
-	//
-	////发送函数
-	//static void SendData(int CommTypeIn, WORD DownAdd, DWORD DownData);
+	//返回左显示窗口名称
+	static constexpr char* LEFT_MATWINDOW_NAME()
+	{
+		return "view1";
+	}
+	static constexpr char* RIGHT_MATWINDOW_NAME()
+	{
+		return "view2";
+	}
+
+	//返回左相机SN
+	static const string& LEFT_CAM_SN()
+	{
+		return string("");
+	}
+	//返回右相机SN
+	static const string& RIGHT_CAM_SN()
+	{
+		return string("");
+	}
+
+
+	//返回相机1的ROI的指针句柄
+	static cv::Rect*& ROI_1()
+	{
+		static cv::Rect* roi_1 = NULL;
+		return roi_1;
+	}
+
+	//测试用，模拟相机1的ROI,直接返回一个Rect引用
+	static cv::Rect& ROI1Temp()
+	{
+		static cv::Rect ro1(PC_WIDTH / 3, 0, PC_WIDTH / 3, PC_HEIGHT);
+		return ro1;
+	}
+
+	static std::vector<bool>& allRuntimeFlag()
+	{
+		static std::vector<bool> b;
+		return b;
+	}
+	 
+	//返回相机2的ROI，暂时先不用做
+	static cv::Rect* ROI_2();
+
+	/* static bool& Selection_enabled()
+	{
+		static bool flag = false;
+		return flag;
+	}
+	*/
+	static bool Selection_enabled;
+
+
+
+
+
 
 };
 

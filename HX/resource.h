@@ -52,6 +52,7 @@
 #define IDC_MOD_BTN_CHANGE              1018
 #define IDC_DAT_BTN_CLEAR               1018
 #define IDC_STATIC1                     1021
+#define IDC_VS_EDIT_HORI                1021
 #define IDC_STATIC2                     1022
 #define IDC_STATIC3                     1023
 #define IDC_STATIC4                     1024
@@ -167,6 +168,14 @@
 #define IDC_DAT_STATIC2                 1099
 #define IDC_DAT_STATIC1                 1101
 #define IDC_HX_PIC_MAIN                 1102
+#define IDC_VS_SB_ROI_H                 1103
+#define IDC_VS_SB_ROI_V                 1104
+#define IDC_VS_STATIC_CV1               1105
+#define IDC_VS_STATIC_CV2               1106
+#define IDC_VS_STARTREC                 1107
+#define IDC_VS_EDIT_ROI                 1108
+#define IDC_VS_EDIT_VERT                1109
+#define IDC_VS_BTN_DETECT               1110
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -191,7 +200,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        164
 #define _APS_NEXT_COMMAND_VALUE         32794
-#define _APS_NEXT_CONTROL_VALUE         1103
+#define _APS_NEXT_CONTROL_VALUE         1111
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
