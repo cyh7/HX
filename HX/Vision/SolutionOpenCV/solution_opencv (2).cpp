@@ -11,33 +11,32 @@ solution_opencv::solution_opencv(const Mat& input)
 	}
 	src = input.clone();
 }
-
 solution_opencv::solution_opencv(const Mat& input, Rect roi)
 {
 	if (input.empty())
 	{
 		cout << "input is empty!" << endl;
 	}
-	src = input.clone()(roi);
+	src = input.clone()(roi);//??????
 	m_roi = roi;
 }
 
-void solution_opencv::solution_preprocess(size_t PD_times, const size_t& G_ksize, const size_t& M_ksize)//Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ë¹ï¿½Ë²ï¿½kSIZE, ï¿½ï¿½Öµï¿½Ë²ï¿½Ksize
+void solution_opencv::solution_preprocess( size_t PD_times, const size_t& G_ksize, const size_t& M_ksize)//Ô¤´¦Àí£¬ ½µ²ÉÑù´ÎÊı£¬ ¸ßË¹ÂË²¨kSIZE, ÖĞÖµÂË²¨Ksize
 {
-	//é™é‡‡æ ·
+	//½µ²ÉÑù
 	if (PD_times)
 	{
 		//PD_times *= 2;
 		/*pyrDown(src, dst, Size((src.cols + 1) / 4, (src.rows + 1) / 4));*/
 		//resize(src, dst, Size(src.cols / PD_times, src.rows / PD_times));
 		resize(src, dst, Size(0, 0), 1 / pow(2, PD_times), 1 / pow(2, PD_times), INTER_AREA);
-
+		
 
 	}
 	else
 		dst = src;
-
-
+	
+	
 	GaussianBlur(dst, dst, Size(G_ksize, G_ksize), 0);
 	cvtColor(dst, dst, COLOR_BGR2GRAY);
 	//medianBlur(dst, dst, M_ksize);
@@ -51,7 +50,7 @@ void solution_opencv::processed_to_threshold(const size_t& method, const size_t&
 
 void solution_opencv::get_roi()
 {
-	//è”é€šåŒºåŸŸç»Ÿè®¡
+	//ÁªÍ¨ÇøÓòÍ³¼Æ
 	Mat labels = Mat::zeros(threshold_img.size(), CV_32S);
 	Mat stats, centroids;
 	int num_labels = connectedComponentsWithStats(threshold_img, labels, stats, centroids, 8, CV_32S);
@@ -63,11 +62,11 @@ void solution_opencv::get_roi()
 	// background color
 	colors[0] = Vec3b(0, 0, 0);
 
-	RNG rng(12345);//éšæœºæ•°äº§ç”Ÿå™¨
+	RNG rng(12345);//Ëæ»úÊı²úÉúÆ÷
 
 	// object color
 	for (int i = 1; i < num_labels; i++) {
-		colors[i] = Vec3b(rng.uniform(0, 256), rng.uniform(0, 256), rng.uniform(0, 256));//å¡«å……è°ƒè‰²æ¿
+		colors[i] = Vec3b(rng.uniform(0, 256), rng.uniform(0, 256), rng.uniform(0, 256));//Ìî³äµ÷É«°å
 	}
 
 	// extract stats info
@@ -79,7 +78,7 @@ void solution_opencv::get_roi()
 
 	for (int i = 1; i < num_labels; i++) {
 
-		int cx = centroids.at<double>(i, 0);//è´¨å¿ƒ
+		int cx = centroids.at<double>(i, 0);//ÖÊĞÄ
 		int cy = centroids.at<double>(i, 1);
 
 		constexpr int offset = 40;
@@ -90,7 +89,7 @@ void solution_opencv::get_roi()
 		int h = stats.at<int>(i, CC_STAT_HEIGHT) + offset;
 		int area = stats.at<int>(i, CC_STAT_AREA);
 
-		if (area < 50000)//å¤ªå°é¢ç§¯çš„ä¸è¦
+		if (area < 50000)//Ì«Ğ¡Ãæ»ıµÄ²»Òª
 			continue;
 
 
@@ -133,7 +132,7 @@ void solution_opencv::get_roi()
 		waitKey();*/
 
 
-
+		
 
 
 		Rect rect(x, y, w, h);
@@ -144,8 +143,7 @@ void solution_opencv::get_roi()
 }
 
 
-
-//ç®—è·ç¦»
+//Ëã¾àÀë
 int ed2(const Point& lhs, const Point& rhs)
 {
 	return (lhs.x - rhs.x) * (lhs.x - rhs.x) + (lhs.y - rhs.y) * (lhs.y - rhs.y);
@@ -157,7 +155,7 @@ vector<Point> removeFromContour(const vector<Point>& contour, const vector<int>&
 	int startIdx = 0;
 	int endIdx = 0;
 
-	// ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½È±ï¿½İµï¿½
+	// ÕÒµ½µãµã¾àÀë×î¶ÌµÄÈ±Ïİµã
 	for (int i = 0; i < defectsIdx.size(); ++i)
 	{
 		for (int j = i + 1; j < defectsIdx.size(); ++j)
@@ -192,7 +190,7 @@ vector<Point> removeFromContour(const vector<Point>& contour, const vector<int>&
 		}
 	}
 
-	// È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Äµï¿½
+	// È¥³ı²»ĞèÒªµÄµã
 	vector<Point> out;
 	if (startIdx <= endIdx)
 	{
@@ -207,7 +205,7 @@ vector<Point> removeFromContour(const vector<Point>& contour, const vector<int>&
 	return out;
 }
 
-void solution_opencv::remove_plate_holder(const bool& is_left)
+void solution_opencv::remove_plate_holder(const bool& is_left )
 {
 	if (roi.empty())
 	{
@@ -220,31 +218,30 @@ void solution_opencv::remove_plate_holder(const bool& is_left)
 	Mat AMorph;
 
 	morphologyEx(roi, AMorph, MORPH_CLOSE, se);
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	//imshow("after_morph", AMorph);
+	//±ÕÔËËã
+	imshow("after_morph", AMorph);
 
-	
+	//»Ò¶È×ªBGR
 	Mat3b out;
 	cvtColor(roi, out, COLOR_GRAY2BGR);
 
 	vector<vector<Point>> contours;
 	findContours(AMorph.clone(), contours, RETR_EXTERNAL, CHAIN_APPROX_NONE);
 
-	vector<Point> pts;
-	//Ñ¡ï¿½î³¤ï¿½ï¿½contours
+	vector<Point> pts = contours[0];
+	//Ñ¡×î³¤µÄcontours
 	for (const auto& v : contours)
 	{
-		if (v.size() > 500)
+		if (v.size() > pts.size())
 		{
 			pts = v;
-			break;
 		}
 	}
 
-	//Í¹ï¿½ï¿½
+	//Í¹°ü
 	vector<int> hullIdx;
 	convexHull(pts, hullIdx, false);
-	//Í¹È±ï¿½İ¼ï¿½ï¿½
+	//Í¹È±Ïİ¼ì²â
 	vector<Vec4i> defects;
 	convexityDefects(pts, hullIdx, defects);
 
@@ -264,9 +261,9 @@ void solution_opencv::remove_plate_holder(const bool& is_left)
 		for (const Vec4i& v : defects)
 		{
 			float depth = float(v[3]) / 256.f;
-			if (depth > 10) //  é€šè¿‡å‡¸åŒ…ä¸åŸè½®å»“ä¹‹é—´çš„è·ç¦»è¿›è¡Œç¼ºé™·ç­›é™¤
+			if (depth > 10) //  Í¨¹ıÍ¹°üÓëÔ­ÂÖÀªÖ®¼äµÄ¾àÀë½øĞĞÈ±ÏİÉ¸³ı
 			{
-				// æ‰¾åˆ°ç¼ºé™·ï¼Œå°†è½®å»“ä¸­æœ€è¿œçš„ç‚¹çš„indexå­˜èµ·æ¥
+				// ÕÒµ½È±Ïİ£¬½«ÂÖÀªÖĞ×îÔ¶µÄµãµÄindex´æÆğÀ´
 				defectsIdx.push_back(v[2]);
 
 				int startidx = v[0]; Point ptStart(pts[startidx]);
@@ -280,12 +277,12 @@ void solution_opencv::remove_plate_holder(const bool& is_left)
 			}
 		}
 
-		//å¦‚æœåªæœ‰ä¸€ä¸ªç¼ºé™·ï¼Œä¸å»é™¤
+		//Èç¹ûÖ»ÓĞÒ»¸öÈ±Ïİ£¬²»È¥³ı
 		if (defectsIdx.size() < 2)
 		{
 			break;
 		}
-		//å°†çªå‡ºåŒºåŸŸä»åŸè½®å»“ä¸­åˆ é™¤
+		//½«Í»³öÇøÓò´ÓÔ­ÂÖÀªÖĞÉ¾³ı
 		pts = removeFromContour(pts, defectsIdx);
 		convexHull(pts, hullIdx, false);
 		convexityDefects(pts, hullIdx, defects);
@@ -303,7 +300,7 @@ void solution_opencv::remove_plate_holder(const bool& is_left)
 
 	drawContours(final_contour, tmp, 0, Scalar(255), 1);
 
-	//imshow("Result", final_contour);
+	imshow("Result", final_contour);
 
 }
 
@@ -320,10 +317,10 @@ void solution_opencv::GetContour()
 	Mat AMorph;
 
 	morphologyEx(roi, AMorph, MORPH_CLOSE, se);
-	//é—­è¿ç®—
+	//±ÕÔËËã
 	//imshow("after_morph", AMorph);
 
-	//ç°åº¦è½¬BGR
+	//»Ò¶È×ªBGR
 	Mat3b out;
 	cvtColor(roi, out, COLOR_GRAY2BGR);
 
@@ -340,7 +337,7 @@ void solution_opencv::GetContour()
 	//	}
 	//}
 
-	//é€‰æœ€é•¿çš„contours
+	//Ñ¡×î³¤µÄcontours
 	size_t maxSize = contours[0].size();
 	size_t j = 0;
 	for (int i = 0; i < contours.size(); ++i)
@@ -376,18 +373,18 @@ struct LineAngle
 {
 	LS line;
 	double angle;
-	LineAngle(const LS& m_line, double& m_angle) : line(m_line), angle(m_angle)
+	LineAngle(const LS& m_line, double& m_angle ) : line(m_line), angle(m_angle)
 	{}
 };
 
 
-// double getDistance(Point2d pointO, Point2d pointA)
-// {
-// 	double distance;
-// 	distance = powf((pointO.x - pointA.x), 2) + powf((pointO.y - pointA.y), 2);
-
-// 	return sqrtf(distance);
-// }
+//double getDistance(cv::Point2d pointO, cv::Point2d pointA)
+//{
+//	double distance;
+//	distance = powf((pointO.x - pointA.x), 2) + powf((pointO.y - pointA.y), 2);
+//
+//	return sqrtf(distance);
+//}
 void solution_opencv::get_lines()
 {
 	if (final_contour.empty())
@@ -396,16 +393,16 @@ void solution_opencv::get_lines()
 		exit(-1);
 	}
 
-	EDLines testEDLines = EDLines(final_contour, 1.0, 50);//ç›´çº¿æ‹Ÿåˆï¼Œæœ€å°é•¿åº¦50ä»¥ä¸Š
-	Mat line_img = testEDLines.getLineImage();//ç”»ç›´çº¿å›¾
+	EDLines testEDLines = EDLines(final_contour, 1.0, 50);//Ö±ÏßÄâºÏ£¬×îĞ¡³¤¶È50ÒÔÉÏ
+	Mat line_img = testEDLines.getLineImage();//»­Ö±ÏßÍ¼
 	imshow("line_img", line_img);
 	//waitKey();
-	vector<LS> linePoints = testEDLines.getLines();//è·å–æ‰€æœ‰ç›´çº¿
-
-
+	vector<LS> linePoints = testEDLines.getLines();//»ñÈ¡ËùÓĞÖ±Ïß
+	
+	
 	vector<LineAngle> allLines;
 
-	/*è®¾å®šè¾¹ç•Œå€¼ï¼Œæ¸…æ¥šæ‰€æœ‰çš„è¾¹ç•Œä¸Šçš„ç›´çº¿*/
+	/*Éè¶¨±ß½çÖµ£¬Çå³şËùÓĞµÄ±ß½çÉÏµÄÖ±Ïß*/
 	const size_t ratio = 100;
 	const size_t& cols = final_contour.cols;
 	const size_t& rows = final_contour.rows;
@@ -415,25 +412,25 @@ void solution_opencv::get_lines()
 	////////////////////////////////////////////////////////////////
 
 
-	//éå†ç›´çº¿åæ ‡ç»„ï¼Œå»é™¤ä¸éœ€è¦çš„
-	for (LS& line : linePoints)
+	//±éÀúÖ±Ïß×ø±ê×é£¬È¥³ı²»ĞèÒªµÄ
+	for ( LS& line : linePoints)
 	{
-
+		
 		const double& sx = line.start.x; const double& sy = line.start.y;
 		const double& ex = line.end.x;   const double& ey = line.end.y;
-		if (sx <= xLowBound && ex <= xLowBound || sx >= xHighBound && ex >= xHighBound)//æ¸…é™¤æ‰“ç«–çš„å›¾åƒè¾¹ç•Œ
+		if (sx <= xLowBound  && ex <= xLowBound || sx >= xHighBound && ex >= xHighBound)//Çå³ı´òÊúµÄÍ¼Ïñ±ß½ç
 			continue;
-		if (sy <= yLowBound && sy >= yHighBound || sy >= yHighBound && ey >= yHighBound)//æ¸…é™¤æ‰“æ¨ªçš„å›¾åƒè¾¹ç•Œ
+		if (sy <= yLowBound && sy >= yHighBound || sy >= yHighBound && ey >= yHighBound)//Çå³ı´òºáµÄÍ¼Ïñ±ß½ç
 			continue;
-		//å»é™¤è¾¹çº¿
-		Point2d relative_cor(line.end - line.start);//è®¡ç®—æ–¹å‘å‘é‡
+		//È¥³ı±ßÏß
+		Point2d relative_cor(line.end - line.start);//¼ÆËã·½ÏòÏòÁ¿
 
 		//double angle = (atan2( (double)relative_cor.y , (double)relative_cor.x));
 		/*if (angle < 0)
 			angle += PI;*/
-
+		
 		double angle = cv::fastAtan2(relative_cor.y, relative_cor.x);
-		//å‘é‡æ–¹å‘ä¿®æ­£ï¼Œå°†æ‰€æœ‰çš„å‘é‡ä¿®æ­£ä¸º0~180Â°, ä¿®æ­£è§’åº¦çš„åŒæ—¶åè½¬å‘é‡æ–¹å‘
+		//ÏòÁ¿·½ÏòĞŞÕı£¬½«ËùÓĞµÄÏòÁ¿ĞŞÕıÎª0~180¡ã, ĞŞÕı½Ç¶ÈµÄÍ¬Ê±·´×ªÏòÁ¿·½Ïò
 		if (angle > 180.0)
 		{
 			angle -= 180.0;
@@ -443,8 +440,8 @@ void solution_opencv::get_lines()
 		allLines.emplace_back(line, angle);
 		cout << "rex: " << relative_cor.x << "rey: " << relative_cor.y << endl;
 		cout << " line start x: " << line.start.x << " line start y: " << line.start.y;
-		cout << " line end   x: " << line.end.x << " line end   y: " << line.end.y << " angle " << angle << endl;
-
+		cout << " line end   x: " << line.end.x << " line end   y: " << line.end.y  << " angle " << angle  << endl;
+		
 	}
 	cout << endl;
 	sort(allLines.begin(), allLines.end(),
@@ -453,42 +450,47 @@ void solution_opencv::get_lines()
 		return l1.angle < l2.angle;
 	});
 	vector<LineAngle> allLsNormalized;
-
-	cout << allLines.size() << endl;
-
-
 	
-	for (auto itc = allLines.begin(); itc != allLines.end() - 1; itc++)//å°†é‡å¤çš„çº¿æ¡å½’ä¸€åŒ–
+	cout << allLines.size() << endl;
+	
+
+	/*for (const auto& itc : allLines)
+	{
+		cout << " line start x: " << itc.line.start.x << " line start y: " << itc.line.start.y;
+		cout << " line end   x: " << itc.line.end.x << " line end   y: " << itc.line.end.y << " angle " << itc.angle << endl;
+	}
+	cout << endl;*/
+	for (auto itc = allLines.begin(); itc != allLines.end() - 1; itc++)//½«ÖØ¸´µÄÏßÌõ¹éÒ»»¯
 	{
 		LS& tmp1 = itc->line;
 		LS& tmp2 = (itc + 1)->line;
 
-		if (sqrt(ed2(tmp1.start, tmp2.start)) > 50.0)//ä¸æ˜¯é‡å¤çš„çº¿
+		if (sqrt(ed2(tmp1.start, tmp2.start)) > 50.0)//²»ÊÇÖØ¸´µÄÏß
 		{
 			continue;
 		}
 
 		tmp1.start = (tmp1.start + tmp2.start) / 2;
-		tmp1.end = (tmp1.end + tmp2.end) / 2;
+		tmp1.end =   (tmp1.end + tmp2.end) / 2;
 		allLsNormalized.emplace_back(tmp1, itc->angle);
-
+		
 	}
 
 	for (const auto& itc : allLsNormalized)
 	{
 		cout << " line start x: " << itc.line.start.x << " line start y: " << itc.line.start.y;
-		cout << " line end   x: " << itc.line.end.x << " line end   y: " << itc.line.end.y << " angle " << itc.angle << endl;
+		cout << " line end   x: " << itc.line.end.x << " line end   y: " << itc.line.end.y << " angle "<<itc.angle <<endl;
 	}
 
 
-	//å»ºç«‹ç›´è§’å¯¹
+	//½¨Á¢Ö±½Ç¶Ô
 	vector<pair<LineAngle, LineAngle>> rightAngles;
 
 	for (auto i = allLsNormalized.begin(); i != allLsNormalized.end(); ++i)
 	{
 		for (auto j = i + 1; j != allLsNormalized.end(); ++j)
 		{
-			if (fabs(fabs(i->angle - j->angle) - 90) < 1.0)//ç›¸å·®ä¹ååº¦
+			if (fabs(fabs(i->angle - j->angle) - 90) < 1.0)//Ïà²î¾ÅÊ®¶È
 			{
 				rightAngles.emplace_back(make_pair(*i, *j));
 				++i; j = i + 1;
@@ -499,8 +501,8 @@ void solution_opencv::get_lines()
 	}
 
 
-
-
+	
+	
 	/*if (rightAngles.size() > 1)
 	{
 		cout << "error!!!" << endl;
@@ -522,8 +524,8 @@ void solution_opencv::get_lines()
 
 		circle(line_img, crossPoint, 3, Scalar(0, 0, 255), -1);
 
-		/*	Point2d vector1 = l1.end - l1.start;
-			Point2d vector2 = l2.end - l2.start;*/
+	/*	Point2d vector1 = l1.end - l1.start;
+		Point2d vector2 = l2.end - l2.start;*/
 
 		Point2d vector1 = l1.end - crossPoint;
 		Point2d vector2 = l2.end - crossPoint;
@@ -531,12 +533,12 @@ void solution_opencv::get_lines()
 		double t = SimpleMath::GetVectorAngle(vector1.x, vector1.y, vector2.x, vector2.y);
 
 		/*double t = ((vector1.x * vector2.x) + (vector1.y * vector2.y)) / (sqrt(pow(vector1.x, 2) + pow(vector1.y, 2)) * sqrt(pow(vector2.x, 2) + pow(vector2.y, 2)));
-		cout << "è¿™ä¸¤ä¸ªå‘é‡çš„å¤¹è§’ä¸º:" << acos(t) * (180 / PI) << "åº¦" << endl;*/
-		cout << "è¿™ä¸¤ä¸ªå‘é‡çš„å¤¹è§’ä¸ºï¼š" << t << "åº¦" << endl;
+		cout << "ÕâÁ½¸öÏòÁ¿µÄ¼Ğ½ÇÎª:" << acos(t) * (180 / PI) << "¶È" << endl;*/
+		cout << "ÕâÁ½¸öÏòÁ¿µÄ¼Ğ½ÇÎª£º" << t << "¶È" << endl;
 
 	}
 
-
+	
 
 
 	//cout << "line.start.x" << vector1.x << " " << "line.start.y" << vector1.y << endl;
@@ -545,7 +547,7 @@ void solution_opencv::get_lines()
 	//cout << "vertical" << endl;
 	namedWindow("ED", WINDOW_FREERATIO);
 
-
+	
 	imshow("ED", line_img);
 }
 
@@ -567,7 +569,7 @@ void solution_opencv::show_src()
 		imshow("src", src);
 	else
 		cout << "dont show anything!" << endl;
-
+	
 }
 
 void solution_opencv::show_dst()
@@ -594,12 +596,11 @@ void solution_opencv::show_roi()
 	else
 		cout << "roi dont show anything!" << endl;
 }
-
 void solution_opencv::auto_detect_default()
 {
-	solution_preprocess(1, 3, 3);//é¢„å¤„ç†ï¼Œ é™é‡‡æ ·æ¬¡æ•°ï¼Œ é«˜æ–¯æ»¤æ³¢kSIZE, ä¸­å€¼æ»¤æ³¢Ksize
+	solution_preprocess(1, 3, 3);//Ô¤´¦Àí£¬ ½µ²ÉÑù´ÎÊı£¬ ¸ßË¹ÂË²¨kSIZE, ÖĞÖµÂË²¨Ksize
 	processed_to_threshold(THRESH_OTSU, 165);
 	get_roi();
-	remove_plate_holder();//å»é™¤æ”¯æ¶
+	remove_plate_holder();//È¥³ıÖ§¼Ü
 	get_lines();
 }
