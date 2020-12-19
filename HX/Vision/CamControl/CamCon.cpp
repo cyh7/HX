@@ -58,7 +58,7 @@ int CamCon::init_all_cam(vector<shared_ptr<SingleCam>>& cam_vec)
 			{
 				throw exception("Found a new Cam");
 			}
-
+			++i;
 		}
 	}
 	

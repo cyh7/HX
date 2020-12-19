@@ -259,8 +259,12 @@ BOOL CvisionDlg::OnInitDialog()
 	//扫描总线上所有的相机
 	CAMVEC().init_all_cam(SCV());
 
-	leftCam = SCV()[0];
-	rightCam = SCV()[1];
+	if (!SCV().empty())
+	{
+		leftCam = SCV()[0];
+		rightCam = SCV()[1];
+	}
+	
 
 
 	return TRUE;  // return TRUE unless you set the focus to a control
