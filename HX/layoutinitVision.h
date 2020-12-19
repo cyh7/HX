@@ -12,8 +12,18 @@ void InitLayoutVision(CLayout& layout, CWnd* parent)
 	layout.RegisterControl(IDC_VIS_BTN_OPDATA, CLayout::e_stretch_all);
 	layout.RegisterControl(IDC_VIS_BTN_OPMOD, CLayout::e_stretch_all);
 	layout.RegisterControl(IDC_VIS_BTN_OPVS, CLayout::e_stretch_all);
-
 	layout.RegisterControl(IDC_VS_STATIC_NAME, CLayout::e_stretch_all);
+
+	layout.RegisterControl(IDC_VS_STATIC_CV1, CLayout::e_stretch_all);
+	layout.RegisterControl(IDC_VS_STATIC_CV2, CLayout::e_stretch_all);
+	layout.RegisterControl(IDC_VS_STARTREC, CLayout::e_stretch_all);
+	layout.RegisterControl(IDC_VS_EDIT_ROI, CLayout::e_stretch_all);
+	layout.RegisterControl(IDC_VS_BTN_DETECT, CLayout::e_stretch_all);
+	layout.RegisterControl(IDC_VS_SB_ROI_H, CLayout::e_stretch_all);
+	layout.RegisterControl(IDC_VS_SB_ROI_V, CLayout::e_stretch_all);
+	layout.RegisterControl(IDC_VS_EDIT_HORI, CLayout::e_stretch_all);
+	layout.RegisterControl(IDC_VS_EDIT_VERT, CLayout::e_stretch_all);
+
 }
 
 #endif

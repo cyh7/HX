@@ -9,7 +9,7 @@
 #ifndef GX_SMART_POINTER_H
 #define GX_SMART_POINTER_H
 
-#include <GalaxyException.h>
+#include "GalaxyException.h"
 
 #if defined (_WIN32)
 #include "windows.h"

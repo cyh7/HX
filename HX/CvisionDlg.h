@@ -2,6 +2,7 @@
 #include "CmodbusDlg.h"
 #include "CLayout.h"
 #include "CMyButton.h"
+#include "Vision/CamControl/CamCon.h"
 
 extern bool IdentifyDone;
 //把时间全局给插入数据库用
@@ -55,4 +56,17 @@ public:
 
 
 
+	afx_msg void OnBnClickedButton2();
+	CSliderCtrl m_slider_ROI_width;
+	CSliderCtrl m_slider_ROI_height;
+	afx_msg void OnBnClickedVsStartrec();
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	void OnBnClickedVisBtnUp();
+	void OnBnClickedVisBtnDown();
+	void OnBnClickedVisBtnLeft();
+	void OnBnClickedVisBtnRight();
+	afx_msg void OnBnClickedVsBtnDetect();
+	afx_msg void OnBnClickedVsEditRoi();
+	shared_ptr<SingleCam> leftCam;
+	shared_ptr<SingleCam> rightCam;
 };

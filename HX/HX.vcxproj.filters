@@ -16,100 +16,163 @@
     <Filter Include="COM">
       <UniqueIdentifier>{14dd43c1-116e-474d-a30c-5d65ee38d980}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Hang">
+      <UniqueIdentifier>{f3ddfe43-be4d-4b84-ba64-77a48e6f8422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Hang">
+      <UniqueIdentifier>{edce5bcb-d7b5-440a-9638-bbee126e5f86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Cheng">
+      <UniqueIdentifier>{70f923f6-f285-4118-9de2-e28028f0d6c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Cheng\CamControl">
+      <UniqueIdentifier>{65dbd4e8-f776-4b1c-8bd2-b3efbc1e9c21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Cheng\SolutionOpenCV">
+      <UniqueIdentifier>{28aa02b9-f213-46b8-97b3-ea8c00f85d92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Cheng\SolutionOpenCV\ImageProcess">
+      <UniqueIdentifier>{4337435f-9f19-46d7-b1f2-4b18da7136bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Cheng\SolutionOpenCV\EDLIB">
+      <UniqueIdentifier>{1c1e1612-e9ed-4676-80c4-b543c1fcd313}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Cheng">
+      <UniqueIdentifier>{f1ad5d91-84c1-4fbd-afe1-91d3571b52c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Cheng\SolutionOpenCV">
+      <UniqueIdentifier>{1a103578-58c5-4645-b9e6-2f86c4d14bf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Cheng\SolutionOpenCV\EDLIB">
+      <UniqueIdentifier>{9c402e41-ff2d-4d96-803f-504344eaa24b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Cheng\SolutionOpenCV\ImageProcess">
+      <UniqueIdentifier>{05f734c1-1dfb-4aac-a5a6-a9ebef21d6ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Cheng\CamControl">
+      <UniqueIdentifier>{f8b6245d-8f30-4274-8a5e-15c2fd6f943d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Cheng\SolutionOpenCV\CalLIB">
+      <UniqueIdentifier>{2a390eee-ef77-4a53-b1dd-ac5a1f4d5f4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Cheng\SolutionOpenCV\CalLIB">
+      <UniqueIdentifier>{43d41aa1-21b3-45c8-94e1-b08a694cb913}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HX.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="HXDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="framework.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CcadDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CmodbusDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CvisionDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\CSerialPort\sigslot.h">
       <Filter>COM</Filter>
     </ClInclude>
-    <ClInclude Include="CPublic.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="Vision\opencv_include.h">
+      <Filter>头文件\Cheng\SolutionOpenCV\ImageProcess</Filter>
     </ClInclude>
-    <ClInclude Include="CLayout.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="Vision\CamControl\CamCon.h">
+      <Filter>头文件\Cheng\CamControl</Filter>
     </ClInclude>
-    <ClInclude Include="layoutinit.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="layoutinitModbus.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="drawcad.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="layoutinitCad.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CLoginDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="InfoFile.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="CcadDlg.h">
+      <Filter>头文件\Hang</Filter>
     </ClInclude>
     <ClInclude Include="CchagePwdDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CMyButton.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="layoutinitVision.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\Hang</Filter>
     </ClInclude>
     <ClInclude Include="CdataDlg.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\Hang</Filter>
     </ClInclude>
-    <ClInclude Include="layoutinitData.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="CLoginDlg.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="CLayout.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="CmodbusDlg.h">
+      <Filter>头文件\Hang</Filter>
     </ClInclude>
     <ClInclude Include="CMonitorDlg.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="CPublic.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="CMyButton.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="CvisionDlg.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="drawcad.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="HX.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="HXDlg.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="InfoFile.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="layoutinitCad.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="layoutinitData.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="layoutinitVision.h">
+      <Filter>头文件\Hang</Filter>
     </ClInclude>
     <ClInclude Include="layoutinitMonitor.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="layoutinitModbus.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="layoutinit.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件\Hang</Filter>
+    </ClInclude>
+    <ClInclude Include="Vision\SolutionOpenCV\solution_opencv.h">
+      <Filter>头文件\Cheng\SolutionOpenCV\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="Vision\EDLIB\ED.h">
+      <Filter>头文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClInclude>
+    <ClInclude Include="Vision\EDLIB\EDCircles.h">
+      <Filter>头文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClInclude>
+    <ClInclude Include="Vision\EDLIB\EDColor.h">
+      <Filter>头文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClInclude>
+    <ClInclude Include="Vision\EDLIB\EDLib.h">
+      <Filter>头文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClInclude>
+    <ClInclude Include="Vision\EDLIB\EDLines.h">
+      <Filter>头文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClInclude>
+    <ClInclude Include="Vision\EDLIB\EDPF.h">
+      <Filter>头文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClInclude>
+    <ClInclude Include="Vision\EDLIB\NFA.h">
+      <Filter>头文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClInclude>
+    <ClInclude Include="Vision\CalLIB\CalLib.h">
+      <Filter>头文件\Cheng\SolutionOpenCV\CalLIB</Filter>
+    </ClInclude>
+    <ClInclude Include="Vision\SolutionOpenCV\SimpleMath.h">
+      <Filter>头文件\Cheng\SolutionOpenCV\ImageProcess</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HX.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="HXDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CcadDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CmodbusDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CvisionDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SerialPort.cpp">
       <Filter>COM</Filter>
     </ClCompile>
@@ -128,35 +191,80 @@
     <ClCompile Include="..\src\SerialPortWinBase.cpp">
       <Filter>COM</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CPublic.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CLayout.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="drawcad.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CLoginDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="InfoFile.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="CcadDlg.cpp">
+      <Filter>源文件\Hang</Filter>
     </ClCompile>
     <ClCompile Include="CchagePwdDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CMyButton.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Hang</Filter>
     </ClCompile>
     <ClCompile Include="CdataDlg.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Hang</Filter>
+    </ClCompile>
+    <ClCompile Include="CLayout.cpp">
+      <Filter>源文件\Hang</Filter>
+    </ClCompile>
+    <ClCompile Include="CLoginDlg.cpp">
+      <Filter>源文件\Hang</Filter>
+    </ClCompile>
+    <ClCompile Include="CmodbusDlg.cpp">
+      <Filter>源文件\Hang</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>源文件\Hang</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoFile.cpp">
+      <Filter>源文件\Hang</Filter>
+    </ClCompile>
+    <ClCompile Include="HXDlg.cpp">
+      <Filter>源文件\Hang</Filter>
+    </ClCompile>
+    <ClCompile Include="drawcad.cpp">
+      <Filter>源文件\Hang</Filter>
     </ClCompile>
     <ClCompile Include="CMonitorDlg.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Hang</Filter>
+    </ClCompile>
+    <ClCompile Include="CMyButton.cpp">
+      <Filter>源文件\Hang</Filter>
+    </ClCompile>
+    <ClCompile Include="CPublic.cpp">
+      <Filter>源文件\Hang</Filter>
+    </ClCompile>
+    <ClCompile Include="CvisionDlg.cpp">
+      <Filter>源文件\Hang</Filter>
+    </ClCompile>
+    <ClCompile Include="HX.cpp">
+      <Filter>源文件\Hang</Filter>
+    </ClCompile>
+    <ClCompile Include="Vision\CamControl\CamCon.cpp">
+      <Filter>源文件\Cheng\CamControl</Filter>
+    </ClCompile>
+    <ClCompile Include="Vision\SolutionOpenCV\solution_opencv.cpp">
+      <Filter>源文件\Cheng\SolutionOpenCV\ImageProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="Vision\EDLIB\ED.cpp">
+      <Filter>源文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="Vision\EDLIB\EDCircles.cpp">
+      <Filter>源文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="Vision\EDLIB\EDColor.cpp">
+      <Filter>源文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="Vision\EDLIB\EDLines.cpp">
+      <Filter>源文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="Vision\EDLIB\EDPF.cpp">
+      <Filter>源文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="Vision\EDLIB\NFA.cpp">
+      <Filter>源文件\Cheng\SolutionOpenCV\EDLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="Vision\CalLIB\CalLib.cpp">
+      <Filter>源文件\Cheng\SolutionOpenCV\CalLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="Vision\SolutionOpenCV\SimpleMath.cpp">
+      <Filter>源文件\Cheng\SolutionOpenCV\ImageProcess</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

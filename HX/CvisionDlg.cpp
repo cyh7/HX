@@ -9,6 +9,13 @@
 #include "HXDlg.h"
 #include "layoutinitVision.h"
 
+#include "Vision/CamControl/CamCon.h"//相机控制，必须第一引入，避免前面出现 using namespace cv;
+#include "Vision/opencv_include.h"  //图像总引入
+#include "Vision/SolutionOpenCV/solution_opencv.h" //图像处理总类
+
+//相机
+
+
 //发送错误次数
 int BadVisionNum = 0;
 //当前发送的是第几个
@@ -49,6 +56,8 @@ void CvisionDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_VIS_BTN_OPDATA, m_vs_btn_opdata);
 	DDX_Control(pDX, IDC_VIS_BTN_OPMOD, m_vs_btn_opmod);
 	DDX_Control(pDX, IDC_VIS_BTN_OPVS, m_vs_btn_opvs);
+	DDX_Control(pDX, IDC_VS_SB_ROI_H, m_slider_ROI_width);
+	DDX_Control(pDX, IDC_VS_SB_ROI_V, m_slider_ROI_height);
 }
 
 
@@ -64,6 +73,11 @@ BEGIN_MESSAGE_MAP(CvisionDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_HELPINFO()
 	ON_BN_CLICKED(IDC_VIS_BTN_OPMON, &CvisionDlg::OnBnClickedVisBtnOpmon)
+	ON_BN_CLICKED(IDC_BUTTON2, &CvisionDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_VS_STARTREC, &CvisionDlg::OnBnClickedVsStartrec)
+	ON_WM_HSCROLL()
+	//ON_BN_CLICKED(IDC_VS_BTN_DETECT, &CvisionDlg::OnBnClickedVsBtnDetect)
+	ON_BN_CLICKED(IDC_VS_EDIT_ROI, &CvisionDlg::OnBnClickedVsEditRoi)
 END_MESSAGE_MAP()
 
 
@@ -212,7 +226,46 @@ BOOL CvisionDlg::OnInitDialog()
 		struWndpl.rcNormalPosition = rectFullScreen;
 		SetWindowPlacement(&struWndpl);
 	}
+	//初始化图形控件
+	PicConInit(this->m_hWnd, IDC_VS_STATIC_CV1, CPublic::LEFT_MATWINDOW_NAME());//初始化窗口1
+	//初始化右相机窗口
+
+	//初始化相片容器
+	//CPublic::Mat_Vec();
+	//初始化滚动条
+	{
+		//设置滚动条滚动范围
+		m_slider_ROI_width.SetRange(0, PC_WIDTH);
+		//每50个单位画一个刻度
+		m_slider_ROI_width.SetTicFreq(50);
+		//设置初始位置
+		int Start = PC_WIDTH / 2;
+		m_slider_ROI_width.SetPos(Start);//滚动条初始位置
+		SetDlgItemInt(IDC_VS_EDIT_HORI, Start);//设置编辑框的初始值
+
+	   //滚动条2
+
+		//设置滚动条滚动范围
+		m_slider_ROI_height.SetRange(0, PC_HEIGHT);
+		//每十个单位画一个刻度
+		m_slider_ROI_height.SetTicFreq(50);
+		//设置初始位置
+		int Start2 = PC_HEIGHT / 2;
+		m_slider_ROI_height.SetPos(Start2);
+		SetDlgItemInt(IDC_VS_EDIT_VERT, Start2);//编辑框的初始值
+	}
+	//初始化相机驱动库
+	CAMVEC();
+	//扫描总线上所有的相机
+	CAMVEC().init_all_cam(SCV());
+
+	if (!SCV().empty())
+	{
+		leftCam = SCV()[0];
+		rightCam = SCV()[1];
+	}
 	
+
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
@@ -410,6 +463,23 @@ BOOL CvisionDlg::PreTranslateMessage(MSG* pMsg)
 		{
 			OnBnClickedVisBtnOpmod();
 		}
+		if (pMsg->wParam == VK_UP) //上键处理函数
+		{
+			OnBnClickedVisBtnUp();
+		}
+		else if (pMsg->wParam == VK_DOWN) //上键处理函数
+		{
+			OnBnClickedVisBtnDown();
+		}
+		else if (pMsg->wParam == VK_LEFT) //上键处理函数
+		{
+			OnBnClickedVisBtnLeft();
+		}
+		else if (pMsg->wParam == VK_RIGHT) //上键处理函数
+		{
+			OnBnClickedVisBtnRight();
+		}
+
 		if (pMsg->wParam == VK_ESCAPE || pMsg->wParam == VK_RETURN)    //屏蔽回车和ESC  
 			return TRUE;
 		if (pMsg->message == WM_SYSKEYDOWN && pMsg->wParam == VK_F4)  //屏蔽ALT+F4
@@ -675,3 +745,197 @@ BOOL CvisionDlg::OnHelpInfo(HELPINFO* pHelpInfo)
 
 
 
+
+
+void CvisionDlg::OnBnClickedButton2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CvisionDlg::OnBnClickedVsStartrec()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	//leftCam = SCV()[0];
+
+	CPublic::leftSelectionEnabled = false;
+	leftCam->Record_start();
+
+	return;
+
+}
+
+
+void CvisionDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	if (CPublic::leftSelectionEnabled)
+	{
+		leftCam = SCV()[0];
+		rightCam = SCV()[1];
+
+		//if
+		cv::Rect& ROI1 = leftCam->ROI;
+		//else
+		//cv::Rect& ROI1 = rightCam->ROI;
+
+		CSliderCtrl* pSlider = (CSliderCtrl*)pScrollBar;
+		if (pSlider->GetDlgCtrlID() == IDC_VS_SB_ROI_H)
+		{
+			int ROI1_width = m_slider_ROI_width.GetPos(); //获取roi1的宽度
+
+
+			if (ROI1_width + ROI1.x >= PC_WIDTH)
+			{
+				ROI1_width = PC_WIDTH - ROI1.x;
+			}
+			SetDlgItemInt(IDC_VS_EDIT_HORI, ROI1_width);
+			m_slider_ROI_width.SetPos(ROI1_width);
+
+
+			ROI1.width = ROI1_width;
+
+		}
+		else if (pSlider->GetDlgCtrlID() == IDC_VS_SB_ROI_V)
+		{
+			int ROI1_height = m_slider_ROI_height.GetPos(); //获取roi1的高度
+			if (ROI1_height + ROI1.y >= PC_HEIGHT)
+			{
+				ROI1_height = PC_HEIGHT - ROI1.y;
+			}
+			SetDlgItemInt(IDC_VS_EDIT_VERT, ROI1_height);
+			m_slider_ROI_height.SetPos(ROI1_height);
+			ROI1.height = ROI1_height;
+		}
+		///temp
+		/// 
+		
+		//if ...
+		Mat src = leftCam->GetSrc().clone();
+		if (src.empty())
+		{
+			CString a;
+			MessageBox(CString("empty Mat"));
+			return;
+		}
+		cv::Rect ROI1Resized(ROI1.x / 10, ROI1.y / 10, ROI1.width / 10, ROI1.height / 10);
+		resize(src, src, Size(0, 0), 1.0 / AS_RATIO, 1.0 / AS_RATIO);
+		rectangle(src, ROI1Resized, Scalar(255, 0, 0));
+		imshow(leftCam->GetShowWindow(), src);
+		//else
+		/*
+		Mat src = rightCam->GetSrc().clone();
+		if (src.empty())
+		{
+			CString a;
+			MessageBox(CString("empty Mat"));
+			return;
+		}
+		cv::Rect ROI1Resized(ROI1.x / 10, ROI1.y / 10, ROI1.width / 10, ROI1.height / 10);
+		resize(src, src, Size(0, 0), 1 / AS_RATIO, 1 / AS_RATIO);
+		rectangle(src, ROI1Resized, Scalar(255, 0, 0));
+		imshow(rightCam->GetShowWindow(), src);
+		*/
+	}
+
+
+	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+constexpr int roiSlice = 80;//前进步进
+void CvisionDlg::OnBnClickedVisBtnUp()
+{
+	// TODO: 在此处添加实现代码.
+	if (CPublic::leftSelectionEnabled)
+	{
+		cv::Rect& curROI = CPublic::ROI1Temp();
+
+		int temp = curROI.y - roiSlice;
+
+		if (temp <= 0)
+			curROI.y = 0;
+		else
+			curROI.y = temp;
+	}
+}
+
+
+void CvisionDlg::OnBnClickedVisBtnDown()
+{
+	// TODO: 在此处添加实现代码.
+	if (CPublic::leftSelectionEnabled)
+	{
+		cv::Rect& curROI = CPublic::ROI1Temp();
+
+		int temp = curROI.y + curROI.height + roiSlice;
+
+		if (temp >= PC_HEIGHT)
+			curROI.y = PC_HEIGHT - curROI.height;
+		else
+			curROI.y += roiSlice;
+	}
+}
+
+
+void CvisionDlg::OnBnClickedVisBtnLeft()
+{
+	// TODO: 在此处添加实现代码.
+	if (CPublic::leftSelectionEnabled)
+	{
+		cv::Rect& curROI = CPublic::ROI1Temp();
+
+		int temp = curROI.x - roiSlice;
+
+		if (temp <= 0)
+			curROI.x = 0;
+		else
+			curROI.x = temp;
+	}
+}
+
+
+void CvisionDlg::OnBnClickedVisBtnRight()
+{
+	// TODO: 在此处添加实现代码.
+	if (CPublic::leftSelectionEnabled)
+	{
+		cv::Rect& curROI = CPublic::ROI1Temp();
+
+		int temp = curROI.x + curROI.width + roiSlice;
+
+		if (temp >= PC_WIDTH)
+			curROI.x = PC_WIDTH - curROI.width;
+		else
+			curROI.x += roiSlice;
+	}
+}
+
+
+void CvisionDlg::OnBnClickedVsBtnDetect()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	///
+	/// 这个按键是暂时的，意味着这玩意直接就调用两个相机的停止采集，然后对两个相机的原图来一波操作
+	/// 要用到多线程
+	/// 
+	/*auto leftCam  = SCV()[0];
+	auto rightCam = SCV()[1];*/
+	
+	//solution_opencv left_pic(leftCam->GetSrc(), leftCam->ROI);
+	//left_pic.auto_detect_default();
+	leftCam->Record_stop();
+}
+
+
+void CvisionDlg::OnBnClickedVsEditRoi()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	/*auto leftCam = SCV()[0];
+	auto rightCam = SCV()[1];*/
+	//关闭录制
+	leftCam->Record_stop();
+	//...
+	//使能
+	CPublic::leftSelectionEnabled = true;
+}
