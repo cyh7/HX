@@ -8,7 +8,7 @@
 #include <vector>
 #include "layoutinitModbus.h"
 #include "HXDlg.h"
-
+#include "InfoFile.h"
 
 
 int BaudRateArray[] = { 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 56000, 57600, 115200 };
@@ -486,6 +486,16 @@ BOOL CmodbusDlg::OnInitDialog()
 	m_mod_hBitmap_logo = (HBITMAP)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_HG), IMAGE_BITMAP, 200, 40, LR_DEFAULTCOLOR);
 	m_mod_pic_logo.SetBitmap(m_mod_hBitmap_logo);
 	
+	CInfoFile file;
+	file.ReadDocline(backboard, x_floor, x_ceil, y_floor, y_ceil, theta_floor, theta_ceil);
+	m_mod_type = backboard;
+	m_mod_edit_xfloor = x_floor;
+	m_mod_edit_xceil = x_ceil;
+	m_mod_edit_yfloor = y_floor;
+	m_mod_edit_yceil = y_ceil;
+	m_mod_edit_thetafloor = theta_floor;
+	m_mod_edit_thetaceil = theta_ceil;
+	UpdateData(FALSE);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
@@ -1154,7 +1164,8 @@ void CmodbusDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	
-	SetTimer(1, 200, NULL);
+	CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
+	pvsdlg->ReSetTime();
 	
 }
 
@@ -1305,6 +1316,8 @@ void CmodbusDlg::OnBnClickedModBtnChange()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
+	CInfoFile file;
+
 	backboard = m_mod_type;
 	SprayBatch = 0;
 	x_floor = m_mod_edit_xfloor;
@@ -1313,7 +1326,7 @@ void CmodbusDlg::OnBnClickedModBtnChange()
 	y_ceil = m_mod_edit_yceil;
 	theta_floor = m_mod_edit_thetafloor;
     theta_ceil = m_mod_edit_thetaceil;
-
+	file.WirteDocline(backboard, x_floor, x_ceil, y_floor, y_ceil, theta_floor, theta_ceil);
 }
 
 

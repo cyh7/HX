@@ -229,6 +229,11 @@ BOOL CvisionDlg::OnInitDialog()
 	m_vs_hBitmap_logo = (HBITMAP)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_HG), IMAGE_BITMAP, 200, 40, LR_DEFAULTCOLOR);
 	m_vs_pic_logo.SetBitmap(m_vs_hBitmap_logo);
 
+	CmodbusDlg *pdlg = CmodbusDlg::pModbusdlg;
+	pdlg->OnBnClickedButtonOpen();
+
+	//SetTimer(1, 200, NULL);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }

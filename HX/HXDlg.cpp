@@ -235,16 +235,17 @@ BOOL CHXDlg::OnInitDialog()
 	
 
 	//分别创建三个非模态窗口，并隐藏
-	m_Dlg1.Create(IDD_VISION);
-	m_Dlg1.ShowWindow(SW_HIDE);
+	m_Dlg5.Create(IDD_DATABASE);
+	m_Dlg5.ShowWindow(SW_HIDE);
+	
 	m_Dlg2.Create(IDD_CAD);
 	m_Dlg2.ShowWindow(SW_HIDE);
 	m_Dlg3.Create(IDD_MODBUS);
 	m_Dlg3.ShowWindow(SW_HIDE);
 	m_Dlg4.Create(IDD_MONITOR);
 	m_Dlg4.ShowWindow(SW_HIDE);
-	m_Dlg5.Create(IDD_DATABASE);
-	m_Dlg5.ShowWindow(SW_HIDE);
+	m_Dlg1.Create(IDD_VISION);
+	m_Dlg1.ShowWindow(SW_HIDE);
 	//背景颜色画刷
 	m_HX_Brush.CreateSolidBrush(RGB(240, 240, 220));
 
@@ -568,14 +569,29 @@ void CHXDlg::OnBnClickedHxBtnCad()
 void CHXDlg::OnBnClickedHxBtnModbus()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	m_Dlg3.ShowWindow(SW_SHOW);
-	m_Dlg1.ShowWindow(SW_HIDE);
-	m_Dlg2.ShowWindow(SW_HIDE);
-	m_Dlg4.ShowWindow(SW_HIDE);
-	m_Dlg5.ShowWindow(SW_HIDE);
-	CString title;
-	title = _T("系统设置");
-	this->SetWindowText(title);
+	if (LoginFlag == false)
+	{
+		m_Dlg4.ShowWindow(SW_SHOW);
+		m_Dlg1.ShowWindow(SW_HIDE);
+		m_Dlg2.ShowWindow(SW_HIDE);
+		m_Dlg3.ShowWindow(SW_HIDE);
+		m_Dlg5.ShowWindow(SW_HIDE);
+		CString title;
+		title = _T("喷胶主监控");
+		this->SetWindowText(title);
+		MessageBox(_T("请登录管理员账户"));
+	}
+	else
+	{
+		m_Dlg3.ShowWindow(SW_SHOW);
+		m_Dlg1.ShowWindow(SW_HIDE);
+		m_Dlg4.ShowWindow(SW_HIDE);
+		m_Dlg2.ShowWindow(SW_HIDE);
+		m_Dlg5.ShowWindow(SW_HIDE);
+		CString title;
+		title = _T("系统设置");
+		this->SetWindowText(title);
+	}
 }
 
 void CHXDlg::OnBnClickedHxBtnData()
