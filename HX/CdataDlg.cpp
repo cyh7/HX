@@ -346,7 +346,8 @@ BOOL CdataDlg::ConnectDB()
 	return TRUE;*/
 	try
 	{
-		mysql_real_connect(&m_sqlCon, "localhost", "root", "123", "test", 3306, NULL, 0);
+		if (!mysql_real_connect(&m_sqlCon, "localhost", "root", "123", "test", 3306, NULL, 0))
+			return false;
 		ConnectSucces = true;
 	}
 	catch (_com_error)
@@ -378,7 +379,8 @@ BOOL CdataDlg::SelectDB()
 	try
 	{
 		//查询数据
-		mysql_query(&m_sqlCon, query); //执行指定为一个空结尾的字符串的SQL查询。
+		if (mysql_query(&m_sqlCon, query))//执行指定为一个空结尾的字符串的SQL查询。
+			return false;
 		//获取结果集
 		m_dat_res = mysql_store_result(&m_sqlCon); //检索一个完整的结果集合给客户
 
@@ -526,7 +528,8 @@ BOOL CdataDlg::SelectDateDB()
 	//m_dat_res = mysql_store_result(&m_sqlCon); //检索一个完整的结果集合给客户
 	try
 	{
-		mysql_query(&m_sqlCon, query);
+		if (mysql_query(&m_sqlCon, query))
+			return false;
 		m_dat_res = mysql_store_result(&m_sqlCon);
 	}
 	catch(_com_error)
@@ -574,7 +577,9 @@ BOOL CdataDlg::DeleteDB()
 	}*/
 	try
 	{
-		mysql_query(&m_sqlCon, query);
+		if (mysql_query(&m_sqlCon, query))
+			return false;
+		//mysql_query(&m_sqlCon, query);
 	}
 	catch (_com_error )
 	{
@@ -712,7 +717,8 @@ BOOL CdataDlg::InsertDB(CString time, CString type, DWORD batch, double x, doubl
 
 	try
 	{
-		mysql_query(&m_sqlCon, query);
+		if (mysql_query(&m_sqlCon, query))
+			return false;
 	}
 	catch (_com_error)
 	{

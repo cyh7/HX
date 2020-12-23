@@ -471,8 +471,8 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 				//断线标志位
 				DisconnectFlag = true;
 				DisconnectNum += 1;
-				//断线超过10s，即DisconnectNum=50则提示断线
-				if(DisconnectNum >= 50)
+				//断线超过60s，即DisconnectNum=50则提示断线
+				if(DisconnectNum >= 300)
 				{
 					KillTimer(1);
 					AfxMessageBox(_T("请检查连接！"));
@@ -712,6 +712,7 @@ void CvisionDlg::OnBnClickedVsBtnResend()
 void CvisionDlg::KillTime1()
 {
 	// TODO: 在此处添加实现代码.
+	DisconnectNum = 0;
 	KillTimer(1);
 }
 
@@ -720,5 +721,6 @@ void CvisionDlg::KillTime1()
 void CvisionDlg::ReSetTime()
 {
 	// TODO: 在此处添加实现代码.
+	DisconnectNum = 0;
 	SetTimer(1, 200, NULL);
 }

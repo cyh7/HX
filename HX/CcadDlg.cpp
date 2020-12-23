@@ -582,6 +582,21 @@ void CcadDlg::OnBnClickedButtonCadOpen()
 
 		m_CadGlueList.SetItemText(j, 1, strDecimals[a]);
 		m_CadGlueList.SetItemText(j, 2, strDecimals[a + 1]);
+
+		if (strDecimals[a + 2] == _T("1.6"))
+		{
+			strDecimals[a + 2] = _T("垂直不喷");
+		}
+		else if (strDecimals[a + 2] == _T("0.1"))
+		{
+			strDecimals[a + 2] = _T("喷胶");
+		}
+		else if (strDecimals[a + 2] == _T("0.0"))
+		{
+			strDecimals[a + 2] = _T("水平不喷胶");
+		}
+
+
 		m_CadGlueList.SetItemText(j, 3, strDecimals[a + 2]);
 		/*m_CadGlueList.SetItemText(j, 4, strDecimals[a + 3]);
 		m_CadGlueList.SetItemText(j, 5, strTmp[a + 4]);*/
