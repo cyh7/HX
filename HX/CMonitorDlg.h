@@ -21,45 +21,63 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	virtual BOOL OnInitDialog();
+	//颜色
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnPaint();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	//大小适配
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	//快捷键
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	//取消F1弹出帮助
+	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
+	//大小同步类
+	CLayout m_layoutMonitor;
+//指示灯图标
+public:
+	CStatic m_mon_pic_plc;
+	CStatic m_mon_pic_glue;
+	CStatic m_mon_pic_stop;
 	HICON m_hIconRed;
 	HICON m_hIconBlue;
 	HICON m_hIconYellow;
 	HICON m_hIconGray;
-	virtual BOOL OnInitDialog();
-	CStatic m_mon_pic_plc;
-	CStatic m_mon_pic_glue;
-	CStatic m_mon_pic_stop;
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	afx_msg void OnPaint();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
+	//背景颜色画刷
 	CBrush m_Brush;
-	CLayout m_layoutMonitor;
-
 	//HBITMAP m_hBit;
-	afx_msg void OnBnClickedMonBtnOpvs();
-	afx_msg void OnBnClickedMonBtnOpcad();
-	afx_msg void OnBnClickedMonBtnOpdata();
-	afx_msg void OnBnClickedMonBtnOpmod();
-	CMyButton m_mon_btn_opvs;
-	CMyButton m_mon_btn_opcad;
-	CMyButton m_mon_btn_opdata;
-	CMyButton m_mon_btn_opmod;
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	// 背板型号
-	CString m_mon_edit_type;
-	DWORD m_mon_edit_batch;
-	DOUBLE m_mon_edit_x;
-	DOUBLE m_mon_edit_y;
-	DOUBLE m_mon_edit_theta;
-	CMyButton m_mon_btn_opmon;
-
+	//主图片和logo
 	HBITMAP m_mon_hBitmapMain;
 	CStatic m_mon_pic_main;
 	CStatic m_mon_pic_logo;
 	HBITMAP m_mon_hBitmap_logo;
-
+//按键
+public:
+	//按键功能
+	afx_msg void OnBnClickedMonBtnOpvs();
+	afx_msg void OnBnClickedMonBtnOpcad();
+	afx_msg void OnBnClickedMonBtnOpdata();
+	afx_msg void OnBnClickedMonBtnOpmod();
+	//按键重绘
+	CMyButton m_mon_btn_opvs;
+	CMyButton m_mon_btn_opcad;
+	CMyButton m_mon_btn_opdata;
+	CMyButton m_mon_btn_opmod;
+	CMyButton m_mon_btn_opmon;
+//监视区变量
+public:
+	// 背板型号
+	CString m_mon_edit_type;
+	//批次
+	DWORD m_mon_edit_batch;
+	//x坐标
+	DOUBLE m_mon_edit_x;
+	//y坐标
+	DOUBLE m_mon_edit_y;
+	//偏转角
+	DOUBLE m_mon_edit_theta;
+//字体
+public:
 	CFont f_mon_name;
 	CFont f_mon_font;
 };

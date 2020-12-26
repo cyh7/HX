@@ -26,8 +26,7 @@ bool RecMsgFlag = true;
 //接收超时
 bool OverTime_Vision = false;
 bool OverTime = false;
-//发送的胶条数量
-int SendGlueNum = 0;
+
 
 
 
@@ -152,6 +151,7 @@ void CmodbusDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_YCEILING, m_mod_edit_yceil);
 	DDX_Text(pDX, IDC_EDIT_THETACEILING, m_mod_edit_thetaceil);
 	DDX_Control(pDX, IDC_MOD_PIC_LOGO, m_mod_pic_logo);
+	DDX_Control(pDX, IDC_BUTTON1, m_mod_btn_timesend);
 }
 
 
@@ -182,12 +182,6 @@ BOOL CmodbusDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-
-	CRect mod_rect;
-	GetClientRect(&mod_rect);
-	old_mod.x = mod_rect.right - mod_rect.left;
-	old_mod.y = mod_rect.bottom - mod_rect.top;
-
 	//初始化串口指针
 	pModbusdlg = this;
 	// 串口选择组合框
@@ -613,6 +607,7 @@ void CmodbusDlg::OnBnClickedButtonOpen()
 		AfxMessageBox(_T("没有发现串口！"));
 	}
 }
+
 //串口单次发送
 void CmodbusDlg::OnBnClickedButtonSendOnce()
 {
@@ -1163,9 +1158,22 @@ void CmodbusDlg::SendData(int CommTypeIn, WORD DownAdd, DWORD DownData)
 void CmodbusDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	CString temp;
+	m_mod_btn_timesend.GetWindowText(temp);///获取按钮的文本
+	UpdateData(true);
+	if (temp == _T("关闭通讯"))///表示点击后是"关闭串口"，也就是已经关闭了串口
+	{
+		CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
+		pvsdlg->KillTime1(); 
+		m_mod_btn_timesend.SetWindowText(_T("开启通讯"));
+	}
+	if (temp == _T("开启通讯"))///表示点击后是"关闭串口"，也就是已经关闭了串口
+	{
+		CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
+		pvsdlg->ReSetTime();
+		m_mod_btn_timesend.SetWindowText(_T("关闭通讯"));
+	}
 	
-	CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
-	pvsdlg->ReSetTime();
 	
 }
 
@@ -1180,8 +1188,8 @@ void CmodbusDlg::OnTimer(UINT_PTR nIDEvent)
 
 		case 1:
 		{
-			SendOnce = true;
-			SendData(0, 95, 1);
+			/*SendOnce = true;
+			SendData(0, 95, 1);*/
 
 
 			break;

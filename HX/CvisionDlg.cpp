@@ -77,12 +77,6 @@ BOOL CvisionDlg::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化
 	pVisiondlg = this;
-	//控件大小同步
-	CRect v_rect;
-	GetClientRect(&v_rect);
-	old_Vision.x = v_rect.right - v_rect.left;
-	old_Vision.y = v_rect.bottom - v_rect.top;
-
 	//ModifyStyle(WS_CAPTION, 0, 0);  // 如果只是要普通的全屏，不想去掉标题栏，就不用第一个语句
 	//SendMessage(WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 
@@ -612,7 +606,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 					CString msg;
 
 					//%02X为16进制显示  %d十进制 %s 字符串
-					msg.Format(_T("第%d个数据发送错误，终止发送！"), LocVisionNum);
+					msg.Format(_T("第%d个数据发送错误，请检查连接并点击重新发送按钮！"), LocVisionNum);
 					AfxMessageBox(msg);
 
 				}

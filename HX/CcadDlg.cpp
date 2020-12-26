@@ -89,10 +89,7 @@ BOOL CcadDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-	CRect c_rect;
-	GetClientRect(&c_rect);
-	old_Cad.x = c_rect.right - c_rect.left;
-	old_Cad.y = c_rect.bottom - c_rect.top;
+	
 	////胶条列表
 	CString strglue[] = { _T("条数"),_T("X"),_T("Y"),_T("是否喷胶") };
 	for (int i = 0; i < 4; i++)
