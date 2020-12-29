@@ -578,7 +578,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 					m_Vision_T2 = GetTickCount();//这里加一个计时是防止下一组背板错误判断
 					//SprayBatch += 1; //喷涂批次加一
 					//重启定时器1
-					SetTimer(1, 200, NULL);
+					ReSetTime();
 				}
 
 			}
@@ -716,5 +716,7 @@ void CvisionDlg::ReSetTime()
 {
 	// TODO: 在此处添加实现代码.
 	DisconnectNum = 0;
+	SendOnce = true;
+	SendOnce_Vision = true;
 	SetTimer(1, 200, NULL);
 }

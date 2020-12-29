@@ -100,6 +100,7 @@ BEGIN_MESSAGE_MAP(CHXDlg, CDialogEx)
 	ON_COMMAND(ID_MENU_EXIT, &CHXDlg::OnMenuExit)
 	ON_BN_CLICKED(IDC_HX_BTN_MONITOR, &CHXDlg::OnBnClickedHxBtnMonitor)
 	ON_COMMAND(ID_32772, &CHXDlg::OnAbout)
+	ON_COMMAND(ID_32794, &CHXDlg::OnExitAll)
 END_MESSAGE_MAP()
 
 
@@ -836,4 +837,11 @@ void CHXDlg::OnAbout()
 	// TODO: 在此添加命令处理程序代码
 	CAboutDlg dlgAbout;
 	dlgAbout.DoModal();
+}
+
+
+void CHXDlg::OnExitAll()
+{
+	// TODO: 在此添加命令处理程序代码
+	AfxGetMainWnd()->SendMessage(WM_CLOSE);
 }

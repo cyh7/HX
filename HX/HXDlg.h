@@ -98,4 +98,5 @@ public:
 	afx_msg void OnMenuLogin();
 	afx_msg void OnMenuExit();
 	afx_msg void OnAbout();
+	afx_msg void OnExitAll();
 };

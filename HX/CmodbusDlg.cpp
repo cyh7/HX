@@ -52,9 +52,9 @@ bool ArriveFlag = false;
 //int locGlueNum = 0;
 
 //声明一个当前是否是单次发送的flag
-bool SendOnce = false;
+bool SendOnce = true;
 //是否是每200s询问一次，不是的话就属于发送视觉识别的程序，计算发送定位数据是否超时
-bool SendOnce_Vision = false;
+bool SendOnce_Vision = true;
 
 
 int DisconnectNum = 0;
@@ -74,14 +74,16 @@ bool SprayFlag = false;
 DWORD SprayBatch = 0;
 //是否良品
 bool GoodFlag = true;
-
 //PLC正常
 bool PlcFlag = true;
 //通信状态
 bool DisconnectFlag = true;
 //急停标志位
 bool StopFlag = false;
-
+//可否写入cad数据 初始值为true
+bool WriteFlag = true;
+//读cad图纸是否接收完毕
+bool PlcCadRecFlag = false;
 //插入数据库所需变量
 //防止识别完成后重复插入，识别完置0；插入完成置1
 int insertdata = 0;
@@ -383,6 +385,17 @@ BOOL CmodbusDlg::OnInitDialog()
 		m_mod_btn_change.setWordColor(RGB(255, 250, 250));
 		//设置字体大小
 		m_mod_btn_change.setWordSize(200);
+
+		//将按钮修改为BS_OWNERDRAW风格,允许button的采用自绘模式
+		GetDlgItem(IDC_BUTTON1)->ModifyStyle(0, BS_OWNERDRAW, 0);
+		//设置Button Down的背景色，SetDownColor()和SetUpnColor()是CMyButton类中的析构函数
+		m_mod_btn_timesend.SetDownColor(RGB(102, 139, 139));
+		//设置Button Up的背景色
+		m_mod_btn_timesend.SetUpColor(RGB(2, 158, 160));
+		//设置字体颜色
+		m_mod_btn_timesend.setWordColor(RGB(255, 250, 250));
+		//设置字体大小
+		m_mod_btn_timesend.setWordSize(200);
 	}
 	
 	//静态文本字体改变
@@ -524,21 +537,9 @@ HBRUSH CmodbusDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		return (HBRUSH)m_Brush.GetSafeHandle();  // 设置背景色
 		//return (HBRUSH)::GetStockObject(WHITE_BRUSH);
 	}
-	//if (nCtlColor == CTLCOLOR_BTN) //如果当前控件属于按钮
-	//{
-	//	pDC->SetTextColor(RGB(50, 50, 200)); //字体颜色
-	//	pDC->SetBkMode(TRANSPARENT); //设置字体背景为透明
-	//	//pDC-> SetBkColor(RGB(0, 0, 255));  //字体背景色
-	//}
-	//if (pWnd->GetDlgCtrlID() == IDC_STATIC10)
-	//{
-	//	pDC->SetTextColor(RGB(50, 50, 200));  //字体颜色
-	//	pDC->SetBkColor(RGB(240, 240, 220));   //字体背景色
- //// TODO: Return a different brush if the default is not desired
-	//	return (HBRUSH)m_Brush.GetSafeHandle();  // 设置背景色
-	//}
+	
 	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
-	//delete p_font;
+
 
 	return hbr;
 	//return (HBRUSH)m_Brush.GetSafeHandle();
@@ -894,56 +895,100 @@ void CmodbusDlg::OnReceive()
 				//MessageBox(tt);
 
 				//背板没到，没有停机，PLC正常，没有急停
-			    if (RecStr == "0") 
+			    if (RecStr == "1") 
 			    {
 			        //MessageBox(_T("相等"));
 					ArriveFlag = false;
 					SprayFlag = false;
 					PlcFlag = true;
 					StopFlag = false;
-
+					WriteFlag = true;
 					//背板不在（离开）要把这个置为false，方便下一次进入程序
 					IdentifyDone = false;
 			    }
 				//背板没到，喷胶停机，PLC正常，没有急停
-			    else if (RecStr == "1")
+			    else if (RecStr == "2")
 			    {
 					ArriveFlag = false;
 					SprayFlag = true;
 					PlcFlag = true;
 					StopFlag = false;
-
+					WriteFlag = true;
 					//背板不在（离开）要把这个置为false，方便下一次进入程序
 					IdentifyDone = false;
 			    }
 				//背板到位	没有停机	PLC正常	没有急停
-				else if (RecStr == "2")
+				else if (RecStr == "3")
 				{
 					ArriveFlag = true;
 					SprayFlag = false;
 					PlcFlag = true;
 					StopFlag = false;
+					WriteFlag = true;
 				}
 				//背板到位	停机	PLC正常	没有急停
-				else if (RecStr == "3")
+				else if (RecStr == "4")
 				{
 					ArriveFlag = true;
 					SprayFlag = true;
 					PlcFlag = true;
 					StopFlag = false;
+					WriteFlag = true;
 				}
+				else if (RecStr == "5")
+				{
+					//MessageBox(_T("相等"));
+					ArriveFlag = false;
+					SprayFlag = false;
+					PlcFlag = true;
+					StopFlag = false;
+					WriteFlag = false;
+					//背板不在（离开）要把这个置为false，方便下一次进入程序
+					IdentifyDone = false;
+				}
+				//背板没到，喷胶停机，PLC正常，没有急停
+				else if (RecStr == "6")
+				{
+					ArriveFlag = false;
+					SprayFlag = true;
+					PlcFlag = true;
+					StopFlag = false;
+					WriteFlag = false;
+					//背板不在（离开）要把这个置为false，方便下一次进入程序
+					IdentifyDone = false;
+				}
+				//背板到位	没有停机	PLC正常	没有急停
+				else if (RecStr == "7")
+				{
+					ArriveFlag = true;
+					SprayFlag = false;
+					PlcFlag = true;
+					StopFlag = false;
+					WriteFlag = false;
+				}
+				//背板到位	停机	PLC正常	没有急停
+				else if (RecStr == "8")
+				{
+					ArriveFlag = true;
+					SprayFlag = true;
+					PlcFlag = true;
+					StopFlag = false;
+					WriteFlag = false;
+				}
+
 				//背板没到	没有停机	PLC不正常	没有急停
-				else if (RecStr == "4")
+				else if (RecStr == "9")
 				{
 					ArriveFlag = false;
 					SprayFlag = false;
 					PlcFlag = false;
 					StopFlag = false;
 
+
 					IdentifyDone = false;
 				}
 				//背板没到	停机	PLC不正常	没有急停
-				else if (RecStr == "5")
+				else if (RecStr == "10")
 				{
 					ArriveFlag = false;
 					SprayFlag = true;
@@ -953,7 +998,7 @@ void CmodbusDlg::OnReceive()
 					IdentifyDone = false;
 				}
 				//背板到位	没有停机	PLC不正常	没有急停
-				else if (RecStr == "6")
+				else if (RecStr == "11")
 				{
 					ArriveFlag = true;
 					SprayFlag = false;
@@ -961,7 +1006,7 @@ void CmodbusDlg::OnReceive()
 					StopFlag = false;
 				}
 				//背板到位	停机	PLC不正常	没有急停
-				else if (RecStr == "7")
+				else if (RecStr == "12")
 				{
 					ArriveFlag = true;
 					SprayFlag = true;
@@ -969,9 +1014,13 @@ void CmodbusDlg::OnReceive()
 					StopFlag = false;
 				}
 				//急停
-				else if (RecStr == "8")
+				else if (RecStr == "13")
 				{
 					StopFlag = true;
+				}
+				else if (RecStr == "20")
+				{
+					PlcCadRecFlag = true;
 				}
 			}
 			else

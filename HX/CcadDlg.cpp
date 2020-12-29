@@ -659,9 +659,9 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 					//发送完毕之后，可以考虑每次按下发送键的时候把这个置为0，把定位数据置为0，方便下次发送
 					locGlueNum = 0;
 					KillTimer(2);
-
-					CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
-					pvsdlg->ReSetTime();
+					//读寄存器收完消息没有
+					SetTimer(3, 30, NULL);
+					
 				}
 			}
 			//这里是上一组信息发送有误的情况
@@ -694,6 +694,17 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 			}
 			break;
 		}
+		case 3:
+		{
+			SendData(0,2,1);
+			if (PlcCadRecFlag == true)
+			{
+				KillTimer(3);
+				AfxMessageBox(_T("CAD图纸数据发送完毕"));
+				CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
+				pvsdlg->ReSetTime();
+			}
+		}
 	}
 	
 
@@ -724,20 +735,27 @@ void CcadDlg::OnSizing(UINT fwSide, LPRECT pRect)
 void CcadDlg::OnBnClickedButtonCadSend()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	OverTime = false;
-	//发送cad数据时停掉定时器1
-	CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
-	pvsdlg->KillTime1();
-	CString temp;
-	CmodbusDlg *pdlg = CmodbusDlg::pModbusdlg;
-	pdlg->m_OpenCloseCtrl.GetWindowText(temp);///获取按钮的文本
-	//UpdateData(true);
-	if (temp == _T("打开串口"))///表示点击后是"关闭串口"，也就是已经关闭了串口
+	if (WriteFlag == true)
 	{
-		AfxMessageBox(_T("请先打开串口！"));
+		OverTime = false;
+		//发送cad数据时停掉定时器1
+		CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
+		pvsdlg->KillTime1();
+
+		//send();
+		//settime(3,) //隔100ms判断一次 可以写了
+
+		CString temp;
+		CmodbusDlg *pdlg = CmodbusDlg::pModbusdlg;
+		pdlg->m_OpenCloseCtrl.GetWindowText(temp);///获取按钮的文本
+		//UpdateData(true);
+		if (temp == _T("打开串口"))///表示点击后是"关闭串口"，也就是已经关闭了串口
+		{
+			AfxMessageBox(_T("请先打开串口！"));
+		}
+		else
+			SetTimer(2, 50, NULL);
 	}
-	else
-		SetTimer(2, 50, NULL);
 }
 
 
