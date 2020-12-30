@@ -641,6 +641,7 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 			//判断的是上一组已发送的数据的标志，如果没有超时且上一组数据CRC校验正确的话，那么可以进行本次发送
 			m_CadT1 = GetTickCount();
 			if (m_CadT2 != 0 && OverTime == false && RecMsgFlag == true)
+			//if (m_CadT2 != 0 && RecMsgFlag == true)
 			{
 				m_CadT2 = 0;//进入之后把这个时间置为0，用以判断之后的是否断线
 				//如果上一个数据发送成功，那么将BadCadNum置为0
@@ -654,14 +655,15 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 				else
 				{
 					SendData(1, 80, locGlueNum / 3);
-					Sleep(30);
+					Sleep(50);
 					SendData(1, 85, 1);
 					//发送完毕之后，可以考虑每次按下发送键的时候把这个置为0，把定位数据置为0，方便下次发送
 					locGlueNum = 0;
 					KillTimer(2);
 					//读寄存器收完消息没有
-					SetTimer(3, 30, NULL);
-					
+					//SetTimer(3, 50, NULL);//实际应位30
+					CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
+					pvsdlg->ReSetTime();
 				}
 			}
 			//这里是上一组信息发送有误的情况
@@ -685,7 +687,8 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 					KillTimer(2);
 					//报错
 					CString msg;
-
+					BadCadNum = 0;
+					locGlueNum = 0;
 					//%02X为16进制显示  %d十进制 %s 字符串
 					msg.Format(_T("第%d个数据发送错误，终止发送！"), locGlueNum);
 					AfxMessageBox(msg);
@@ -737,6 +740,9 @@ void CcadDlg::OnBnClickedButtonCadSend()
 	// TODO: 在此添加控件通知处理程序代码
 	if (WriteFlag == true)
 	{
+		BadCadNum = 0;
+		locGlueNum = 0;
+
 		OverTime = false;
 		//发送cad数据时停掉定时器1
 		CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;

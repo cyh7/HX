@@ -177,6 +177,17 @@ BEGIN_MESSAGE_MAP(CmodbusDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
+UINT ThreadRec(LPVOID param)
+{
+	CmodbusDlg *pdlg = CmodbusDlg::pModbusdlg;
+
+	while (1)
+	{
+		pdlg->OnReceive();
+	}
+}
+
+
 // CmodbusDlg 消息处理程序
 //窗口初始化
 BOOL CmodbusDlg::OnInitDialog()
@@ -504,6 +515,9 @@ BOOL CmodbusDlg::OnInitDialog()
 	m_mod_edit_thetaceil = theta_ceil;
 	UpdateData(FALSE);
 
+
+	HANDLE hthreadREC = AfxBeginThread(ThreadRec, this, THREAD_PRIORITY_BELOW_NORMAL);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -814,8 +828,8 @@ void CmodbusDlg::OnReceive()
 	{
 		//MessageBox(_T("计时"));
 		m_CadT2 = GetTickCount();
-		if ((m_CadT2 - m_CadT1) > 50)
-		OverTime = true;
+		if ((m_CadT2 - m_CadT1) > 70)
+			OverTime = true;
 	}
 	/*if ((m_CadT2 - m_CadT1) > 50)
 		OverTime = true;*/

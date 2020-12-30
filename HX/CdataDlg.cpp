@@ -263,7 +263,7 @@ BOOL CdataDlg::OnInitDialog()
 	////显示数据
 	//ShowInfo();
 
-	SetTimer(1, 10 * 1000, NULL);//每隔10min判断重连一次数据库
+	SetTimer(1, 600 * 1000, NULL);//每隔10min判断重连一次数据库
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -366,7 +366,7 @@ BOOL CdataDlg::SelectDB()
 	CString cquery;
 	//条件全部为空则查询所有书籍
 
-	cquery.Format(_T("select * from table1"));
+	cquery.Format(_T("select * from table1 where DATE_SUB(CURDATE(), INTERVAL 6 DAY) <= 日期"));
 	//CString转const char*
 	//const char* query = CString(cquery);
 	//cstring转 const char*
