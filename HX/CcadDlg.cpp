@@ -697,12 +697,39 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 			}
 			break;
 		}
+		//判断cad图纸发送标志位定时器
 		case 3:
 		{
-			SendData(0,2,1);
-			if (PlcCadRecFlag == true)
+			SendData(0, 97, 1);
+			//PlcCadWriteFlag可以写入  254
+			if (PlcCadWriteFlag == true)
 			{
 				KillTimer(3);
+				//
+				
+
+				////send();
+				////settime(3,) //隔100ms判断一次 可以写了
+
+				CString temp;
+				CmodbusDlg *pdlg = CmodbusDlg::pModbusdlg;
+				pdlg->m_OpenCloseCtrl.GetWindowText(temp);///获取按钮的文本
+				//UpdateData(true);
+				if (temp == _T("打开串口"))///表示点击后是"关闭串口"，也就是已经关闭了串口
+				{
+					AfxMessageBox(_T("请先打开串口！"));
+				}
+				else
+					SetTimer(2, 50, NULL);
+			}
+		}
+		//数据发送完成定时器
+		case 4:
+		{
+			SendData(0,99,1);
+			if (PlcCadRecFlag == true)
+			{
+				KillTimer(4);
 				AfxMessageBox(_T("CAD图纸数据发送完毕"));
 				CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
 				pvsdlg->ReSetTime();
@@ -738,30 +765,35 @@ void CcadDlg::OnSizing(UINT fwSide, LPRECT pRect)
 void CcadDlg::OnBnClickedButtonCadSend()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	if (WriteFlag == true)
-	{
-		BadCadNum = 0;
-		locGlueNum = 0;
+	
+	BadCadNum = 0;
+	locGlueNum = 0;
 
-		OverTime = false;
-		//发送cad数据时停掉定时器1
-		CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
-		pvsdlg->KillTime1();
+	OverTime = false;
+	//发送cad数据时停掉定时器1
+	CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
+	pvsdlg->KillTime1();
 
-		//send();
-		//settime(3,) //隔100ms判断一次 可以写了
+	SendData(1, 96, 32767);
+	Sleep(50);
+	SetTimer(3, 30, NULL);
+	
+	
 
-		CString temp;
-		CmodbusDlg *pdlg = CmodbusDlg::pModbusdlg;
-		pdlg->m_OpenCloseCtrl.GetWindowText(temp);///获取按钮的文本
-		//UpdateData(true);
-		if (temp == _T("打开串口"))///表示点击后是"关闭串口"，也就是已经关闭了串口
-		{
-			AfxMessageBox(_T("请先打开串口！"));
-		}
-		else
-			SetTimer(2, 50, NULL);
-	}
+	////send();
+	////settime(3,) //隔100ms判断一次 可以写了
+
+	//CString temp;
+	//CmodbusDlg *pdlg = CmodbusDlg::pModbusdlg;
+	//pdlg->m_OpenCloseCtrl.GetWindowText(temp);///获取按钮的文本
+	////UpdateData(true);
+	//if (temp == _T("打开串口"))///表示点击后是"关闭串口"，也就是已经关闭了串口
+	//{
+	//	AfxMessageBox(_T("请先打开串口！"));
+	//}
+	//else
+	//	SetTimer(2, 50, NULL);
+	
 }
 
 

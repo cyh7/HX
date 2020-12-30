@@ -48,7 +48,7 @@ extern bool StopFlag;
 //通信状态
 extern bool DisconnectFlag;
 //是否可写 初始值为可以写入
-extern bool WriteFlag;
+extern bool PlcCadWriteFlag;
 //PLC是否收完发送的cad图纸数据，初始值为false
 extern bool PlcCadRecFlag;
 //通信超时次数

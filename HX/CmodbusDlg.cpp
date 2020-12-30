@@ -81,7 +81,7 @@ bool DisconnectFlag = true;
 //急停标志位
 bool StopFlag = false;
 //可否写入cad数据 初始值为true
-bool WriteFlag = true;
+bool PlcCadWriteFlag = true;
 //读cad图纸是否接收完毕
 bool PlcCadRecFlag = false;
 //插入数据库所需变量
@@ -916,7 +916,7 @@ void CmodbusDlg::OnReceive()
 					SprayFlag = false;
 					PlcFlag = true;
 					StopFlag = false;
-					WriteFlag = true;
+					
 					//背板不在（离开）要把这个置为false，方便下一次进入程序
 					IdentifyDone = false;
 			    }
@@ -927,7 +927,7 @@ void CmodbusDlg::OnReceive()
 					SprayFlag = true;
 					PlcFlag = true;
 					StopFlag = false;
-					WriteFlag = true;
+					
 					//背板不在（离开）要把这个置为false，方便下一次进入程序
 					IdentifyDone = false;
 			    }
@@ -938,7 +938,7 @@ void CmodbusDlg::OnReceive()
 					SprayFlag = false;
 					PlcFlag = true;
 					StopFlag = false;
-					WriteFlag = true;
+					
 				}
 				//背板到位	停机	PLC正常	没有急停
 				else if (RecStr == "4")
@@ -947,49 +947,9 @@ void CmodbusDlg::OnReceive()
 					SprayFlag = true;
 					PlcFlag = true;
 					StopFlag = false;
-					WriteFlag = true;
+					
 				}
-				else if (RecStr == "5")
-				{
-					//MessageBox(_T("相等"));
-					ArriveFlag = false;
-					SprayFlag = false;
-					PlcFlag = true;
-					StopFlag = false;
-					WriteFlag = false;
-					//背板不在（离开）要把这个置为false，方便下一次进入程序
-					IdentifyDone = false;
-				}
-				//背板没到，喷胶停机，PLC正常，没有急停
-				else if (RecStr == "6")
-				{
-					ArriveFlag = false;
-					SprayFlag = true;
-					PlcFlag = true;
-					StopFlag = false;
-					WriteFlag = false;
-					//背板不在（离开）要把这个置为false，方便下一次进入程序
-					IdentifyDone = false;
-				}
-				//背板到位	没有停机	PLC正常	没有急停
-				else if (RecStr == "7")
-				{
-					ArriveFlag = true;
-					SprayFlag = false;
-					PlcFlag = true;
-					StopFlag = false;
-					WriteFlag = false;
-				}
-				//背板到位	停机	PLC正常	没有急停
-				else if (RecStr == "8")
-				{
-					ArriveFlag = true;
-					SprayFlag = true;
-					PlcFlag = true;
-					StopFlag = false;
-					WriteFlag = false;
-				}
-
+				
 				//背板没到	没有停机	PLC不正常	没有急停
 				else if (RecStr == "9")
 				{
@@ -1032,7 +992,11 @@ void CmodbusDlg::OnReceive()
 				{
 					StopFlag = true;
 				}
-				else if (RecStr == "20")
+				else if (RecStr == "254")
+				{
+					PlcCadWriteFlag = true;
+				}
+				else if (RecStr == "255")
 				{
 					PlcCadRecFlag = true;
 				}
