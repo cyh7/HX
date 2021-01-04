@@ -896,110 +896,125 @@ void CmodbusDlg::OnReceive()
 			{
 				RecMsgFlag = true;
 			    //MessageBox(_T("相等"));
-			    MidData = SendFreqData[4];
-			    char MyChar[10];
-			    _itoa_s(MidData, MyChar, 10);
-			    //测试成功 RecStr值为1，长度为1可以进行后续判断了
-			    RecStr = MyChar;
+				if (SendFreqData[3] == 0)
+				{
+					MidData = SendFreqData[4];
+					char MyChar[10];
+					_itoa_s(MidData, MyChar, 10);
+					//测试成功 RecStr值为1，长度为1可以进行后续判断了
+					RecStr = MyChar;
 
-				//发送接收时间计算
-				//T2 = GetTickCount();
-				//CString tt;
-				//tt.Format(_T("%d"), T2 - T1);//前后之差即程序运行时间  
-				//MessageBox(tt);
+					//发送接收时间计算
+					//T2 = GetTickCount();
+					//CString tt;
+					//tt.Format(_T("%d"), T2 - T1);//前后之差即程序运行时间  
+					//MessageBox(tt);
 
-				//背板没到，没有停机，PLC正常，没有急停
-			    if (RecStr == "1") 
-			    {
-			        //MessageBox(_T("相等"));
-					ArriveFlag = false;
-					SprayFlag = false;
-					PlcFlag = true;
-					StopFlag = false;
-					
-					//背板不在（离开）要把这个置为false，方便下一次进入程序
-					IdentifyDone = false;
-			    }
-				//背板没到，喷胶停机，PLC正常，没有急停
-			    else if (RecStr == "2")
-			    {
-					ArriveFlag = false;
-					SprayFlag = true;
-					PlcFlag = true;
-					StopFlag = false;
-					
-					//背板不在（离开）要把这个置为false，方便下一次进入程序
-					IdentifyDone = false;
-			    }
-				//背板到位	没有停机	PLC正常	没有急停
-				else if (RecStr == "3")
-				{
-					ArriveFlag = true;
-					SprayFlag = false;
-					PlcFlag = true;
-					StopFlag = false;
-					
-				}
-				//背板到位	停机	PLC正常	没有急停
-				else if (RecStr == "4")
-				{
-					ArriveFlag = true;
-					SprayFlag = true;
-					PlcFlag = true;
-					StopFlag = false;
-					
-				}
-				
-				//背板没到	没有停机	PLC不正常	没有急停
-				else if (RecStr == "9")
-				{
-					ArriveFlag = false;
-					SprayFlag = false;
-					PlcFlag = false;
-					StopFlag = false;
+					//背板没到，没有停机，PLC正常，没有急停
+					if (RecStr == "1")
+					{
+						//MessageBox(_T("相等"));
+						ArriveFlag = false;
+						SprayFlag = false;
+						PlcFlag = true;
+						StopFlag = false;
+
+						//背板不在（离开）要把这个置为false，方便下一次进入程序
+						IdentifyDone = false;
+					}
+					//背板没到，喷胶停机，PLC正常，没有急停
+					else if (RecStr == "2")
+					{
+						ArriveFlag = false;
+						SprayFlag = true;
+						PlcFlag = true;
+						StopFlag = false;
+
+						//背板不在（离开）要把这个置为false，方便下一次进入程序
+						IdentifyDone = false;
+					}
+					//背板到位	没有停机	PLC正常	没有急停
+					else if (RecStr == "3")
+					{
+						ArriveFlag = true;
+						SprayFlag = false;
+						PlcFlag = true;
+						StopFlag = false;
+
+					}
+					//背板到位	停机	PLC正常	没有急停
+					else if (RecStr == "4")
+					{
+						ArriveFlag = true;
+						SprayFlag = true;
+						PlcFlag = true;
+						StopFlag = false;
+
+					}
+
+					//背板没到	没有停机	PLC不正常	没有急停
+					else if (RecStr == "9")
+					{
+						ArriveFlag = false;
+						SprayFlag = false;
+						PlcFlag = false;
+						StopFlag = false;
 
 
-					IdentifyDone = false;
-				}
-				//背板没到	停机	PLC不正常	没有急停
-				else if (RecStr == "10")
-				{
-					ArriveFlag = false;
-					SprayFlag = true;
-					PlcFlag = false;
-					StopFlag = false;
+						IdentifyDone = false;
+					}
+					//背板没到	停机	PLC不正常	没有急停
+					else if (RecStr == "10")
+					{
+						ArriveFlag = false;
+						SprayFlag = true;
+						PlcFlag = false;
+						StopFlag = false;
 
-					IdentifyDone = false;
+						IdentifyDone = false;
+					}
+					//背板到位	没有停机	PLC不正常	没有急停
+					else if (RecStr == "11")
+					{
+						ArriveFlag = true;
+						SprayFlag = false;
+						PlcFlag = false;
+						StopFlag = false;
+					}
+					//背板到位	停机	PLC不正常	没有急停
+					else if (RecStr == "12")
+					{
+						ArriveFlag = true;
+						SprayFlag = true;
+						PlcFlag = false;
+						StopFlag = false;
+					}
+					//急停
+					else if (RecStr == "13")
+					{
+						StopFlag = true;
+					}
+					else if (RecStr == "254")
+					{
+						PlcCadWriteFlag = true;
+					}
+					else if (RecStr == "255")
+					{
+						PlcCadRecFlag = true;
+					}
 				}
-				//背板到位	没有停机	PLC不正常	没有急停
-				else if (RecStr == "11")
+				//如果读的是数据的话，就会进入这个判断
+				else
 				{
-					ArriveFlag = true;
-					SprayFlag = false;
-					PlcFlag = false;
-					StopFlag = false;
+					int test = 0;
+					test = SendFreqData[3] * 256 + SendFreqData[4];
+					//if (//xxflag = true)
+					//{
+					//	//赋值
+					//	//xxflag = false
+					//}
 				}
-				//背板到位	停机	PLC不正常	没有急停
-				else if (RecStr == "12")
-				{
-					ArriveFlag = true;
-					SprayFlag = true;
-					PlcFlag = false;
-					StopFlag = false;
-				}
-				//急停
-				else if (RecStr == "13")
-				{
-					StopFlag = true;
-				}
-				else if (RecStr == "254")
-				{
-					PlcCadWriteFlag = true;
-				}
-				else if (RecStr == "255")
-				{
-					PlcCadRecFlag = true;
-				}
+			   
 			}
 			else
 			{

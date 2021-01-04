@@ -508,7 +508,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 						//程序识别完之后，直接开始settimer
 						SetTimer(2,30,Null);
 						*/
-						IdentifyDone = true;
+						
 						//CTime curTime = CTime().GetCurrentTime();//当前时间
 						//LastTime = preTime.Format("%Y-%m-%d %H:%M:%S");
 						if ((vs_x >= x_floor && vs_x <= x_ceil) && (vs_y >= x_floor && vs_y <= y_ceil) && (vs_theta >= theta_floor && vs_theta <= theta_ceil))
@@ -573,6 +573,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 					//SendData 这个跟轩举商量
 					//发送完毕 发送数清0
 					KillTimer(2);
+					IdentifyDone = true;
 					SendData(1, 93, 1);
 					LocVisionNum = 0;
 					m_Vision_T2 = GetTickCount();//这里加一个计时是防止下一组背板错误判断

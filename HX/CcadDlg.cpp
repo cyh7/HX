@@ -654,16 +654,17 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 				}
 				else
 				{
-					SendData(1, 80, locGlueNum / 3);
+					SendData(1, 75, locGlueNum / 3);
 					Sleep(50);
-					SendData(1, 85, 1);
+					SendData(1, 78, 32767);
 					//发送完毕之后，可以考虑每次按下发送键的时候把这个置为0，把定位数据置为0，方便下次发送
 					locGlueNum = 0;
 					KillTimer(2);
+					m_CadT2 = GetTickCount();
 					//读寄存器收完消息没有
-					//SetTimer(3, 50, NULL);//实际应位30
-					CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
-					pvsdlg->ReSetTime();
+					SetTimer(4, 50, NULL);//实际应位30
+					/*CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
+					pvsdlg->ReSetTime();*/
 				}
 			}
 			//这里是上一组信息发送有误的情况
@@ -700,7 +701,7 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 		//判断cad图纸发送标志位定时器
 		case 3:
 		{
-			SendData(0, 97, 1);
+			SendData(0, 77, 1);
 			//PlcCadWriteFlag可以写入  254
 			if (PlcCadWriteFlag == true)
 			{
@@ -726,7 +727,7 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 		//数据发送完成定时器
 		case 4:
 		{
-			SendData(0,99,1);
+			SendData(0,79,1);
 			if (PlcCadRecFlag == true)
 			{
 				KillTimer(4);
@@ -774,7 +775,7 @@ void CcadDlg::OnBnClickedButtonCadSend()
 	CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
 	pvsdlg->KillTime1();
 
-	SendData(1, 96, 32767);
+	SendData(1, 76, 32767);
 	Sleep(50);
 	SetTimer(3, 30, NULL);
 	

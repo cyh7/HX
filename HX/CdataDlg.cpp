@@ -13,6 +13,8 @@ bool ConnectSucces = false;
 CdataDlg *CdataDlg::pDatadlg = NULL;
 // CdataDlg 对话框
 
+static std::vector<std::string> m_dat_data[40000];
+
 IMPLEMENT_DYNAMIC(CdataDlg, CDialogEx)
 
 CdataDlg::CdataDlg(CWnd* pParent /*=nullptr*/)
@@ -512,31 +514,41 @@ BOOL CdataDlg::SelectDateDB()
 	m_dat_timeEnd.GetTime(timeEnd);
 	CString sTimeEnd = timeEnd.Format("%H:%M:%S");
 
-
-	cquery.Format(_T("select * from table1 where 日期 >= CONCAT('%s',' ','%s') and 日期 <= CONCAT('%s',' ','%s')"), sYear, sTime, sYearEnd, sTimeEnd);
-	//CString转const char*
-	//const char* query = CString(cquery);
-	//cstring转 const char*
-	const char* query;
-	char temp[1024];
-	::wsprintfA(temp, "%ls", (LPCTSTR)cquery);
-	query = temp;
-	//查询数据
-	//if (mysql_query(&m_sqlCon, query)) //执行指定为一个空结尾的字符串的SQL查询。
-	//	return FALSE;
-	////获取结果集
-	//m_dat_res = mysql_store_result(&m_sqlCon); //检索一个完整的结果集合给客户
-	try
+	int s_day = year.GetDay();
+	int e_day = yearEnd.GetDay();
+	if ((e_day - s_day) >= 7)
 	{
-		if (mysql_query(&m_sqlCon, query))
-			return false;
-		m_dat_res = mysql_store_result(&m_sqlCon);
+		AfxMessageBox(_T("起始日期和终止日期不能超过7天"));
+		return FALSE;
 	}
-	catch(_com_error)
+	else
 	{
-		IsConnOpen = false;
+		cquery.Format(_T("select * from table1 where 日期 >= CONCAT('%s',' ','%s') and 日期 <= CONCAT('%s',' ','%s')"), sYear, sTime, sYearEnd, sTimeEnd);
+		//CString转const char*
+		//const char* query = CString(cquery);
+		//cstring转 const char*
+		const char* query;
+		char temp[1024];
+		::wsprintfA(temp, "%ls", (LPCTSTR)cquery);
+		query = temp;
+		//查询数据
+		//if (mysql_query(&m_sqlCon, query)) //执行指定为一个空结尾的字符串的SQL查询。
+		//	return FALSE;
+		////获取结果集
+		//m_dat_res = mysql_store_result(&m_sqlCon); //检索一个完整的结果集合给客户
+		try
+		{
+			if (mysql_query(&m_sqlCon, query))
+				return false;
+			m_dat_res = mysql_store_result(&m_sqlCon);
+		}
+		catch (_com_error)
+		{
+			IsConnOpen = false;
+		}
+		return TRUE;
 	}
-	return TRUE;
+	
 }
 
 BOOL CdataDlg::DeleteDB()
