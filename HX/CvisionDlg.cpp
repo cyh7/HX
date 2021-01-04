@@ -456,7 +456,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 			//寄存器地址95 读1位数据
 			
 			SendOnce_Vision = true;
-			SendData(0, 95, 1);  
+			SendData(0, 74, 1);  
 			
 			//判断上一次发送的是否为0，为0没有触发receive则断线
 			if (m_Status_T2 == 0)
@@ -574,7 +574,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 					//发送完毕 发送数清0
 					KillTimer(2);
 					IdentifyDone = true;
-					SendData(1, 93, 1);
+					SendData(1, 73, 32767);
 					LocVisionNum = 0;
 					m_Vision_T2 = GetTickCount();//这里加一个计时是防止下一组背板错误判断
 					//SprayBatch += 1; //喷涂批次加一
