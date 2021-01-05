@@ -12,8 +12,8 @@ bool IsConnOpen = false;
 bool ConnectSucces = false;
 CdataDlg *CdataDlg::pDatadlg = NULL;
 // CdataDlg 对话框
-
-static std::vector<std::string> m_dat_data[40000];
+// 存放数据库记录，最大为40000条
+std::vector<std::string> m_dat_data[40000];
 
 IMPLEMENT_DYNAMIC(CdataDlg, CDialogEx)
 

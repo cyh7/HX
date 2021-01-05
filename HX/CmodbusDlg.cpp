@@ -843,7 +843,7 @@ void CmodbusDlg::OnReceive()
 	/*if ((m_Vision_T2 - m_Vision_T1) > 50)
 		OverTime_Vision = true;*/
 
-	m_Status_T2 = GetTickCount();
+	
 
 	//CString tt;
 	//tt.Format(_T("2:%d"), T2 - T1);//前后之差即程序运行时间  
@@ -867,6 +867,7 @@ void CmodbusDlg::OnReceive()
 	//Sleep(1000);
 	if (iRet > 0)
 	{
+		m_Status_T2 = GetTickCount();
 		//MessageBox(_T("1"));
 		if (iRet == 7)
 		{
