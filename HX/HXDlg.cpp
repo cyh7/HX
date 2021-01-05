@@ -473,6 +473,10 @@ void CHXDlg::OnTimer(UINT_PTR nIDEvent)
 		{
 			m_Statusbar.SetPaneText(1, _T("通信状态: 连接中断"));
 		}
+		if (ConnectClose == true)
+		{
+			m_Statusbar.SetPaneText(1, _T("通信状态: 通信关闭"));
+		}
 		break;
 	}
 

@@ -654,7 +654,7 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 				}
 				else
 				{
-					SendData(1, 75, locGlueNum / 3);
+					SendData(1, 99, locGlueNum / 3);
 					Sleep(50);
 					SendData(1, 78, 32767);
 					//发送完毕之后，可以考虑每次按下发送键的时候把这个置为0，把定位数据置为0，方便下次发送
@@ -727,6 +727,7 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 		//数据发送完成定时器
 		case 4:
 		{
+			SendOnce = true;
 			SendData(0,79,1);
 			if (PlcCadRecFlag == true)
 			{

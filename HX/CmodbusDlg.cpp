@@ -78,6 +78,7 @@ bool GoodFlag = true;
 bool PlcFlag = true;
 //通信状态
 bool DisconnectFlag = true;
+bool ConnectClose = false;
 //急停标志位
 bool StopFlag = false;
 //可否写入cad数据 初始值为true
@@ -1208,12 +1209,14 @@ void CmodbusDlg::OnBnClickedButton1()
 	{
 		CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
 		pvsdlg->KillTime1(); 
+		ConnectClose = true;
 		m_mod_btn_timesend.SetWindowText(_T("开启通讯"));
 	}
 	if (temp == _T("开启通讯"))///表示点击后是"关闭串口"，也就是已经关闭了串口
 	{
 		CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
 		pvsdlg->ReSetTime();
+		ConnectClose = false;
 		m_mod_btn_timesend.SetWindowText(_T("关闭通讯"));
 	}
 	

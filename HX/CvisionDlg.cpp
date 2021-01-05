@@ -476,6 +476,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 			else
 			{
 				DisconnectFlag = false;
+				DisconnectNum = 0;
 				m_Status_T2 = 0;//如果没有断线 那么在onReceive里会更改这个值，如果断线了那就不会更改了
 				//只能对上一个时间循环里的数据进行判断
 				if (ArriveFlag == true)
@@ -719,5 +720,5 @@ void CvisionDlg::ReSetTime()
 	DisconnectNum = 0;
 	SendOnce = true;
 	SendOnce_Vision = true;
-	SetTimer(1, 200, NULL);
+	SetTimer(1, 100, NULL);
 }
