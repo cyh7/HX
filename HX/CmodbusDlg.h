@@ -56,7 +56,7 @@ extern bool PlcCadRecFlag;
 extern int DisconnectNum;
 //防止识别完成后重复插入，识别完置0；插入完成置1
 extern int insertdata;
-
+extern bool exitFlag;
 
 // CmodbusDlg 对话框
 

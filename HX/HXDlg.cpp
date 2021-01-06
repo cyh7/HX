@@ -1,10 +1,6 @@
 ﻿
 // HXDlg.cpp: 实现文件
-//陈一航是个人上人
 
-//老8是吴卓承
-
-//老吴秘制小汉堡
 
 #include "pch.h"
 #include "framework.h"
@@ -847,5 +843,10 @@ void CHXDlg::OnAbout()
 void CHXDlg::OnExitAll()
 {
 	// TODO: 在此添加命令处理程序代码
+	
+	exitFlag = true;
+	Sleep(50);
+	CmodbusDlg *pdlg = CmodbusDlg::pModbusdlg;
+	pdlg->OnClose();
 	AfxGetMainWnd()->SendMessage(WM_CLOSE);
 }

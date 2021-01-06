@@ -96,9 +96,9 @@ CString data_spray;
 CString data_plc;
 //急停
 CString data_stop;
-
 //这个数据暂时不用发完就清空，因为每一次都会把对应的值覆盖进去
 //WORD GlueTemp[200];//把胶条数据从函数里边提取出来变成全局的，用以发送
+bool exitFlag = false;
 // CmodbusDlg 对话框
 
 IMPLEMENT_DYNAMIC(CmodbusDlg, CDialogEx)
@@ -516,7 +516,6 @@ BOOL CmodbusDlg::OnInitDialog()
 	m_mod_edit_thetaceil = theta_ceil;
 	UpdateData(FALSE);
 
-
 	HANDLE hthreadREC = AfxBeginThread(ThreadRec, this, THREAD_PRIORITY_BELOW_NORMAL);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -856,7 +855,11 @@ void CmodbusDlg::OnReceive()
 	str = new char[1024];
 
 	//std::shared_ptr<char> str(new char[1024]);
-
+	if (exitFlag = true)
+	{
+		delete[]str;
+		return;
+	}
 	int iRet = m_SerialPort.readAllData(str); //06发过来的数据长度为8 接收到的数据是没错的
 
 	
@@ -1273,6 +1276,7 @@ void CmodbusDlg::OnSizing(UINT fwSide, LPRECT pRect)
 void CmodbusDlg::OnClose()
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	
 	m_SerialPort.close();
 	__super::OnClose();
 }
