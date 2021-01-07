@@ -82,7 +82,7 @@ bool ConnectClose = false;
 //急停标志位
 bool StopFlag = false;
 //可否写入cad数据 初始值为true
-bool PlcCadWriteFlag = true;
+bool PlcCadWriteFlag = false;
 //读cad图纸是否接收完毕
 bool PlcCadRecFlag = false;
 //插入数据库所需变量

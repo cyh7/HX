@@ -32,7 +32,8 @@ int vecGlueNum = 0;
 WORD GlueTemp[200];//把胶条数据从函数里边提取出来变成全局的，用以发送
 //发送胶条时计数
 int locGlueNum = 0;
-
+int plcRecNum = 0;
+int plcWriteNum = 0;
 // CcadDlg 对话框
 
 IMPLEMENT_DYNAMIC(CcadDlg, CDialogEx)
@@ -639,9 +640,8 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 			//msg.Format(_T("定时器2执行"));
 			//MessageBox(msg);
 			//判断的是上一组已发送的数据的标志，如果没有超时且上一组数据CRC校验正确的话，那么可以进行本次发送
-			m_CadT1 = GetTickCount();
+			m_CadT1 = GetTickCount64();
 			if (m_CadT2 != 0 && OverTime == false && RecMsgFlag == true)
-			//if (m_CadT2 != 0 && RecMsgFlag == true)
 			{
 				m_CadT2 = 0;//进入之后把这个时间置为0，用以判断之后的是否断线
 				//如果上一个数据发送成功，那么将BadCadNum置为0
@@ -654,16 +654,20 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 				}
 				else
 				{
+					KillTimer(2);
+					SendOnce = true;
 					SendData(1, 99, locGlueNum / 3);
-					Sleep(50);
+					Sleep(100);
 					SendData(1, 78, 32767);
 					//发送完毕之后，可以考虑每次按下发送键的时候把这个置为0，把定位数据置为0，方便下次发送
+					m_CadT2 = GetTickCount64();
 					locGlueNum = 0;
-					KillTimer(2);
-					m_CadT2 = GetTickCount();
+
+
+
 					//读寄存器收完消息没有
 					SetTimer(4, 50, NULL);//实际应位30
-					/*CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
+					/*CvisionDlg* pvsdlg = CvisionDlg::pVisiondlg;
 					pvsdlg->ReSetTime();*/
 				}
 			}
@@ -688,55 +692,97 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 					KillTimer(2);
 					//报错
 					CString msg;
-					BadCadNum = 0;
-					locGlueNum = 0;
+
 					//%02X为16进制显示  %d十进制 %s 字符串
 					msg.Format(_T("第%d个数据发送错误，终止发送！"), locGlueNum);
 					AfxMessageBox(msg);
+					locGlueNum = 0;
 
 				}
 			}
 			break;
 		}
-		//判断cad图纸发送标志位定时器
 		case 3:
 		{
+			SendOnce = true;
+
 			SendData(0, 77, 1);
 			//PlcCadWriteFlag可以写入  254
-			if (PlcCadWriteFlag == true)
+			plcWriteNum += 1;
+			if (plcWriteNum <= 20)
+			{
+				if (PlcCadWriteFlag == true)
+				{
+					KillTimer(3);
+					//CString temp;
+					//CmodbusDlg* pdlg = CmodbusDlg::pModbusdlg;
+					//pdlg->m_OpenCloseCtrl.GetWindowText(temp);///获取按钮的文本
+					////UpdateData(true);
+					//if (temp == _T("打开串口"))///表示点击后是"关闭串口"，也就是已经关闭了串口
+					//{
+					//	AfxMessageBox(_T("请先打开串口！"));
+					//}
+					//else
+					//{
+					//	SetTimer(2, 50, NULL);
+					//	locGlueNum = 0;
+					//}
+					SetTimer(2, 50, NULL);
+					locGlueNum = 0;
+				}
+			}
+			else
 			{
 				KillTimer(3);
-				//
-				
+				Sleep(50);
+				AfxMessageBox(_T("请重新发送CAD数据!"));
+				PlcCadWriteFlag = false;
+				plcWriteNum = 0;
 
-				////send();
-				////settime(3,) //隔100ms判断一次 可以写了
-
-				CString temp;
-				CmodbusDlg *pdlg = CmodbusDlg::pModbusdlg;
-				pdlg->m_OpenCloseCtrl.GetWindowText(temp);///获取按钮的文本
-				//UpdateData(true);
-				if (temp == _T("打开串口"))///表示点击后是"关闭串口"，也就是已经关闭了串口
-				{
-					AfxMessageBox(_T("请先打开串口！"));
-				}
-				else
-					SetTimer(2, 50, NULL);
+				CvisionDlg* pvsdlg = CvisionDlg::pVisiondlg;
+				pvsdlg->ReSetTime();
 			}
+			break;
 		}
-		//数据发送完成定时器
 		case 4:
 		{
 			SendOnce = true;
-			SendData(0,79,1);
-			if (PlcCadRecFlag == true)
+			SendData(0, 79, 1);//255
+			plcRecNum += 1;//50 * 20
+			if (plcRecNum <= 20)
+			{
+				if (PlcCadRecFlag == true)
+				{
+					KillTimer(4);
+					Sleep(50);
+					AfxMessageBox(_T("CAD图纸数据发送完毕"));
+					PlcCadRecFlag = false;
+					locGlueNum = 0;
+					plcRecNum = 0;
+
+					CvisionDlg* pvsdlg = CvisionDlg::pVisiondlg;
+					pvsdlg->ReSetTime();
+
+
+				}
+
+			}
+			else
 			{
 				KillTimer(4);
-				AfxMessageBox(_T("CAD图纸数据发送完毕"));
-				CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
+				Sleep(50);
+				AfxMessageBox(_T("请重新发送CAD数据!"));
+
+				PlcCadRecFlag = false;
+				plcRecNum;
+				locGlueNum = 0;
+
+
+				CvisionDlg* pvsdlg = CvisionDlg::pVisiondlg;
 				pvsdlg->ReSetTime();
 			}
 		}
+		break;
 	}
 	
 
@@ -768,10 +814,12 @@ void CcadDlg::OnBnClickedButtonCadSend()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	
+	OverTime = false;
 	BadCadNum = 0;
 	locGlueNum = 0;
-
-	OverTime = false;
+	plcRecNum = 0;
+	plcWriteNum = 0;
+	PlcCadWriteFlag = false;
 	//发送cad数据时停掉定时器1
 	CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
 	pvsdlg->KillTime1();

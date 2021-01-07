@@ -575,6 +575,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 					//发送完毕 发送数清0
 					KillTimer(2);
 					IdentifyDone = true;
+					SendOnce_Vision = true;
 					SendData(1, 73, 32767);
 					LocVisionNum = 0;
 					m_Vision_T2 = GetTickCount();//这里加一个计时是防止下一组背板错误判断
