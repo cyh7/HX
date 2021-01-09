@@ -855,11 +855,12 @@ void CmodbusDlg::OnReceive()
 	str = new char[1024];
 
 	//std::shared_ptr<char> str(new char[1024]);
-	if (exitFlag = true)
+	if (exitFlag == true)
 	{
 		delete[]str;
 		return;
 	}
+
 	int iRet = m_SerialPort.readAllData(str); //06发过来的数据长度为8 接收到的数据是没错的
 
 	

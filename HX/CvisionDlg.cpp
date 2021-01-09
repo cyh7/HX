@@ -226,7 +226,7 @@ BOOL CvisionDlg::OnInitDialog()
 	CmodbusDlg *pdlg = CmodbusDlg::pModbusdlg;
 	pdlg->OnBnClickedButtonOpen();
 
-	//SetTimer(1, 100, NULL);
+	SetTimer(1, 100, NULL);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE

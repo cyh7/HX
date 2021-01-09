@@ -461,17 +461,21 @@ void CHXDlg::OnTimer(UINT_PTR nIDEvent)
 		StatusTime = StatusTime.GetCurrentTime();
 		CString sTime = StatusTime.Format("%Y-%m-%d %H:%M:%S");
 		m_Statusbar.SetPaneText(0, sTime);
-		if (DisconnectFlag == false)
-		{
-			m_Statusbar.SetPaneText(1, _T("通信状态: 连接正常"));
-		}
-		else if (DisconnectFlag == true)
-		{
-			m_Statusbar.SetPaneText(1, _T("通信状态: 连接中断"));
-		}
+		
 		if (ConnectClose == true)
 		{
 			m_Statusbar.SetPaneText(1, _T("通信状态: 通信关闭"));
+		}
+		else
+		{
+			if (DisconnectFlag == false)
+			{
+				m_Statusbar.SetPaneText(1, _T("通信状态: 连接正常"));
+			}
+			else if (DisconnectFlag == true)
+			{
+				m_Statusbar.SetPaneText(1, _T("通信状态: 连接中断"));
+			}
 		}
 		break;
 	}

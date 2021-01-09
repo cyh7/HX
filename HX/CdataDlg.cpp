@@ -266,6 +266,7 @@ BOOL CdataDlg::OnInitDialog()
 	//ShowInfo();
 
 	SetTimer(1, 600 * 1000, NULL);//每隔10min判断重连一次数据库
+	SetTimer(2, 1000, NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -330,6 +331,23 @@ void CdataDlg::OnTimer(UINT_PTR nIDEvent)
 			}
 		}
 		break;
+	case 2:
+	{
+		CTime StatusTime;
+		StatusTime = StatusTime.GetCurrentTime();
+		CString sTime = StatusTime.Format("%Y-%m-%d %H:%M:%S");
+		CString test_Type = _T("A型");
+		int n = 1;
+		double test_x_loc = 1.12;
+		double test_y_loc = 1.13;
+		double test_theta_loc = 1.14;
+		CString test_Good = _T("良品");
+		CString test_PLc = _T("PLC正常");
+		CString test_Spray = _T("胶机正常");
+		CString test_Stop = _T("无急停");
+
+		InsertDB(sTime, test_Type, n, test_x_loc, test_y_loc, test_theta_loc, test_Good, test_PLc, test_Spray, test_Stop);
+	}
 	}
 	CDialogEx::OnTimer(nIDEvent);
 }
