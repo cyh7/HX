@@ -852,12 +852,18 @@ void CmodbusDlg::OnReceive()
 
 	//每次传进来的str都是新的 第二次的str是直接把所有的数据读到一块儿了
 	char * str = NULL;
-	str = new char[1024];
+	try {
+		str = new char[1024];
+	}
+	catch (...)
+	{
 
+	}
 	//std::shared_ptr<char> str(new char[1024]);
 	if (exitFlag == true)
 	{
-		delete[]str;
+		if (str != NULL)
+			delete[]str;
 		return;
 	}
 

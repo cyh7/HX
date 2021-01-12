@@ -253,9 +253,9 @@ BOOL CdataDlg::OnInitDialog()
 		//查询数据
 		SelectDB();
 		//获取数据;
-		GetDataFromDB();
+		//GetDataFromDB();
 		//显示数据
-		ShowInfo();
+		//ShowInfo();
 	}
 
 	////查询数据
