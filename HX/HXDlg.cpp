@@ -128,8 +128,13 @@ BOOL CHXDlg::OnInitDialog()
 
 	// 设置此对话框的图标。  当应用程序主窗口不是对话框时，框架将自动
 	//  执行此操作
-	SetIcon(m_hIcon, TRUE);			// 设置大图标
-	SetIcon(m_hIcon, FALSE);		// 设置小图标
+	//SetIcon(m_hIcon, TRUE);			// 设置大图标
+	//SetIcon(m_hIcon, FALSE);		// 设置小图标
+
+	m_myhIcon = LoadIcon(theApp.m_hInstance, MAKEINTRESOURCE(IDI_GDUT));
+
+	SetIcon(m_myhIcon, TRUE);
+	SetIcon(m_myhIcon, FALSE);
 
 	// TODO: 在此添加额外的初始化代码
 	//菜单栏设置

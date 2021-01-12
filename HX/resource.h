@@ -11,7 +11,7 @@
 #define IDD_MODBUS                      130
 #define IDD_CAD                         131
 #define IDI_ICON1                       142
-#define IDI_GDUT                        142
+#define IDI_GDUT                        127
 #define IDR_MENU1                       143
 #define IDI_CAD                         144
 #define IDI_MODBUS                      145

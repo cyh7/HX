@@ -38,7 +38,7 @@ public:
 // 实现
 protected:
 	HICON m_hIcon;
-
+	HICON m_myhIcon;
 	// 生成的消息映射函数
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);

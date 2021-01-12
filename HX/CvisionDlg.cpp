@@ -607,7 +607,8 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 					KillTimer(2);
 					//报错
 					CString msg;
-
+					LocVisionNum = 0;
+					BadVisionNum = 0;
 					//%02X为16进制显示  %d十进制 %s 字符串
 					msg.Format(_T("第%d个数据发送错误，请检查连接并点击重新发送按钮！"), LocVisionNum);
 					AfxMessageBox(msg);

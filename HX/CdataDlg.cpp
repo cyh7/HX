@@ -266,7 +266,7 @@ BOOL CdataDlg::OnInitDialog()
 	//ShowInfo();
 
 	SetTimer(1, 600 * 1000, NULL);//每隔10min判断重连一次数据库
-	SetTimer(2, 1000, NULL);
+	//SetTimer(2, 1000, NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
