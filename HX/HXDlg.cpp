@@ -344,7 +344,7 @@ BOOL CHXDlg::OnInitDialog()
 	//InitLayout(m_layout, this);
 	m_hBitmapMain = (HBITMAP)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP2), IMAGE_BITMAP, 600, 500, LR_DEFAULTCOLOR);
 	m_hx_pic_main.SetBitmap(m_hBitmapMain);
-
+	
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -854,8 +854,9 @@ void CHXDlg::OnExitAll()
 	// TODO: 在此添加命令处理程序代码
 	
 	exitFlag = true;
-	Sleep(50);
+	Sleep(100);
 	CmodbusDlg *pdlg = CmodbusDlg::pModbusdlg;
 	pdlg->OnClose();
+	Sleep(100);
 	AfxGetMainWnd()->SendMessage(WM_CLOSE);
 }

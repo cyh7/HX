@@ -406,8 +406,10 @@ void CMonitorDlg::OnTimer(UINT_PTR nIDEvent)
 			{
 				m_mon_pic_stop.SetIcon(m_hIconBlue);
 			}
-
+			
 			UpdateData(FALSE);
+
+			DeleteObject(m_mon_hBitmapMain);
 		}
 	}
 

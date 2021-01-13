@@ -862,6 +862,7 @@ void CmodbusDlg::OnReceive()
 	//std::shared_ptr<char> str(new char[1024]);
 	if (exitFlag == true)
 	{
+		
 		if (str != NULL)
 			delete[]str;
 		return;

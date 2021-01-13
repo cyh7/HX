@@ -15,6 +15,8 @@ CdataDlg *CdataDlg::pDatadlg = NULL;
 // 存放数据库记录，最大为40000条
 std::vector<std::string> m_dat_data[40000];
 
+
+
 IMPLEMENT_DYNAMIC(CdataDlg, CDialogEx)
 
 CdataDlg::CdataDlg(CWnd* pParent /*=nullptr*/)
@@ -345,6 +347,7 @@ void CdataDlg::OnTimer(UINT_PTR nIDEvent)
 		CString test_PLc = _T("PLC正常");
 		CString test_Spray = _T("胶机正常");
 		CString test_Stop = _T("无急停");
+		
 
 		InsertDB(sTime, test_Type, n, test_x_loc, test_y_loc, test_theta_loc, test_Good, test_PLc, test_Spray, test_Stop);
 	}
@@ -754,5 +757,6 @@ BOOL CdataDlg::InsertDB(CString time, CString type, DWORD batch, double x, doubl
 	{
 		IsConnOpen = false;
 	}
+	
 	return TRUE;
 }
