@@ -748,8 +748,8 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 		{
 			SendOnce = true;
 			SendData(0, 79, 1);//255
-			plcRecNum += 1;//50 * 20
-			if (plcRecNum <= 20)
+			plcRecNum += 1;//50 * 20 * 3 
+			if (plcRecNum <= 60)
 			{
 				if (PlcCadRecFlag == true)
 				{
@@ -826,7 +826,7 @@ void CcadDlg::OnBnClickedButtonCadSend()
 
 	SendData(1, 76, 32767);
 	Sleep(50);
-	SetTimer(3, 30, NULL);
+	SetTimer(2, 50, NULL);
 	
 	
 

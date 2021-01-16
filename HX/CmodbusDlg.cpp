@@ -1011,7 +1011,7 @@ void CmodbusDlg::OnReceive()
 					{
 						PlcCadWriteFlag = true;
 					}
-					else if (RecStr == "255")
+					else if (RecStr == "0")
 					{
 						PlcCadRecFlag = true;
 					}
