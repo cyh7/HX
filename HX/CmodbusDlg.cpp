@@ -924,99 +924,14 @@ void CmodbusDlg::OnReceive()
 					//CString tt;
 					//tt.Format(_T("%d"), T2 - T1);//前后之差即程序运行时间  
 					//MessageBox(tt);
-
-					//背板没到，没有停机，PLC正常，没有急停
-					if (RecStr == "6")
-					{
-						//MessageBox(_T("相等"));
-						ArriveFlag = false;
-						SprayFlag = false;
-						PlcFlag = true;
-						StopFlag = false;
-
-						//背板不在（离开）要把这个置为false，方便下一次进入程序
-						IdentifyDone = false;
-					}
-					//背板没到，喷胶停机，PLC正常，没有急停
-					else if (RecStr == "4")
-					{
-						ArriveFlag = false;
-						SprayFlag = true;
-						PlcFlag = true;
-						StopFlag = false;
-
-						//背板不在（离开）要把这个置为false，方便下一次进入程序
-						IdentifyDone = false;
-					}
-					//背板到位	没有停机	PLC正常	没有急停
-					else if (RecStr == "7")
-					{
-						ArriveFlag = true;
-						SprayFlag = false;
-						PlcFlag = true;
-						StopFlag = false;
-
-					}
-					//背板到位	停机	PLC正常	没有急停
-					else if (RecStr == "5")
-					{
-						ArriveFlag = true;
-						SprayFlag = true;
-						PlcFlag = true;
-						StopFlag = false;
-
-					}
-
-					//背板没到	没有停机	PLC不正常	没有急停
-					else if (RecStr == "2")
-					{
-						ArriveFlag = false;
-						SprayFlag = false;
-						PlcFlag = false;
-						StopFlag = false;
-
-
-						IdentifyDone = false;
-					}
-					//背板没到	停机	PLC不正常	没有急停
-					else if (RecStr == "0")
-					{
-						ArriveFlag = false;
-						SprayFlag = true;
-						PlcFlag = false;
-						StopFlag = false;
-
-						IdentifyDone = false;
-					}
-					//背板到位	没有停机	PLC不正常	没有急停
-					else if (RecStr == "3")
-					{
-						ArriveFlag = true;
-						SprayFlag = false;
-						PlcFlag = false;
-						StopFlag = false;
-					}
-					//背板到位	停机	PLC不正常	没有急停
-					else if (RecStr == "1")
-					{
-						ArriveFlag = true;
-						SprayFlag = true;
-						PlcFlag = false;
-						StopFlag = false;
-					}
-					//急停
-					else if (RecStr == "8")
-					{
-						StopFlag = true;
-					}
-					else if (RecStr == "254")
+					if (RecStr == "254")
 					{
 						PlcCadWriteFlag = true;
 					}
-					/*else if (RecStr == "0")
+					else if (RecStr == "0")
 					{
 						PlcCadRecFlag = true;
-					}*/
+					}
 				}
 				//如果读的是数据的话，就会进入这个判断
 				else
@@ -1032,6 +947,7 @@ void CmodbusDlg::OnReceive()
 					else
 					{
 						ArriveFlag = false;
+						//背板不在（离开）要把这个置为false，方便下一次进入程序
 						IdentifyDone = false;
 					}
 						
