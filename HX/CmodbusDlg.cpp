@@ -1037,6 +1037,7 @@ void CmodbusDlg::OnReceive()
 		else if (iRet == 5)
 		{
 			AfxMessageBox(_T("PLC出现问题"));
+			
 		}
 		else if (iRet == 8)
 		{
@@ -1099,6 +1100,52 @@ void CmodbusDlg::OnReceive()
 
 			m_EditReceiveCtrl.SetSel(-1, -1);*/
 		}
+		else if (iRet == 9)
+		{
+			SendFreqData[0] = str[0];
+			SendFreqData[1] = str[1];
+			SendFreqData[2] = str[2];
+			SendFreqData[3] = str[3];
+			SendFreqData[4] = str[4];
+			SendFreqData[5] = str[5];
+			SendFreqData[6] = str[6];
+			MidData = CRC16(SendFreqData, 7);
+			SendFreqData[7] = MidData >> 8;
+			SendFreqData[8] = MidData - 256 * SendFreqData[6];
+			//显示在接受栏中
+			RecCrcData[0] = str[0];
+			RecCrcData[1] = str[1];
+			RecCrcData[2] = str[2];
+			RecCrcData[3] = str[3];
+			RecCrcData[4] = str[4];
+			RecCrcData[5] = str[5];
+			//CString msg;
+			////%02X为16进制显示  %d十进制 %s 字符串
+			//msg.Format(_T("%02X"), SendFreqData[7]);
+			//MessageBox(msg);
+			RecCrcData[6] = str[6];
+			RecCrcData[7] = str[7];
+			RecCrcData[8] = str[8];
+			//对比发送再收回的CRC校验
+			if (SendFreqData[7] == RecCrcData[7] && SendFreqData[8] == RecCrcData[8])
+			{
+				RecMsgFlag = true;
+
+				//m_CadT2 = GetTickCount();
+
+				//CString msg;
+				////%02X为16进制显示  %d十进制 %s 字符串
+				//msg.Format(_T("%d"), RecNum);
+				//MessageBox(msg);
+
+				//MessageBox(RecStr);
+			}
+			else
+			{
+				RecMsgFlag = false;
+			}
+		}
+
 
 		CTime curTime;//当前时间
 		curTime = CTime::GetCurrentTime();
