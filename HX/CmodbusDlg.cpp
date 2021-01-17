@@ -21,6 +21,8 @@ std::string StopArray[] = { "1", "1.5", "2" };
 
 CmodbusDlg *CmodbusDlg::pModbusdlg = NULL;
 
+//声明一个位操作的容器
+vector<bool> bit_manipul(15, 0);
 //判断从机发送回复信息的对错 可以进入第一次发送
 bool RecMsgFlag = true;
 //接收超时
@@ -68,8 +70,8 @@ double theta_floor;
 double theta_ceil;
 //背板型号
 CString backboard;
-//胶机状态 false没有停机 true停机
-bool SprayFlag = false;
+//胶机状态 true没有停机 false停机
+bool SprayFlag = true;
 //喷涂批次
 DWORD SprayBatch = 0;
 //是否良品
@@ -1020,12 +1022,40 @@ void CmodbusDlg::OnReceive()
 				else
 				{
 					int test = 0;
+					//读到的10进制数据
 					test = SendFreqData[3] * 256 + SendFreqData[4];
-					//if (//xxflag = true)
-					//{
-					//	//赋值
-					//	//xxflag = false
-					//}
+					//位操作
+					BitManipul(test);
+					//背板到位
+					if (bit_manipul[0] == true)
+						ArriveFlag = true;
+					else
+					{
+						ArriveFlag = false;
+						IdentifyDone = false;
+					}
+						
+					//胶机状态位
+					if (bit_manipul[1] == true)
+						SprayFlag = true;
+					else
+						SprayFlag = false;
+					//PLC状态
+					if (bit_manipul[2] == true)
+						PlcFlag = true;
+					else
+						PlcFlag = false;
+					//急停
+					if (bit_manipul[3] == true)
+						StopFlag = true;
+					else
+						StopFlag = false;
+					//请求连接尝试标志位
+					if (bit_manipul[14] == true)
+						StopFlag = true;
+					else
+						StopFlag = false;
+
 				}
 			   
 			}
@@ -1088,17 +1118,7 @@ void CmodbusDlg::OnReceive()
 			}
 
 
-			/*CString RecStr;
-			for (int k = 0; k < iRet; k++)
-			{
-				strtemp.Format(_T("%02X "), RecCrcData[k]);
-
-				RecStr += strtemp;
-			}
-			RecStr += "\r\n";
-			m_EditReceiveCtrl.ReplaceSel(RecStr);
-
-			m_EditReceiveCtrl.SetSel(-1, -1);*/
+			
 		}
 		else if (iRet == 9)
 		{
@@ -1457,9 +1477,9 @@ BOOL CmodbusDlg::OnHelpInfo(HELPINFO* pHelpInfo)
 void CmodbusDlg::JudgeStatus()
 {
 	// TODO: 在此处添加实现代码.
-	if (SprayFlag == false)
-		data_spray = _T("正常");
 	if (SprayFlag == true)
+		data_spray = _T("正常");
+	if (SprayFlag == false)
 		data_spray = _T("停机");
 	//PLC
 	if (PlcFlag == true)
@@ -1468,7 +1488,23 @@ void CmodbusDlg::JudgeStatus()
 		data_plc = _T("停机");
 	//急停
 	if (StopFlag == true)
-		data_plc = _T("急停");
+		data_stop = _T("急停");
 	if (StopFlag == false)
-		data_plc = _T("没有急停");
+		data_stop = _T("没有急停");
+}
+
+
+// 位操作
+void CmodbusDlg::BitManipul(int temp)
+{
+	// TODO: 在此处添加实现代码.
+	int n, i, j = 0;
+	i = temp;
+	while (i)
+	{
+		bit_manipul[j] = i % 2;
+		i /= 2;
+		j++;
+	}
+	//BitManu[14] 就是最高位
 }

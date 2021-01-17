@@ -384,11 +384,11 @@ void CMonitorDlg::OnTimer(UINT_PTR nIDEvent)
 			m_mon_edit_theta = vs_theta;
 			
 			//PLC状态  胶机状态  急停 同步到控件里
-			if (SprayFlag == true)
+			if (SprayFlag == true)//胶机正常
 			{
 				m_mon_pic_glue.SetIcon(m_hIconBlue);
 			}
-			else if (SprayFlag == false)
+			else if (SprayFlag == false)//胶机不正常
 			{
 				m_mon_pic_glue.SetIcon(m_hIconRed);
 			}

@@ -158,4 +158,6 @@ public:
 	CFont f_mod_font;
 	CFont f_mod_name;
 	CMyButton m_mod_btn_timesend;
+	// 位操作
+	void BitManipul(int temp);
 };
