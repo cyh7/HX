@@ -92,7 +92,7 @@ BOOL CcadDlg::OnInitDialog()
 	// TODO:  在此添加额外的初始化
 	
 	////胶条列表
-	CString strglue[] = { _T("条数"),_T("X"),_T("Y"),_T("是否喷胶") };
+	CString strglue[] = { _T("点数"),_T("X"),_T("Y"),_T("是否喷胶") };
 	for (int i = 0; i < 4; i++)
 	{
 		//设置表头 索引 内容 对齐方式 列宽度
@@ -573,7 +573,7 @@ void CcadDlg::OnBnClickedButtonCadOpen()
 	for (int j = 0, a = 0; j < (strDecimals.size() / 3); j++)
 	{
 		CString name;
-		name.Format(_T("第%d条"), j + 1);
+		name.Format(_T("第%d点"), j + 1);
 		m_CadGlueList.InsertItem(j, name);
 		
 		a = j * 3;

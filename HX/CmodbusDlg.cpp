@@ -924,7 +924,7 @@ void CmodbusDlg::OnReceive()
 					//MessageBox(tt);
 
 					//背板没到，没有停机，PLC正常，没有急停
-					if (RecStr == "1")
+					if (RecStr == "6")
 					{
 						//MessageBox(_T("相等"));
 						ArriveFlag = false;
@@ -936,7 +936,7 @@ void CmodbusDlg::OnReceive()
 						IdentifyDone = false;
 					}
 					//背板没到，喷胶停机，PLC正常，没有急停
-					else if (RecStr == "2")
+					else if (RecStr == "4")
 					{
 						ArriveFlag = false;
 						SprayFlag = true;
@@ -947,7 +947,7 @@ void CmodbusDlg::OnReceive()
 						IdentifyDone = false;
 					}
 					//背板到位	没有停机	PLC正常	没有急停
-					else if (RecStr == "3")
+					else if (RecStr == "7")
 					{
 						ArriveFlag = true;
 						SprayFlag = false;
@@ -956,7 +956,7 @@ void CmodbusDlg::OnReceive()
 
 					}
 					//背板到位	停机	PLC正常	没有急停
-					else if (RecStr == "4")
+					else if (RecStr == "5")
 					{
 						ArriveFlag = true;
 						SprayFlag = true;
@@ -966,7 +966,7 @@ void CmodbusDlg::OnReceive()
 					}
 
 					//背板没到	没有停机	PLC不正常	没有急停
-					else if (RecStr == "9")
+					else if (RecStr == "2")
 					{
 						ArriveFlag = false;
 						SprayFlag = false;
@@ -977,7 +977,7 @@ void CmodbusDlg::OnReceive()
 						IdentifyDone = false;
 					}
 					//背板没到	停机	PLC不正常	没有急停
-					else if (RecStr == "10")
+					else if (RecStr == "0")
 					{
 						ArriveFlag = false;
 						SprayFlag = true;
@@ -987,7 +987,7 @@ void CmodbusDlg::OnReceive()
 						IdentifyDone = false;
 					}
 					//背板到位	没有停机	PLC不正常	没有急停
-					else if (RecStr == "11")
+					else if (RecStr == "3")
 					{
 						ArriveFlag = true;
 						SprayFlag = false;
@@ -995,7 +995,7 @@ void CmodbusDlg::OnReceive()
 						StopFlag = false;
 					}
 					//背板到位	停机	PLC不正常	没有急停
-					else if (RecStr == "12")
+					else if (RecStr == "1")
 					{
 						ArriveFlag = true;
 						SprayFlag = true;
@@ -1003,7 +1003,7 @@ void CmodbusDlg::OnReceive()
 						StopFlag = false;
 					}
 					//急停
-					else if (RecStr == "13")
+					else if (RecStr == "8")
 					{
 						StopFlag = true;
 					}
