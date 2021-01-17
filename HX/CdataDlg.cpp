@@ -14,7 +14,7 @@ CdataDlg *CdataDlg::pDatadlg = NULL;
 // CdataDlg 对话框
 // 存放数据库记录，最大为40000条
 std::vector<std::string> m_dat_data[40000];
-
+bool QueryDayFlag = true;
 
 
 IMPLEMENT_DYNAMIC(CdataDlg, CDialogEx)
@@ -539,11 +539,13 @@ BOOL CdataDlg::SelectDateDB()
 	int e_day = yearEnd.GetDay();
 	if ((e_day - s_day) >= 7)
 	{
+		QueryDayFlag = false;
 		AfxMessageBox(_T("起始日期和终止日期不能超过7天"));
 		return FALSE;
 	}
 	else
 	{
+		QueryDayFlag = true;
 		cquery.Format(_T("select * from table1 where 日期 >= CONCAT('%s',' ','%s') and 日期 <= CONCAT('%s',' ','%s')"), sYear, sTime, sYearEnd, sTimeEnd);
 		//CString转const char*
 		//const char* query = CString(cquery);
@@ -603,7 +605,7 @@ BOOL CdataDlg::DeleteDB()
 	::wsprintfA(temp, "%ls", (LPCTSTR)cquery);
 	query = temp;
 
-	/*if (mysql_query(&m_sqlCon, query))
+	/*if (mysql_query(&m_sqlCon, query6
 	{
 		AfxMessageBox(TEXT("删除数据失败！"));
 		return FALSE;
@@ -626,6 +628,10 @@ void CdataDlg::OnBnClickedDatBtnQuery()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	SelectDateDB();
+	if (QueryDayFlag == false)
+	{
+		return;	
+	}
 	GetDataFromDB();
 	//显示数据
 	ShowInfo();

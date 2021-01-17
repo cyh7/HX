@@ -224,7 +224,8 @@ BOOL CMonitorDlg::OnInitDialog()
 	
 	m_mon_hBitmap_logo = (HBITMAP)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_HG), IMAGE_BITMAP, 200, 40, LR_DEFAULTCOLOR);
 	m_mon_pic_logo.SetBitmap(m_mon_hBitmap_logo);
-
+	m_mon_hBitmapMain = (HBITMAP)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP2), IMAGE_BITMAP, 700, 500, LR_DEFAULTCOLOR);
+	m_mon_pic_main.SetBitmap(m_mon_hBitmapMain);
 	SetTimer(1, 1000, NULL);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -369,8 +370,9 @@ void CMonitorDlg::OnTimer(UINT_PTR nIDEvent)
 		case 1:
 		{
 			//更换图片
-			m_mon_hBitmapMain = (HBITMAP)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP2), IMAGE_BITMAP, 700, 500, LR_DEFAULTCOLOR);
-			m_mon_pic_main.SetBitmap(m_mon_hBitmapMain);
+			/*m_mon_hBitmapMain = (HBITMAP)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_BITMAP2), IMAGE_BITMAP, 700, 500, LR_DEFAULTCOLOR);
+			m_mon_pic_main.SetBitmap(m_mon_hBitmapMain);*/
+
 			//SprayBatch喷涂批次
 			m_mon_edit_batch = SprayBatch;
 			//backboard背板型号
@@ -409,7 +411,7 @@ void CMonitorDlg::OnTimer(UINT_PTR nIDEvent)
 			
 			UpdateData(FALSE);
 
-			DeleteObject(m_mon_hBitmapMain);
+			//DeleteObject(m_mon_hBitmapMain);
 		}
 	}
 

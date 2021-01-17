@@ -1011,10 +1011,10 @@ void CmodbusDlg::OnReceive()
 					{
 						PlcCadWriteFlag = true;
 					}
-					else if (RecStr == "0")
+					/*else if (RecStr == "0")
 					{
 						PlcCadRecFlag = true;
-					}
+					}*/
 				}
 				//如果读的是数据的话，就会进入这个判断
 				else

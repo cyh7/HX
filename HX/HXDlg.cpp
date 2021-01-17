@@ -463,6 +463,7 @@ void CHXDlg::OnTimer(UINT_PTR nIDEvent)
 	switch (nIDEvent)
 	{
 	case 1:
+
 		StatusTime = StatusTime.GetCurrentTime();
 		CString sTime = StatusTime.Format("%Y-%m-%d %H:%M:%S");
 		m_Statusbar.SetPaneText(0, sTime);
