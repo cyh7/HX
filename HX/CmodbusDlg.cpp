@@ -83,10 +83,10 @@ bool DisconnectFlag = true;
 bool ConnectClose = false;
 //急停标志位
 bool StopFlag = false;
-//可否写入cad数据 初始值为true
-bool PlcCadWriteFlag = false;
 //读cad图纸是否接收完毕
 bool PlcCadRecFlag = false;
+//PLC请求连接标志位
+bool PlcAskFlag = false;
 //插入数据库所需变量
 //防止识别完成后重复插入，识别完置0；插入完成置1
 int insertdata = 0;
@@ -924,23 +924,23 @@ void CmodbusDlg::OnReceive()
 					//CString tt;
 					//tt.Format(_T("%d"), T2 - T1);//前后之差即程序运行时间  
 					//MessageBox(tt);
-					if (RecStr == "254")
-					{
-						PlcCadWriteFlag = true;
-					}
-					else if (RecStr == "0")
+					if (RecStr == "0")
 					{
 						PlcCadRecFlag = true;
+					}
+					else if (RecStr == "1")
+					{
+						
 					}
 				}
 				//如果读的是数据的话，就会进入这个判断
 				else
 				{
-					int test = 0;
+					int temp = 0;
 					//读到的10进制数据
-					test = SendFreqData[3] * 256 + SendFreqData[4];
+					temp = SendFreqData[3] * 256 + SendFreqData[4];
 					//位操作
-					BitManipul(test);
+					BitManipul(temp);
 					//背板到位
 					if (bit_manipul[0] == true)
 						ArriveFlag = true;
@@ -968,9 +968,14 @@ void CmodbusDlg::OnReceive()
 						StopFlag = false;
 					//请求连接尝试标志位
 					if (bit_manipul[14] == true)
-						StopFlag = true;
+					{
+						PlcAskFlag = true;
+						//ASCII码对应CR
+						SendData(1, 75, 21059);
+						Sleep(40);
+					}
 					else
-						StopFlag = false;
+						PlcAskFlag = false;
 
 				}
 			   
@@ -1135,6 +1140,7 @@ void CmodbusDlg::SendData(int CommTypeIn, WORD DownAdd, DWORD DownData)
 {
 	// TODO: 在此处添加实现代码.
 	unsigned char SendData[200];
+	//unsigned char 整数范围为0到255(0~0xFF)
 	unsigned short CRCData;
 	//CByteArray SendArray;
 	char SendArray[8];

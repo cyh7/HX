@@ -45,11 +45,11 @@ extern DWORD SprayBatch;
 extern bool PlcFlag;
 //急停标志位
 extern bool StopFlag;
+//PLC请求标志位，默认为没有请求
+extern bool PlcAskFlag;
 //通信状态
 extern bool DisconnectFlag;
 extern bool ConnectClose;
-//是否可写 初始值为可以写入
-extern bool PlcCadWriteFlag;
 //PLC是否收完发送的cad图纸数据，初始值为false
 extern bool PlcCadRecFlag;
 //通信超时次数

@@ -658,15 +658,12 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 					SendOnce = true;
 					SendData(1, 99, locGlueNum / 3);
 					Sleep(100);
-					SendData(1, 78, 32767);
+					SendData(1, 78, 21573);
 					//发送完毕之后，可以考虑每次按下发送键的时候把这个置为0，把定位数据置为0，方便下次发送
 					m_CadT2 = GetTickCount64();
 					locGlueNum = 0;
-
-
-
 					//读寄存器收完消息没有
-					SetTimer(4, 50, NULL);//实际应位30
+					SetTimer(3, 50, NULL);//实际应位30
 					/*CvisionDlg* pvsdlg = CvisionDlg::pVisiondlg;
 					pvsdlg->ReSetTime();*/
 				}
@@ -694,7 +691,7 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 					CString msg;
 
 					//%02X为16进制显示  %d十进制 %s 字符串
-					msg.Format(_T("第%d个数据发送错误，终止发送！"), locGlueNum);
+					msg.Format(_T("图纸数据发送错误，请检查连接并重新发送！"));
 					AfxMessageBox(msg);
 					locGlueNum = 0;
 
@@ -705,55 +702,13 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 		case 3:
 		{
 			SendOnce = true;
-
-			SendData(0, 77, 1);
-			//PlcCadWriteFlag可以写入  254
-			plcWriteNum += 1;
-			if (plcWriteNum <= 20)
-			{
-				if (PlcCadWriteFlag == true)
-				{
-					KillTimer(3);
-					//CString temp;
-					//CmodbusDlg* pdlg = CmodbusDlg::pModbusdlg;
-					//pdlg->m_OpenCloseCtrl.GetWindowText(temp);///获取按钮的文本
-					////UpdateData(true);
-					//if (temp == _T("打开串口"))///表示点击后是"关闭串口"，也就是已经关闭了串口
-					//{
-					//	AfxMessageBox(_T("请先打开串口！"));
-					//}
-					//else
-					//{
-					//	SetTimer(2, 50, NULL);
-					//	locGlueNum = 0;
-					//}
-					SetTimer(2, 50, NULL);
-					locGlueNum = 0;
-				}
-			}
-			else
-			{
-				KillTimer(3);
-				Sleep(50);
-				AfxMessageBox(_T("请重新发送CAD数据!"));
-				PlcCadWriteFlag = false;
-				plcWriteNum = 0;
-
-				CvisionDlg* pvsdlg = CvisionDlg::pVisiondlg;
-				pvsdlg->ReSetTime();
-			}
-			break;
-		}
-		case 4:
-		{
-			SendOnce = true;
 			SendData(0, 79, 1);//255
 			plcRecNum += 1;//50 * 20 * 3 
 			if (plcRecNum <= 60)
 			{
 				if (PlcCadRecFlag == true)
 				{
-					KillTimer(4);
+					KillTimer(3);
 					Sleep(50);
 					AfxMessageBox(_T("CAD图纸数据发送完毕"));
 					PlcCadRecFlag = false;
@@ -769,7 +724,7 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 			}
 			else
 			{
-				KillTimer(4);
+				KillTimer(3);
 				Sleep(50);
 				AfxMessageBox(_T("请重新发送CAD数据!"));
 
@@ -819,12 +774,11 @@ void CcadDlg::OnBnClickedButtonCadSend()
 	locGlueNum = 0;
 	plcRecNum = 0;
 	plcWriteNum = 0;
-	PlcCadWriteFlag = false;
 	//发送cad数据时停掉定时器1
 	CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
 	pvsdlg->KillTime1();
-
-	SendData(1, 76, 32767);
+	//begin ASCII码BG
+	SendData(1, 76, 18242);
 	Sleep(50);
 	SetTimer(2, 50, NULL);
 	

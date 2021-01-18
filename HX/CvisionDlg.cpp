@@ -576,7 +576,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 					KillTimer(2);
 					IdentifyDone = true;
 					SendOnce_Vision = true;
-					SendData(1, 73, 32767);
+					SendData(1, 73, 21573);
 					LocVisionNum = 0;
 					m_Vision_T2 = GetTickCount();//这里加一个计时是防止下一组背板错误判断
 					//SprayBatch += 1; //喷涂批次加一
@@ -610,7 +610,8 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 					LocVisionNum = 0;
 					BadVisionNum = 0;
 					//%02X为16进制显示  %d十进制 %s 字符串
-					msg.Format(_T("第%d个数据发送错误，请检查连接并点击重新发送按钮！"), LocVisionNum);
+					//msg.Format(_T("第%d个数据发送错误，请检查连接并点击重新发送按钮！"), LocVisionNum);
+					msg.Format(_T("视觉数据发送错误，请检查连接并重启！"));
 					AfxMessageBox(msg);
 
 				}
