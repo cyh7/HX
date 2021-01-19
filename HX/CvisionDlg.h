@@ -72,4 +72,6 @@ public:
 	void ReSetTime();
 	//用以外界调用vision里的函数
 	static CvisionDlg *pVisiondlg;
+	CString m_vs_edit_type;
+	DWORD m_vs_edit_batch;
 };

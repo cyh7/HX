@@ -6,12 +6,12 @@
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
 #define IDD_HX_DIALOG                   102
+#define IDI_GDUT                        127
 #define IDR_MAINFRAME                   128
 #define IDD_VISION                      129
 #define IDD_MODBUS                      130
 #define IDD_CAD                         131
 #define IDI_ICON1                       142
-#define IDI_GDUT                        127
 #define IDR_MENU1                       143
 #define IDI_CAD                         144
 #define IDI_MODBUS                      145
@@ -174,6 +174,10 @@
 #define IDC_DATA_PIC_LOGO               1107
 #define IDC_CAD_PIC_LOGO                1108
 #define IDC_VS_BTN_RESEND               1109
+#define IDC_VS_STATIC_TYPE              1110
+#define IDC_VS_STATIC_BATCH             1111
+#define IDC_VS_EDIT_TYPE                1112
+#define IDC_VS_EDIT_BATCH               1113
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -199,7 +203,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        164
 #define _APS_NEXT_COMMAND_VALUE         32795
-#define _APS_NEXT_CONTROL_VALUE         1110
+#define _APS_NEXT_CONTROL_VALUE         1114
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

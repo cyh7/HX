@@ -33,7 +33,6 @@ WORD GlueTemp[200];//把胶条数据从函数里边提取出来变成全局的�
 //发送胶条时计数
 int locGlueNum = 0;
 int plcRecNum = 0;
-int plcWriteNum = 0;
 // CcadDlg 对话框
 
 CcadDlg *CcadDlg::pCaddlg = NULL;
@@ -775,7 +774,7 @@ void CcadDlg::OnBnClickedButtonCadSend()
 	BadCadNum = 0;
 	locGlueNum = 0;
 	plcRecNum = 0;
-	plcWriteNum = 0;
+	
 	//发送cad数据时停掉定时器1
 	CvisionDlg *pvsdlg = CvisionDlg::pVisiondlg;
 	pvsdlg->KillTime1();

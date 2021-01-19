@@ -33,6 +33,8 @@ IMPLEMENT_DYNAMIC(CvisionDlg, CDialogEx)
 
 CvisionDlg::CvisionDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_VISION, pParent)
+	, m_vs_edit_type(_T(""))
+	, m_vs_edit_batch(0)
 {
 
 }
@@ -51,6 +53,8 @@ void CvisionDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_VIS_BTN_OPVS, m_vs_btn_opvs);
 	DDX_Control(pDX, IDC_VS_PIC_LOGO, m_vs_pic_logo);
 	DDX_Control(pDX, IDC_VS_BTN_RESEND, m_vs_btn_resend);
+	DDX_Text(pDX, IDC_VS_EDIT_TYPE, m_vs_edit_type);
+	DDX_Text(pDX, IDC_VS_EDIT_BATCH, m_vs_edit_batch);
 }
 
 
@@ -146,39 +150,43 @@ BOOL CvisionDlg::OnInitDialog()
 		//设置字体大小
 		m_vs_btn_resend.setWordSize(200);
 	}
-	
-	f_vs_font.CreateFontW(50,      // nHeight，文字大小
-		0,          // nWidth
-		0,          // nEscapement
-		0,          // nOrientation
-		FW_BOLD,    // nWeight，加粗
-		FALSE,      // bItalic
-		FALSE,      // bUnderline
-		0,          // cStrikeOut
-		ANSI_CHARSET,               // nCharSet
-		OUT_DEFAULT_PRECIS,         // nOutPrecision
-		CLIP_DEFAULT_PRECIS,        // nClipPrecision
-		DEFAULT_QUALITY,            // nQuality
-		DEFAULT_PITCH | FF_SWISS,   // nPitchAndFamily
-		_T("楷体"));       // lpszFac，字体
-	GetDlgItem(IDC_VS_STATIC_NAME)->SetFont(&f_vs_font, false);
-	
-	
-	f_vs_name.CreateFontW(18,      // nHeight，文字大小
-		0,          // nWidth
-		0,          // nEscapement
-		0,          // nOrientation
-		FW_BOLD,    // nWeight，加粗
-		FALSE,      // bItalic
-		FALSE,      // bUnderline
-		0,          // cStrikeOut
-		ANSI_CHARSET,               // nCharSet
-		OUT_DEFAULT_PRECIS,         // nOutPrecision
-		CLIP_DEFAULT_PRECIS,        // nClipPrecision
-		DEFAULT_QUALITY,            // nQuality
-		DEFAULT_PITCH | FF_SWISS,   // nPitchAndFamily
-		_T("微软雅黑"));       // lpszFac，字体
+	//字体绘制
+	{
+		f_vs_font.CreateFontW(50,      // nHeight，文字大小
+			0,          // nWidth
+			0,          // nEscapement
+			0,          // nOrientation
+			FW_BOLD,    // nWeight，加粗
+			FALSE,      // bItalic
+			FALSE,      // bUnderline
+			0,          // cStrikeOut
+			ANSI_CHARSET,               // nCharSet
+			OUT_DEFAULT_PRECIS,         // nOutPrecision
+			CLIP_DEFAULT_PRECIS,        // nClipPrecision
+			DEFAULT_QUALITY,            // nQuality
+			DEFAULT_PITCH | FF_SWISS,   // nPitchAndFamily
+			_T("楷体"));       // lpszFac，字体
+		GetDlgItem(IDC_VS_STATIC_NAME)->SetFont(&f_vs_font, false);
 
+
+		f_vs_name.CreateFontW(18,      // nHeight，文字大小
+			0,          // nWidth
+			0,          // nEscapement
+			0,          // nOrientation
+			FW_BOLD,    // nWeight，加粗
+			FALSE,      // bItalic
+			FALSE,      // bUnderline
+			0,          // cStrikeOut
+			ANSI_CHARSET,               // nCharSet
+			OUT_DEFAULT_PRECIS,         // nOutPrecision
+			CLIP_DEFAULT_PRECIS,        // nClipPrecision
+			DEFAULT_QUALITY,            // nQuality
+			DEFAULT_PITCH | FF_SWISS,   // nPitchAndFamily
+			_T("微软雅黑"));       // lpszFac，字体
+		GetDlgItem(IDC_VS_STATIC_TYPE)->SetFont(&f_vs_name, false);
+		GetDlgItem(IDC_VS_STATIC_BATCH)->SetFont(&f_vs_name, false);
+	}
+	
 	
 
 	InitLayoutVision(m_layoutVision, this);
@@ -249,6 +257,14 @@ HBRUSH CvisionDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 		//pDC-> SetBkColor(RGB(0, 0, 255));  //字体背景色
 		return (HBRUSH)m_Brush.GetSafeHandle();
+	}
+	if (pWnd->GetDlgCtrlID() == IDC_VS_EDIT_TYPE || IDC_VS_EDIT_BATCH)
+	{
+		pDC->SetBkMode(TRANSPARENT);
+		//pDC->SetTextColor(RGB(50, 50, 200));  //字体颜色
+		//pDC->SetBkColor(RGB(240, 240, 220));   //字体背景色
+		return (HBRUSH)m_Brush.GetSafeHandle();  // 设置背景色
+		//return (HBRUSH)::GetStockObject(WHITE_BRUSH);
 	}
 	return hbr;
 	
@@ -453,6 +469,12 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 		//发送命令询问背板是否到位
 		case 1:
 		{
+			//SprayBatch喷涂批次
+			m_vs_edit_batch = SprayBatch;
+			//backboard背板型号
+			m_vs_edit_type = backboard;
+			UpdateData(FALSE);
+
 			//寄存器地址95 读1位数据
 			
 			SendOnce_Vision = true;
@@ -581,6 +603,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 					m_Vision_T2 = GetTickCount();//这里加一个计时是防止下一组背板错误判断
 					//SprayBatch += 1; //喷涂批次加一
 					//重启定时器1
+					DisconnectNum = 0;
 					ReSetTime();
 				}
 

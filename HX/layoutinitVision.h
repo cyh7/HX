@@ -17,6 +17,11 @@ void InitLayoutVision(CLayout& layout, CWnd* parent)
 
 	layout.RegisterControl(IDC_VS_STATIC_NAME, CLayout::e_stretch_all);
 	layout.RegisterControl(IDC_VS_PIC_LOGO, CLayout::e_stretch_all);
+
+	layout.RegisterControl(IDC_VS_STATIC_TYPE, CLayout::e_stretch_all);
+	layout.RegisterControl(IDC_VS_STATIC_BATCH, CLayout::e_stretch_all);
+	layout.RegisterControl(IDC_VS_EDIT_TYPE, CLayout::e_stretch_all);
+	layout.RegisterControl(IDC_VS_EDIT_BATCH, CLayout::e_stretch_all);
 }
 
 #endif

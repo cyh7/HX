@@ -1083,6 +1083,14 @@ void CmodbusDlg::OnReceive()
 		CTime curTime;//当前时间
 		curTime = CTime::GetCurrentTime();
 		CString testLastTime = curTime.Format("%Y-%m-%d %H:%M:%S");
+		if (IdentifyDone == true && insertdata == 0)
+		{
+			JudgeStatus();
+			CdataDlg *pdatadlg = CdataDlg::pDatadlg;
+			pdatadlg->InsertDB(LastTime, backboard, SprayBatch, vs_x, vs_y, vs_theta, data_good, data_plc, data_spray, data_stop);
+			insertdata = 1;
+		}
+
 		//把收到的数据显示出来
 		/*CString RecStr((char *)str);
 		m_EditReceiveCtrl.SetSel(-1, -1);
@@ -1112,14 +1120,7 @@ void CmodbusDlg::OnReceive()
 	//背板型号 2
 	//喷涂批次就是当前的SprayBatch 3
 	//X Y theta坐标   4 5 6
-	if (IdentifyDone == true && insertdata == 0)
-	{
-		JudgeStatus();
-		CdataDlg *pdatadlg = CdataDlg::pDatadlg;
-		//pdatadlg->InsertDB(LastTime, backboard, SprayBatch, vs_x, vs_y, vs_theta, data_good, data_plc, data_spray, data_stop);
-		insertdata = 1;
-	}
-
+	
 
 	delete []str;
 }
@@ -1300,10 +1301,7 @@ BOOL CmodbusDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 在此处添加实现代码.
 	
-	if (pMsg->wParam == VK_F3)
-	{
-		OnBnClickedModBtnOpcad();
-	}
+	
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		if (pMsg->wParam == VK_F1)
@@ -1313,6 +1311,10 @@ BOOL CmodbusDlg::PreTranslateMessage(MSG* pMsg)
 		if (pMsg->wParam == VK_F2)
 		{
 			OnBnClickedModBtnOpvs();
+		}
+		if (pMsg->wParam == VK_F3)
+		{
+			OnBnClickedModBtnOpcad();
 		}
 		if (pMsg->wParam == VK_F4)
 		{
