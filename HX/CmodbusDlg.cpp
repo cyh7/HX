@@ -991,11 +991,6 @@ void CmodbusDlg::OnReceive()
 				RecMsgFlag = false;
 			}
 		}
-		else if (iRet == 5)
-		{
-			AfxMessageBox(_T("PLC出现问题"));
-			
-		}
 		else if (iRet == 8)
 		{
 			SendFreqData[0] = str[0];
@@ -1077,15 +1072,6 @@ void CmodbusDlg::OnReceive()
 			if (SendFreqData[7] == RecCrcData[7] && SendFreqData[8] == RecCrcData[8])
 			{
 				RecMsgFlag = true;
-
-				//m_CadT2 = GetTickCount();
-
-				//CString msg;
-				////%02X为16进制显示  %d十进制 %s 字符串
-				//msg.Format(_T("%d"), RecNum);
-				//MessageBox(msg);
-
-				//MessageBox(RecStr);
 			}
 			else
 			{
