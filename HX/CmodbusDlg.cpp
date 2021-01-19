@@ -80,7 +80,7 @@ bool GoodFlag = true;
 bool PlcFlag = true;
 //通信状态
 bool DisconnectFlag = true;
-bool ConnectClose = false;
+bool ConnectClose = true;
 //急停标志位
 bool StopFlag = false;
 //读cad图纸是否接收完毕
@@ -829,7 +829,7 @@ void CmodbusDlg::OnReceive()
 	if (SendOnce == false)
 	{
 		//MessageBox(_T("计时"));
-		m_CadT2 = GetTickCount();
+		m_CadT2 = GetTickCount64();
 		if ((m_CadT2 - m_CadT1) > 70)
 			OverTime = true;
 	}
@@ -838,7 +838,7 @@ void CmodbusDlg::OnReceive()
 
 	if (SendOnce_Vision == false)
 	{
-		m_Vision_T2 = GetTickCount();
+		m_Vision_T2 = GetTickCount64();
 		if ((m_Vision_T2 - m_Vision_T1) > 50)
 			OverTime_Vision = true;
 	}

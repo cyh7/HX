@@ -578,7 +578,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 		{
 			DisconnectFlag = false;
 			SendOnce_Vision = false;
-			m_Vision_T1 = GetTickCount();
+			m_Vision_T1 = GetTickCount64();
 			if (m_Vision_T2 != 0 && RecMsgFlag == true && OverTime_Vision == false)
 			{
 				//
@@ -600,7 +600,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 					SendOnce_Vision = true;
 					SendData(1, 73, 21573);
 					LocVisionNum = 0;
-					m_Vision_T2 = GetTickCount();//这里加一个计时是防止下一组背板错误判断
+					m_Vision_T2 = GetTickCount64();//这里加一个计时是防止下一组背板错误判断
 					//SprayBatch += 1; //喷涂批次加一
 					//重启定时器1
 					DisconnectNum = 0;
