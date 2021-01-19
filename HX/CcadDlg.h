@@ -63,4 +63,7 @@ public:
 	//字体
 	CFont f_cad_font;
 	CFont f_cad_name;
+	void BanBtnSend();
+	void EnableBtnSend();
+	static CcadDlg *pCaddlg;
 };

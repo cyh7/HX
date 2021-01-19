@@ -36,6 +36,8 @@ int plcRecNum = 0;
 int plcWriteNum = 0;
 // CcadDlg 对话框
 
+CcadDlg *CcadDlg::pCaddlg = NULL;
+
 IMPLEMENT_DYNAMIC(CcadDlg, CDialogEx)
 
 CcadDlg::CcadDlg(CWnd* pParent /*=nullptr*/)
@@ -90,7 +92,7 @@ BOOL CcadDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-	
+	pCaddlg = this;
 	////胶条列表
 	CString strglue[] = { _T("点数"),_T("X"),_T("Y"),_T("是否喷胶") };
 	for (int i = 0; i < 4; i++)
@@ -886,3 +888,36 @@ BOOL CcadDlg::OnHelpInfo(HELPINFO* pHelpInfo)
 
 
 
+
+
+void CcadDlg::BanBtnSend()
+{
+	// TODO: 在此处添加实现代码.
+	m_cad_btn_send.EnableWindow(FALSE);
+	//设置Button Up的背景色
+	m_cad_btn_send.SetUpColor(RGB(180, 180, 165));
+	//设置字体颜色
+	m_cad_btn_send.setWordColor(RGB(255, 250, 250));
+	//刷新按钮控件
+	CRect brect;
+	GetDlgItem(IDC_BUTTON_CAD_SEND)->GetWindowRect(brect);
+	ScreenToClient(brect);
+	InvalidateRect(brect);
+}
+
+
+
+void CcadDlg::EnableBtnSend()
+{
+	// TODO: 在此处添加实现代码.
+	m_cad_btn_send.EnableWindow(TRUE);
+	//设置Button Up的背景色
+	m_cad_btn_send.SetUpColor(RGB(2, 158, 160));
+	//设置字体颜色
+	m_cad_btn_send.setWordColor(RGB(255, 250, 250));
+	//刷新按钮控件
+	CRect brect;
+	GetDlgItem(IDC_BUTTON_CAD_SEND)->GetWindowRect(brect);
+	ScreenToClient(brect);
+	InvalidateRect(brect);
+}

@@ -928,10 +928,6 @@ void CmodbusDlg::OnReceive()
 					{
 						PlcCadRecFlag = true;
 					}
-					else if (RecStr == "1")
-					{
-						
-					}
 				}
 				//如果读的是数据的话，就会进入这个判断
 				else
@@ -966,6 +962,16 @@ void CmodbusDlg::OnReceive()
 						StopFlag = true;
 					else
 						StopFlag = false;
+					if (bit_manipul[4] == true)
+					{
+						CcadDlg *pcaddlg = CcadDlg::pCaddlg;
+						pcaddlg->BanBtnSend();
+					}
+					else
+					{
+						CcadDlg *pcaddlg = CcadDlg::pCaddlg;
+						pcaddlg->EnableBtnSend();
+					}
 					//请求连接尝试标志位
 					if (bit_manipul[14] == true)
 					{
