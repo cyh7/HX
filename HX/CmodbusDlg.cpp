@@ -28,11 +28,6 @@ bool RecMsgFlag = true;
 //接收超时
 bool OverTime_Vision = false;
 bool OverTime = false;
-
-
-
-
-
 //T1为开关按下时刻，T2为数据接收时刻
 long m_CadT1;
 //给T2赋一个初值，防止首次执行时发生误判，之后的时候若T2值为0则说明通信断线，我们没有收到接收函数
@@ -43,7 +38,6 @@ long m_Vision_T2 = 1;
 //循环发送计时
 long m_Status_T1;
 long m_Status_T2 = 1;
-
 //判断背板是否到达
 bool ArriveFlag = false;
 
@@ -80,6 +74,7 @@ bool GoodFlag = true;
 bool PlcFlag = true;
 //通信状态
 bool DisconnectFlag = true;
+//连接关闭标志位
 bool ConnectClose = true;
 //急停标志位
 bool StopFlag = false;
@@ -470,39 +465,42 @@ BOOL CmodbusDlg::OnInitDialog()
 	
 	InitLayoutModbus(m_layoutMod, this);
 	//全屏幕操作
-	WINDOWPLACEMENT m_struOldWndpl;
-	//get current system resolution
-	int g_iCurScreenWidth = GetSystemMetrics(SM_CXSCREEN); //1920
-	int g_iCurScreenHeight = GetSystemMetrics(SM_CYSCREEN); //1080
+	{
+		WINDOWPLACEMENT m_struOldWndpl;
+		//get current system resolution
+		int g_iCurScreenWidth = GetSystemMetrics(SM_CXSCREEN); //1920
+		int g_iCurScreenHeight = GetSystemMetrics(SM_CYSCREEN); //1080
 
-	//for full screen while backplay
-	GetWindowPlacement(&m_struOldWndpl);
+		//for full screen while backplay
+		GetWindowPlacement(&m_struOldWndpl);
 
-	CRect rectWholeDlg;//entire client(including title bar)
-	CRect rectClient;//client area(not including title bar)
-	CRect rectFullScreen;
-	//用于接收左上角和右下角的屏幕坐标
-	GetWindowRect(&rectWholeDlg);
-	RepositionBars(0, 0xffff, AFX_IDW_PANE_FIRST, reposQuery, &rectClient);
-	//将显示器上给定点或矩形的客户去坐标转换为屏幕坐标 新的坐标是相对于屏幕左上角的
-	ClientToScreen(&rectClient);
+		CRect rectWholeDlg;//entire client(including title bar)
+		CRect rectClient;//client area(not including title bar)
+		CRect rectFullScreen;
+		//用于接收左上角和右下角的屏幕坐标
+		GetWindowRect(&rectWholeDlg);
+		RepositionBars(0, 0xffff, AFX_IDW_PANE_FIRST, reposQuery, &rectClient);
+		//将显示器上给定点或矩形的客户去坐标转换为屏幕坐标 新的坐标是相对于屏幕左上角的
+		ClientToScreen(&rectClient);
 
-	//-8 = 0 - 8
-	rectFullScreen.left = rectWholeDlg.left - rectClient.left;
-	//-28 = 0 - 28
-	rectFullScreen.top = rectWholeDlg.top;
-	// = 1088 + 1920 - 1080
-	rectFullScreen.right = rectWholeDlg.right + g_iCurScreenWidth - rectClient.right;
-	// = 639 + 1080 - 609
-	rectFullScreen.bottom = rectWholeDlg.bottom + g_iCurScreenHeight - rectClient.bottom - 20;
+		//-8 = 0 - 8
+		rectFullScreen.left = rectWholeDlg.left - rectClient.left;
+		//-28 = 0 - 28
+		rectFullScreen.top = rectWholeDlg.top;
+		// = 1088 + 1920 - 1080
+		rectFullScreen.right = rectWholeDlg.right + g_iCurScreenWidth - rectClient.right;
+		// = 639 + 1080 - 609
+		rectFullScreen.bottom = rectWholeDlg.bottom + g_iCurScreenHeight - rectClient.bottom - 20;
 
-	//enter into full screen;
-	WINDOWPLACEMENT struWndpl;
-	struWndpl.length = sizeof(WINDOWPLACEMENT);
-	struWndpl.flags = 0;
-	struWndpl.showCmd = SW_SHOWNORMAL;
-	struWndpl.rcNormalPosition = rectFullScreen;
-	SetWindowPlacement(&struWndpl);
+		//enter into full screen;
+		WINDOWPLACEMENT struWndpl;
+		struWndpl.length = sizeof(WINDOWPLACEMENT);
+		struWndpl.flags = 0;
+		struWndpl.showCmd = SW_SHOWNORMAL;
+		struWndpl.rcNormalPosition = rectFullScreen;
+		SetWindowPlacement(&struWndpl);
+	}
+	
 
 	m_mod_hBitmap_logo = (HBITMAP)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDB_HG), IMAGE_BITMAP, 200, 40, LR_DEFAULTCOLOR);
 	m_mod_pic_logo.SetBitmap(m_mod_hBitmap_logo);
@@ -529,9 +527,6 @@ HBRUSH CmodbusDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  在此更改 DC 的任何特性
-
-	
-
 	//((CStatic*)GetDlgItem(CTLCOLOR_STATIC))->SetFont(p_font, FALSE);
 	if (nCtlColor == CTLCOLOR_STATIC)//如果当前控件属于静态文本
 	{
@@ -631,7 +626,7 @@ void CmodbusDlg::OnBnClickedButtonSendOnce()
 	// TODO: 在此添加控件通知处理程序代码
 
 	SendOnce = true;
-
+	//以字节为单位 无符号整数BYTE类型
 	CByteArray HexDataBuf;
 	char sendData[8] = { 0 };
 	int i = 0;
@@ -826,26 +821,6 @@ void CmodbusDlg::OnReceive()
 	CString RecStr;
 	CString strtemp;
 	//设置单次发送不计时T2,非单次发送计时T2
-	if (SendOnce == false)
-	{
-		//MessageBox(_T("计时"));
-		m_CadT2 = GetTickCount64();
-		if ((m_CadT2 - m_CadT1) > 70)
-			OverTime = true;
-	}
-	/*if ((m_CadT2 - m_CadT1) > 50)
-		OverTime = true;*/
-
-	if (SendOnce_Vision == false)
-	{
-		m_Vision_T2 = GetTickCount64();
-		if ((m_Vision_T2 - m_Vision_T1) > 50)
-			OverTime_Vision = true;
-	}
-	/*if ((m_Vision_T2 - m_Vision_T1) > 50)
-		OverTime_Vision = true;*/
-
-	
 
 	//CString tt;
 	//tt.Format(_T("2:%d"), T2 - T1);//前后之差即程序运行时间  
@@ -881,6 +856,24 @@ void CmodbusDlg::OnReceive()
 	//Sleep(1000);
 	if (iRet > 0)
 	{
+		if (SendOnce == false)
+		{
+			//MessageBox(_T("计时"));
+			m_CadT2 = GetTickCount64();
+			if ((m_CadT2 - m_CadT1) > 200)
+				OverTime = true;
+		}
+		/*if ((m_CadT2 - m_CadT1) > 50)
+			OverTime = true;*/
+
+		if (SendOnce_Vision == false)
+		{
+			m_Vision_T2 = GetTickCount64();
+			if ((m_Vision_T2 - m_Vision_T1) > 200)
+				OverTime_Vision = true;
+		}
+		/*if ((m_Vision_T2 - m_Vision_T1) > 50)
+			OverTime_Vision = true;*/
 		m_Status_T2 = GetTickCount();
 		//MessageBox(_T("1"));
 		if (iRet == 7)
@@ -1258,9 +1251,6 @@ void CmodbusDlg::OnSizing(UINT fwSide, LPRECT pRect)
 
 	// TODO: 在此处添加消息处理程序代码
 }
-
-
-
 
 
 void CmodbusDlg::OnClose()

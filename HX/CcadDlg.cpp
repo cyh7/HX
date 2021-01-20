@@ -32,6 +32,7 @@ int vecGlueNum = 0;
 WORD GlueTemp[200];//把胶条数据从函数里边提取出来变成全局的，用以发送
 //发送胶条时计数
 int locGlueNum = 0;
+//读取PLC接收到所有图纸之后的确认
 int plcRecNum = 0;
 // CcadDlg 对话框
 
@@ -649,7 +650,6 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 				BadCadNum = 0;
 				if (locGlueNum < vecGlueNum)
 				{
-
 					SendData(1, locGlueNum + 100, GlueTemp[locGlueNum]);
 					locGlueNum++;
 				}
@@ -658,12 +658,13 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 					KillTimer(2);
 					SendOnce = true;
 					SendData(1, 99, locGlueNum / 3);
-					Sleep(100);
+					Sleep(50);
 					SendData(1, 78, 21573);
 					//发送完毕之后，可以考虑每次按下发送键的时候把这个置为0，把定位数据置为0，方便下次发送
 					m_CadT2 = GetTickCount64();
 					locGlueNum = 0;
 					//读寄存器收完消息没有
+					Sleep(50);
 					SetTimer(3, 50, NULL);//实际应位30
 					/*CvisionDlg* pvsdlg = CvisionDlg::pVisiondlg;
 					pvsdlg->ReSetTime();*/
@@ -703,7 +704,7 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 		case 3:
 		{
 			SendOnce = true;
-			SendData(0, 79, 1);//255
+			SendData(0, 78, 1);//255
 			plcRecNum += 1;//50 * 20 * 3 
 			if (plcRecNum <= 60)
 			{
@@ -730,7 +731,7 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 				AfxMessageBox(_T("请重新发送CAD数据!"));
 
 				PlcCadRecFlag = false;
-				plcRecNum;
+				plcRecNum = 0;
 				locGlueNum = 0;
 
 

@@ -518,7 +518,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 					{
 						KillTimer(1); //先终止该定时器，进行视觉处理
 
-						/*
+						/* 
 						识别完成的时候就把数据读到容器里
 						其实就三个数据可以换个方式
 						IdentifyDone = true;
@@ -619,7 +619,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 					//寄存器地址  发送的数据根据LocVisionNum来定
 
 					//SendData(1, , );
-					//SendData(1, LocVisionNum + 90, testLoc[LocVisionNum]);
+					//SendData(1, LocVisionNum + 70, testLoc[LocVisionNum]);
 					//发送完之后做加一处理
 					LocVisionNum++;
 				}
