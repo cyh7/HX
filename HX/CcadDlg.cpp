@@ -704,6 +704,7 @@ void CcadDlg::OnTimer(UINT_PTR nIDEvent)
 		case 3:
 		{
 			SendOnce = true;
+			ReadStatus = false;
 			SendData(0, 78, 1);//255
 			plcRecNum += 1;//50 * 20 * 3 
 			if (plcRecNum <= 60)

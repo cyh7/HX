@@ -16,6 +16,7 @@ extern bool OverTime;
 //cad图纸单次发送  这里有个问题 好像也还可以
 extern bool SendOnce;
 extern bool SendOnce_Vision;
+extern bool ReadStatus;
 //计算视觉发送是否超时
 extern long m_Vision_T1;
 extern long m_Vision_T2;

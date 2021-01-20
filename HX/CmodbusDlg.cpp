@@ -40,7 +40,8 @@ long m_Status_T1;
 long m_Status_T2 = 1;
 //判断背板是否到达
 bool ArriveFlag = false;
-
+//读74寄存器标志位
+bool ReadStatus = false;
 
 //胶条数据的总数量，是从sendGlueData赋值
 //int vecGlueNum;
@@ -904,7 +905,7 @@ void CmodbusDlg::OnReceive()
 			{
 				RecMsgFlag = true;
 			    //MessageBox(_T("相等"));
-				if (SendFreqData[3] == 0)
+				if (SendFreqData[3] == 0 && ReadStatus == false)
 				{
 					MidData = SendFreqData[4];
 					char MyChar[10];
@@ -923,7 +924,7 @@ void CmodbusDlg::OnReceive()
 					}
 				}
 				//如果读的是数据的话，就会进入这个判断
-				else
+				if(ReadStatus == true)
 				{
 					int temp = 0;
 					//读到的10进制数据
@@ -975,7 +976,7 @@ void CmodbusDlg::OnReceive()
 					}
 					else
 						PlcAskFlag = false;
-
+					bit_manipul = vector<bool>(15, 0);
 				}
 			   
 			}

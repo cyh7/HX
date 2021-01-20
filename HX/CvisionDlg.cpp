@@ -476,7 +476,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 			UpdateData(FALSE);
 
 			//寄存器地址95 读1位数据
-			
+			ReadStatus = true;
 			SendOnce_Vision = true;
 			SendData(0, 74, 1);  
 			
