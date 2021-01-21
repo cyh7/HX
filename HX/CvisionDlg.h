@@ -3,7 +3,7 @@
 #include "CLayout.h"
 #include "CMyButton.h"
 
-extern bool IdentifyDone;
+extern bool SendDone;
 //把时间全局给插入数据库用
 extern CString LastTime;
 extern double vs_x;

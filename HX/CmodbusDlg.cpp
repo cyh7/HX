@@ -292,7 +292,7 @@ BOOL CmodbusDlg::OnInitDialog()
 	//m_IdentifyList.SetExtendedStyle(dwStyle2);//设置扩展风格
 
 	//串口信息connect
-	m_SerialPort.readReady.connect(this, &CmodbusDlg::OnReceive);
+	//m_SerialPort.readReady.connect(this, &CmodbusDlg::OnReceive);
 	//定义一个画刷
 	m_Brush.CreateSolidBrush(RGB(240, 240, 220));
 
@@ -938,7 +938,7 @@ void CmodbusDlg::OnReceive()
 					{
 						ArriveFlag = false;
 						//背板不在（离开）要把这个置为false，方便下一次进入程序
-						IdentifyDone = false;
+						SendDone = false;
 					}
 						
 					//胶机状态位
@@ -1074,11 +1074,12 @@ void CmodbusDlg::OnReceive()
 		}
 
 
-		CTime curTime;//当前时间
-		curTime = CTime::GetCurrentTime();
-		CString testLastTime = curTime.Format("%Y-%m-%d %H:%M:%S");
-		if (IdentifyDone == true && insertdata == 0)
+		
+		if (SendDone == true && insertdata == 0)
 		{
+			CTime curTime;//当前时间
+			curTime = CTime::GetCurrentTime();
+			CString testLastTime = curTime.Format("%Y-%m-%d %H:%M:%S");
 			JudgeStatus();
 			CdataDlg *pdatadlg = CdataDlg::pDatadlg;
 			pdatadlg->InsertDB(LastTime, backboard, SprayBatch, vs_x, vs_y, vs_theta, data_good, data_plc, data_spray, data_stop);
@@ -1384,6 +1385,14 @@ BOOL CmodbusDlg::OnHelpInfo(HELPINFO* pHelpInfo)
 void CmodbusDlg::JudgeStatus()
 {
 	// TODO: 在此处添加实现代码.
+	if ((vs_x >= x_floor && vs_x <= x_ceil) && (vs_y >= x_floor && vs_y <= y_ceil) && (vs_theta >= theta_floor && vs_theta <= theta_ceil))
+	{
+		data_good = _T("良品");
+	}
+	else
+	{
+		data_good = _T("非良品");
+	}
 	if (SprayFlag == true)
 		data_spray = _T("正常");
 	if (SprayFlag == false)

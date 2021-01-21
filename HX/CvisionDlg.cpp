@@ -13,8 +13,8 @@
 int BadVisionNum = 0;
 //当前发送的是第几个
 int LocVisionNum = 0;
-//判断是否识别完成
-bool IdentifyDone = false;
+//判断是否发送完成
+bool SendDone = false;
 
 //上一次时间
 CString LastTime;
@@ -502,70 +502,13 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 				m_Status_T2 = 0;//如果没有断线 那么在onReceive里会更改这个值，如果断线了那就不会更改了
 				//只能对上一个时间循环里的数据进行判断
 				if (ArriveFlag == true)
-					//如果已经到位,且未识别完成 加一个喷胶是否喷完的标志位
-					//进入判断是 到位，未识别完成，归根结底是什么时候进入判断呢，是在背板到了，再进入判断
-					//背板到了，就停止定时器
-					//主要问题，重启之后还是true怎么，把killtime放里边
-					//背板到位之后，开始判断喷胶，
-					//喷胶喷完为true,在下一台背板进来的时候喷胶标志位一直为true，进入判断的条件是
-					//SprayDone == false
-					//在背板到达时打为false 此时ArriveFlag = true 
 				{
-					//IdentifyDone初始值设为false,执行完程序后设置为true，在背板离开的时候设置为false
+					//SendDone初始值设为false,执行完程序后设置为true，在背板离开的时候设置为false
 					//Sleep()
 					//Send()  发送喷胶判断
-					if (IdentifyDone == false)
+					if (SendDone == false)
 					{
 						KillTimer(1); //先终止该定时器，进行视觉处理
-
-						/* 
-						识别完成的时候就把数据读到容器里
-						其实就三个数据可以换个方式
-						IdentifyDone = true;
-						//对比设置的界限
-						//产生是否良品字符串 在这里边判断只用写一个字符串就可以了
-						//当前的日期
-						//坐标数据
-						//三个状态 是来自收到
-
-						//程序识别完之后，直接开始settimer
-						SetTimer(2,30,Null);
-						*/
-						
-						//CTime curTime = CTime().GetCurrentTime();//当前时间
-						//LastTime = preTime.Format("%Y-%m-%d %H:%M:%S");
-						if ((vs_x >= x_floor && vs_x <= x_ceil) && (vs_y >= x_floor && vs_y <= y_ceil) && (vs_theta >= theta_floor && vs_theta <= theta_ceil))
-						{
-							data_good = _T("良品");
-						}
-						else
-						{
-							data_good = _T("非良品");
-						}
-
-						//if (SprayBatch > 0)
-						//{
-						//	
-						//	
-						//	LastTime;
-						//	SprayBatch;
-						//	backboard;
-						//	vs_x;
-						//	vs_y;
-						//	vs_theta;
-						//	
-						//	//插入数据库,插入(LastTime  1
-						//	//这里判断四个flag 生成四个CString 
-						//	//能进来就说明当前是正常的  要不通信状态不插入数据库
-						//	//上一次的坐标对比设置 CString 良与不良  7 8 9 10
-						//	//背板型号 2
-						//	//喷涂批次就是当前的SprayBatch 3
-						//	//X Y theta坐标   4 5 6
-						//}
-						//preTime = curTime;
-						insertdata = 0;
-						SprayBatch += 1;
-						//执行视觉识别程序 产生三个坐标，
 						SetTimer(2, 50, NULL);
 						//执行发送函数  这里的发送函数应该是启动定时器2
 					}
@@ -587,7 +530,7 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 				if (LocVisionNum < 3)
 				{
 					//SendData;
-					//SendData(1, LocVisionNum + 90, testLoc[LocVisionNum]);
+					//SendData(1, LocVisionNum + 70, testLoc[LocVisionNum]);
 					LocVisionNum++;
 				}
 				//发送完毕
@@ -596,7 +539,10 @@ void CvisionDlg::OnTimer(UINT_PTR nIDEvent)
 					//SendData 这个跟轩举商量
 					//发送完毕 发送数清0
 					KillTimer(2);
-					IdentifyDone = true;
+
+					insertdata = 0;
+					SprayBatch += 1;
+					SendDone = true;
 					SendOnce_Vision = true;
 					SendData(1, 73, 21573);
 					LocVisionNum = 0;
