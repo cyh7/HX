@@ -8,12 +8,15 @@
 #include "layoutinitData.h"
 #include "HXDlg.h"
 
+//查询失败标志位
 bool IsConnOpen = false;
+//连接状态标志位
 bool ConnectSucces = false;
 CdataDlg *CdataDlg::pDatadlg = NULL;
 // CdataDlg 对话框
 // 存放数据库记录，最大为40000条
 std::vector<std::string> m_dat_data[40000];
+//查询日期小于7天标志位
 bool QueryDayFlag = true;
 
 
@@ -739,8 +742,6 @@ BOOL CdataDlg::InsertDB(CString time, CString type, DWORD batch, double x, doubl
 	// TODO: 在此处添加实现代码.
 	CString cquery;
 
-	CString test;
-	test = _T("a");
 	cquery.Format(_T("insert into table1 values('%s','%s','%d',%.3f ,%.3f ,%.3f ,'%s','%s','%s','%s');"), time, type, batch, x, y, theta, good, plc, spray, stop);
 
 	const char* query;

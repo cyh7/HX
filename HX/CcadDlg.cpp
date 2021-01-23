@@ -512,16 +512,16 @@ void CcadDlg::OnBnClickedButtonCadOpen()
 
 	WORD temp[200];//发送数据存储空间
 	int i = 0;//把一行数据读到寄存器时用到的
-	CString w[1024];
+	CString w[1024];//把每一行放到一个cstring里 等待切割
 	CString str;//用于接收分割字符的临时变量
 	CString decimals;
 
 	CString strline;//定义一个变量用于接收读取的一行内容
 	CStdioFile file;//定义一个CStdioFile类的对象 file
 	//GlueX1 = _wtoi(GlueAdd); CString转word
-	std::vector<CString> vecResult;
-	std::vector<CString> strTmp;
-	std::vector<CString> strDecimals;
+	std::vector<CString> vecResult;//保存每一行的内容容器
+	std::vector<CString> strTmp;//保存分割好的内容的容器
+	std::vector<CString> strDecimals;//存放列表显示内容
 
 	//清除元素，并收回内存 std::vector <CString>().swap(strTmp);
 	//vecResult.clear()清除元素但不收回空间
@@ -609,6 +609,9 @@ void CcadDlg::OnBnClickedButtonCadOpen()
 		//a = j * 5;
 	}
 
+	std::vector <CString>().swap(vecResult);
+	std::vector <CString>().swap(strTmp);
+	std::vector <CString>().swap(strDecimals);
 
 
 }
