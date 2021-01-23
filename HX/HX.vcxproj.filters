@@ -60,9 +60,6 @@
     <ClInclude Include="layoutinitModbus.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="drawcad.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="layoutinitCad.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -91,6 +88,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="layoutinitMonitor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mysql.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PathGen.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -137,9 +140,6 @@
     <ClCompile Include="CLayout.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="drawcad.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="CLoginDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -156,6 +156,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CMonitorDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PathGen.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
