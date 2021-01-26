@@ -689,6 +689,7 @@ void CvisionDlg::KillTime1()
 void CvisionDlg::ReSetTime()
 {
 	// TODO: 在此处添加实现代码.
+	Sleep(50);
 	DisconnectNum = 0;
 	SendOnce = true;
 	SendOnce_Vision = true;

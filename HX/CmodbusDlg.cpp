@@ -179,11 +179,21 @@ END_MESSAGE_MAP()
 UINT ThreadRec(LPVOID param)
 {
 	CmodbusDlg *pdlg = CmodbusDlg::pModbusdlg;
-
-	while (1)
+	for (;;)
 	{
+		if (exitFlag == true)
+		{
+
+			break;
+		}
+
 		pdlg->OnReceive();
+		Sleep(50);
 	}
+
+	AfxEndThread(0);
+
+	return 0;
 }
 
 
@@ -666,20 +676,6 @@ void CmodbusDlg::OnBnClickedButtonSendOnce()
 	}
 	
 
-	//int len1 = HexDataBuf.GetSize();
-	//CString temp('x', len1);
-	//for (int i = 0; i < len1; i++)
-	//{
-	//	temp.SetAt(i, HexDataBuf.GetAt(i));
-	//}
-
-
-	//int n = temp.GetLength();//n= 8
-	//int len = WideCharToMultiByte(CP_ACP, 0, temp, temp.GetLength(), NULL, 0, NULL, NULL);//len = 8
-	//char *m_str = new char[len + 1];
-	//WideCharToMultiByte(CP_ACP, 0, temp, temp.GetLength(), m_str, len, NULL, NULL);
-	//m_str[len + 1] = '\0';
-
 	m_SerialPort.writeData(sendData, sizeof(sendData));
 
 	//发送一次清空编辑框
@@ -958,13 +954,21 @@ void CmodbusDlg::OnReceive()
 						StopFlag = false;
 					if (bit_manipul[4] == true)
 					{
-						CcadDlg *pcaddlg = CcadDlg::pCaddlg;
-						pcaddlg->BanBtnSend();
+						if (CadBtnStatus == true)
+						{
+							CcadDlg *pcaddlg = CcadDlg::pCaddlg;
+							pcaddlg->BanBtnSend();
+						}
+						
 					}
 					else
 					{
-						CcadDlg *pcaddlg = CcadDlg::pCaddlg;
-						pcaddlg->EnableBtnSend();
+						if (CadBtnStatus == false)
+						{
+							CcadDlg *pcaddlg = CcadDlg::pCaddlg;
+							pcaddlg->EnableBtnSend();
+						}
+						
 					}
 					//请求连接尝试标志位
 					if (bit_manipul[14] == true)
@@ -1004,37 +1008,17 @@ void CmodbusDlg::OnReceive()
 			RecCrcData[3] = str[3];
 			RecCrcData[4] = str[4];
 			RecCrcData[5] = str[5];
-			//CString msg;
-			////%02X为16进制显示  %d十进制 %s 字符串
-			//msg.Format(_T("%02X"), SendFreqData[7]);
-			//MessageBox(msg);
 			RecCrcData[6] = str[6];
 			RecCrcData[7] = str[7];
 			//对比发送再收回的CRC校验
 			if (SendFreqData[6] == RecCrcData[6] && SendFreqData[7] == RecCrcData[7])
 			{
 				RecMsgFlag = true;
-			
-				//m_CadT2 = GetTickCount();
-	
-				//CString msg;
-				////%02X为16进制显示  %d十进制 %s 字符串
-				//msg.Format(_T("%d"), RecNum);
-				//MessageBox(msg);
-
-				//MessageBox(RecStr);
 			}
 			else
 			{
 				RecMsgFlag = false;
-				//BadNum++; //问坏数大于3 在发送定时器那里进行坏数累加，不在这里累加了
-						  //这里设置一个flag 大于3时 我那边停止发送
-						  //出现一个flag 我那边把对应的数据发一次
-						  //这里我没设置等待
 			}
-
-
-			
 		}
 		else if (iRet == 9)
 		{
@@ -1055,10 +1039,6 @@ void CmodbusDlg::OnReceive()
 			RecCrcData[3] = str[3];
 			RecCrcData[4] = str[4];
 			RecCrcData[5] = str[5];
-			//CString msg;
-			////%02X为16进制显示  %d十进制 %s 字符串
-			//msg.Format(_T("%02X"), SendFreqData[7]);
-			//MessageBox(msg);
 			RecCrcData[6] = str[6];
 			RecCrcData[7] = str[7];
 			RecCrcData[8] = str[8];
@@ -1072,9 +1052,6 @@ void CmodbusDlg::OnReceive()
 				RecMsgFlag = false;
 			}
 		}
-
-
-		
 		if (SendDone == true && insertdata == 0)
 		{
 			CTime curTime;//当前时间
@@ -1086,10 +1063,6 @@ void CmodbusDlg::OnReceive()
 			insertdata = 1;
 		}
 
-		//把收到的数据显示出来
-		/*CString RecStr((char *)str);
-		m_EditReceiveCtrl.SetSel(-1, -1);
-		m_EditReceiveCtrl.ReplaceSel(RecStr);*/
 		CString RecStr;
 		for (int k = 0; k < iRet; k++)
 		{
@@ -1099,24 +1072,9 @@ void CmodbusDlg::OnReceive()
 		}
 		RecStr += "\r\n";
 		m_EditReceiveCtrl.ReplaceSel(RecStr);
-
-		m_EditReceiveCtrl.SetSel(-1, -1); 
-		//this->SetDlgItemTextW(IDC_EDIT2, m_EditReceive);//将m_EditReceive内容显示到ID为IDC_EDIT1的编辑框的最后位置
-		//m_EditReceiveCtrl.LineScroll(m_EditReceiveCtrl.GetLineCount() - 1, 0);//将垂直滚动条滚动到最后一
+		m_EditReceiveCtrl.SetSel(-1, -1);
 		
 	}
-	
-	//如果这里出bug 插入不进去或者重复多次插入，就把他放到iret = 7里
-	//判断是否插入数据库
-	//插入数据库,插入(LastTime  1
-	//这里判断四个flag 生成四个CString 
-	//能进来就说明当前是正常的  要不通信状态不插入数据库
-	//上一次的坐标对比设置 CString 良与不良  7 8 9 10
-	//背板型号 2
-	//喷涂批次就是当前的SprayBatch 3
-	//X Y theta坐标   4 5 6
-	
-
 	delete []str;
 }
 
@@ -1152,38 +1110,12 @@ void CmodbusDlg::SendData(int CommTypeIn, WORD DownAdd, DWORD DownData)
 	SendData[7] = CRCData - 256 * SendData[6];
 	StrLength = 8;
 
-	//CString msg;
-	////%02X为16进制显示  %d十进制 %s 字符串
-	//msg.Format(_T("%02X"), SendData[3]);
-	//MessageBox(msg);
-
-	/*SendArray.RemoveAll();
-	SendArray.SetSize(StrLength);*/
-	//把待发送数据存入数组中
-
-	//CString msg;
- //   //%02X为16进制显示  %d十进制 %s 字符串
- //   msg.Format(_T("%02X"), SendData[3]);
- //   MessageBox(msg);
 
 	for (int Circle = 0; Circle < StrLength; Circle++)
 		SendArray[Circle] = SendData[Circle];
 
-	//int len1 = SendArray.GetSize();
-	//CString temp('x', len1);
-	//for (int i = 0; i < len1; i++)
-	//{m_SerialPort
-	//	temp.SetAt(i, SendArray.GetAt(i));
-	//}
-
-	//int n = temp.GetLength();//n= 8
-	//int len = WideCharToMultiByte(CP_ACP, 0, temp, temp.GetLength(), NULL, 0, NULL, NULL);//len = 8
-	//char *m_str = new char[len + 1];
-	//WideCharToMultiByte(CP_ACP, 0, temp, temp.GetLength(), m_str, len, NULL, NULL);
-	//m_str[len + 1] = '\0';
 
 	m_SerialPort.writeData(SendArray, 8);
-	//m_SerialPort.writeData(m_str, len);
 }
 
 //定时发送
@@ -1217,15 +1149,9 @@ void CmodbusDlg::OnTimer(UINT_PTR nIDEvent)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	switch (nIDEvent)
 	{
-		//一直读200ms，为true到位，false则不到位
-		//到位之后就可以发送尺寸数据
 
 		case 1:
 		{
-			/*SendOnce = true;
-			SendData(0, 95, 1);*/
-
-
 			break;
 		}
 

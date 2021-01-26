@@ -34,6 +34,8 @@ WORD GlueTemp[200];//把胶条数据从函数里边提取出来变成全局的�
 int locGlueNum = 0;
 //读取PLC接收到所有图纸之后的确认
 int plcRecNum = 0;
+//cad按钮状态标志位
+bool CadBtnStatus = false;
 // CcadDlg 对话框
 
 CcadDlg *CcadDlg::pCaddlg = NULL;
@@ -785,7 +787,7 @@ void CcadDlg::OnBnClickedButtonCadSend()
 	//begin ASCII码BG
 	SendData(1, 76, 18242);
 	Sleep(50);
-	SetTimer(2, 50, NULL);
+	SetTimer(2, 100, NULL);
 	
 	
 
@@ -896,6 +898,7 @@ BOOL CcadDlg::OnHelpInfo(HELPINFO* pHelpInfo)
 void CcadDlg::BanBtnSend()
 {
 	// TODO: 在此处添加实现代码.
+	CadBtnStatus = false;
 	m_cad_btn_send.EnableWindow(FALSE);
 	//设置Button Up的背景色
 	m_cad_btn_send.SetUpColor(RGB(180, 180, 165));
@@ -913,6 +916,7 @@ void CcadDlg::BanBtnSend()
 void CcadDlg::EnableBtnSend()
 {
 	// TODO: 在此处添加实现代码.
+	CadBtnStatus = true;
 	m_cad_btn_send.EnableWindow(TRUE);
 	//设置Button Up的背景色
 	m_cad_btn_send.SetUpColor(RGB(2, 158, 160));

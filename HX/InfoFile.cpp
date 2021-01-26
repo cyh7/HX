@@ -186,9 +186,9 @@ CString CInfoFile::DoubleToCString(double x)
 {
 	// TODO: 在此处添加实现代码.
 
-	char temp[10];
+	char temp[15];
 	CString sTemp;
-	_gcvt_s(temp, 10, x, 8);//浮点型转为字符串
+	_gcvt_s(temp, 15, x, 10);//浮点型转为字符串
 	sTemp = CA2CT(temp);
 	return sTemp;
 }

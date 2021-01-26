@@ -3,7 +3,8 @@
 #include "CLayout.h"
 #include "CMyButton.h"
 
-
+//cad按钮状态标志位
+extern bool CadBtnStatus;
 // CcadDlg 对话框
 
 class CcadDlg : public CDialogEx, public has_slots<>
