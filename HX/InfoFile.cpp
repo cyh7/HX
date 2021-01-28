@@ -193,7 +193,12 @@ CString CInfoFile::DoubleToCString(double x)
 
 	char temp[15];
 	CString sTemp;
-	_gcvt_s(temp, 15, x, 10);//浮点型转为字符串
+	if ((x - (int)x) == 0)
+	{
+		_itoa_s(x, temp, 10);
+	}
+	else
+		_gcvt_s(temp, 15, x, 10);//浮点型转为字符串
 	sTemp = CA2CT(temp);
 	return sTemp;
 }
