@@ -104,7 +104,12 @@ void CInfoFile::WirteDocline(CString &type, double &x_floor, double &x_ceil, dou
 	CStdioFile csdioFile;
 	BOOL flag = csdioFile.Open(_T(".\\stock.txt"), CFile::modeReadWrite);
 	//写入简体中文数据
-	csdioFile.WriteString(type);
+	if (type.IsEmpty())
+	{
+		csdioFile.WriteString(_T("无"));
+	}
+	else
+		csdioFile.WriteString(type);
 	
 	//恢复区域设定
 	setlocale(LC_CTYPE, old_locale);
@@ -127,7 +132,7 @@ void CInfoFile::WirteDocline(CString &type, double &x_floor, double &x_ceil, dou
 	csdioFile.WriteString(DoubleToCString(theta_floor));
 	csdioFile.WriteString(_T(" "));
 	csdioFile.WriteString(DoubleToCString(theta_ceil));
-	csdioFile.WriteString(_T("\r\n"));
+	//csdioFile.WriteString(_T("\r\n"));
 	/*MidData = SendFreqData[4];
 	char MyChar[10];
 	_itoa_s(MidData, MyChar, 10);*/
