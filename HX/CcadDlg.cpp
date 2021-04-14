@@ -508,6 +508,9 @@ void CcadDlg::OnBnClickedButtonCadOpen()
 	p1.RefinePaths();
 	p1.GenerateActualPaths(actual_path_);
 
+	//调用例子
+	cout << PathGen::bp_info.e_height << endl;
+
 	m_CadGlueList.DeleteAllItems(); //清空所有表项
 
 	WORD temp[200];//发送数据存储空间

@@ -1,7 +1,9 @@
 ﻿#include "PathGen.h"
 
-
 using namespace std;
+
+back_plate_info PathGen::bp_info;
+
 namespace std
 {
 	ifstream& operator>>(ifstream& fin, point4w& output)
@@ -141,7 +143,20 @@ bool PathGen::RefinePaths()
 //生成实际路径
 void PathGen::GenerateActualPaths(actual_path& ap)
 {
-	if (refined_hori_paths_.size() == 2)//上下路径皆存在
+	if (refined_hori_paths_.size() > 2)
+	{
+
+
+		for (int i = 0; i < 2; ++i)
+		{
+			auto hori_path = refined_hori_paths_[i];
+			copy(hori_path.cbegin(), hori_path.cend(), back_inserter(final_paths_));
+		}
+		FillVerticalGroup();
+		auto last_path = refined_hori_paths_.back();
+		copy(last_path.cbegin(), last_path.cend(), back_inserter(final_paths_));
+	}
+	else if (refined_hori_paths_.size() == 2)//上下路径皆存在
 	{
 		//定义下方路径引用
 		const vector<point4w>& bottom_line = refined_hori_paths_.front();
@@ -220,8 +235,8 @@ void PathGen::GenerateActualPaths(actual_path& ap)
 		ap.rsx = file_rsx;
 		ap.rsy = file_rsy;
 		ap.len = ap.real_path.size();
-		ap.height = bp_info.height;
-		ap.width = bp_info.width;
+		ap.width = bp_info.e_width;
+		ap.height = bp_info.e_height;
 
 	}
 
